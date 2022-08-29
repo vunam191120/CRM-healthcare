@@ -1,0 +1,28 @@
+.table-title {
+  @include styleText($color-brown-1, $fs-1, $fw-1);
+  margin-bottom: $mg-4;
+  text-transform: capitalize;
+  .table-content {
+    width: 100%;
+    color: #212529;
+    border-collapse: collapse;
+    text-align-last: left;
+    overflow-x: scroll;
+    white-space: nowrap;
+    th {
+      padding: $pd-1;
+      font-size: $fs-0;
+      line-height: 1;
+      border-bottom: 2px solid #ebedf2;
+      border-bottom-width: 1px;
+      vertical-align: middle;
+    }
+    td {
+      vertical-align: middle;
+      font-size: $fs-0;
+      line-height: 1;
+      padding: 1rem 0.9375rem;
+      border-top: 1px solid #ebedf2;
+    }
+  }
+}
