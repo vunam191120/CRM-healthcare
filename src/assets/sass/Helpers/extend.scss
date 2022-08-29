@@ -1,0 +1,18 @@
+// .backgroundImage {
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-size: cover;
+// }
+
+// Placeholder
+%backgroundImage {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+%centerBlock {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
