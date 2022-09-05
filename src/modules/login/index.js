@@ -5,14 +5,23 @@ import { Col, Row, Button } from 'antd';
 import Input from '../../components/Input';
 import loginBg from './../../assets/img/loginBg.png';
 import { isLogin } from '../../helpers/isLogin';
+import Spinner from '../../components/Spinner';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  login,
+  selectUsersError,
+  selectUsersLoading,
+} from '../../store/slices/usersSlice';
 
 export default function LoginForm() {
   const [account, setAccount] = useState({
     username: '',
     password: '',
   });
-  const [error, setError] = useState('');
+  const error = useSelector(selectUsersError);
+  const isLoading = useSelector(selectUsersLoading);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLogin()) {
@@ -28,9 +37,7 @@ export default function LoginForm() {
   };
 
   const handleSubmit = (e) => {
-    localStorage.setItem('accessToken', JSON.stringify(account));
-    setError('Your username or password is incorrect. Try again!');
-    navigate('/');
+    dispatch(login({ username: account.username, password: account.password }));
   };
 
   return (
@@ -74,10 +81,10 @@ export default function LoginForm() {
             <Button
               size="large"
               className="login-btn"
-              type="primary"
+              type="submit"
               onClick={handleSubmit}
             >
-              Log in
+              {isLoading ? <Spinner /> : 'Login'}
             </Button>
           </form>
         </Col>

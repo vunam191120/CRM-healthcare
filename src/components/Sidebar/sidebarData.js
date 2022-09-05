@@ -1,9 +1,5 @@
 // import GoThreeBars from 'react-icons/go';
-import {
-  AiFillHome,
-  AiOutlineSetting,
-  AiOutlineMedicineBox,
-} from 'react-icons/ai';
+import { AiOutlineSetting, AiOutlineMedicineBox } from 'react-icons/ai';
 import { BiUser } from 'react-icons/bi';
 import { RiArrowDownSFill, RiArrowUpSFill } from 'react-icons/ri';
 import { HiOutlineDocumentText, HiOutlineCalendar } from 'react-icons/hi';

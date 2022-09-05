@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import healthCareLogo from './../../assets/img/healthCareLogo.png';
 import { useNavigate } from 'react-router-dom';
 import { ImExit } from 'react-icons/im';
@@ -7,7 +7,7 @@ import { SidebarData } from './sidebarData';
 import SubMenu from '../SubMenu';
 
 export default function Sidebar() {
-  const [sidebar, setSidebar] = useState(false);
+  // const [sidebar, setSidebar] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -15,9 +15,9 @@ export default function Sidebar() {
     navigate('/login');
   };
 
-  const handleToggleSidebar = () => {
-    setSidebar(!sidebar);
-  };
+  // const handleToggleSidebar = () => {
+  //   setSidebar(!sidebar);
+  // };
 
   return (
     <div className="sidebar-container">

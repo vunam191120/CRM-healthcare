@@ -33,7 +33,7 @@
       }
       .login-btn {
         width: 50%;
-        height: fit-content;
+        height: 50px;
         color: $color-white-0;
         margin-left: auto;
         border-radius: 14px;
@@ -44,6 +44,12 @@
         transition: 0.25s ease;
         &:hover {
           background-color: $color-yellow-0;
+        }
+        .spinner {
+          height: 30px;
+          width: 30px;
+          border-width: 4px;
+          margin: 0 auto;
         }
       }
       .login-error {

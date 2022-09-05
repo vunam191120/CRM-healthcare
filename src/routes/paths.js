@@ -13,4 +13,4 @@
 export const PATH_HOMEPAGE = '/homepage';
 
 export const PATH_USERS = '/users';
-export const PATH_USERS_UPGRADE = '/users/upgrade:id';
+export const PATH_USERS_UPDATE = '/users/update/:id';

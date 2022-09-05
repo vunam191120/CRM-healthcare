@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/login';
 import PrivateRoute from './routes/PrivateRoute';
-import Layout from './Layout';
+import Layout from './layout';
 
 function App() {
   return (
