@@ -30,6 +30,7 @@ const configServer = () => {
     seeds(server) {
       server.create('user', {
         id: 1,
+        avatar: 'avatar1.png',
         firstName: 'Vu',
         lastName: 'Nam',
         age: '22',
@@ -41,14 +42,15 @@ const configServer = () => {
       });
       server.create('user', {
         id: 2,
+        avatar: 'avatar2.png',
         firstName: 'Quoc',
         lastName: 'Anh',
         age: '24',
         phone: '0971940618',
-        role: 'User',
+        role: 'Sale',
         address: 'Ha noi',
-        username: 'user',
-        password: 'user',
+        username: 'sale',
+        password: 'sale',
       });
     },
 
@@ -65,6 +67,7 @@ const configServer = () => {
             user: {
               firstName: user.attrs.firstName,
               lastName: user.attrs.lastName,
+              avatar: user.attrs.avatar,
               age: user.attrs.age,
               phone: user.attrs.phone,
               role: user.attrs.role,

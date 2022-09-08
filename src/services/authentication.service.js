@@ -1,4 +1,3 @@
-import { Navigate } from 'react-router-dom';
 import UserApi from '../api/user';
 
 const login = async (username, password) => {
@@ -7,22 +6,18 @@ const login = async (username, password) => {
   if (data.status === 401) {
     return Promise.reject('Username of password incorrect');
   } else {
-    // authenticationService.currentUser = data;
     return Promise.resolve(data);
   }
 };
 
 const logout = () => {
-  localStorage.removeItem('accessToken');
+  // Remove data's user whenever they logged out
   localStorage.removeItem('currentUser');
-  <Navigate to="/login" replace={true} />;
+  window.location.href = '/login';
+  // window.location.href = 'localhost:3000/login';
 };
 
-export const authenticationService = {
+export let authenticationService = {
   login,
   logout,
-  currentUser: {},
-  getCurrentUser() {
-    this.currentUser = localStorage.getItem('currentUser');
-  },
 };

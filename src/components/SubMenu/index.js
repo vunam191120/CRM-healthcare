@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export default function SubMenu({ item }) {
   const [subnav, setSubnav] = useState(false);
@@ -8,7 +8,7 @@ export default function SubMenu({ item }) {
 
   return (
     <li className="sidebar-item">
-      <Link
+      <NavLink
         className="sidebar-link"
         to={item.path}
         onClick={item.subNav && handleToggleSubnav}
@@ -22,7 +22,7 @@ export default function SubMenu({ item }) {
             ? item.iconClosed
             : null}
         </span>
-      </Link>
+      </NavLink>
       {subnav &&
         item.subNav.map((item, index) => (
           <Link className="sidebar-subnav" to={item.path} key={index}>

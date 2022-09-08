@@ -1,18 +1,16 @@
 import React from 'react';
 import healthCareLogo from './../../assets/img/healthCareLogo.png';
-import { useNavigate } from 'react-router-dom';
 import { ImExit } from 'react-icons/im';
 
 import { SidebarData } from './sidebarData';
 import SubMenu from '../SubMenu';
+import { authenticationService } from '../../services/authentication.service';
 
 export default function Sidebar() {
   // const [sidebar, setSidebar] = useState(false);
-  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    navigate('/login');
+    authenticationService.logout();
   };
 
   // const handleToggleSidebar = () => {

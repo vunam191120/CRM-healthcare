@@ -1,0 +1,111 @@
+.user-row {
+  cursor: pointer;
+}
+
+.user-detail__overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($color: #000000, $alpha: 0.6);
+  z-index: 90;
+  &.active {
+    display: flex;
+  }
+  .content {
+    border-radius: 15px;
+    position: absolute;
+    background-color: $color-white-0;
+    top: 50%;
+    left: 50%;
+    min-height: calc(86%);
+    max-width: 500px;
+    transform: translate(-50%, -50%);
+    padding: 0 $pd-1 + 1 $pd-1 + 1;
+    .title {
+      padding: $pd-1 + 1;
+      text-align: center;
+      @include styleText($color-black-0, $fs-5, $fw-1);
+    }
+    .head {
+      padding: 0 $pd-1;
+      display: flex;
+      margin-bottom: $mg-3 - 5px;
+      img {
+        border-radius: 5px;
+        object-fit: cover;
+        width: 74px;
+        height: 74px;
+        display: block;
+        margin-right: $mg-2;
+      }
+      .description {
+        .id,
+        .name,
+        .category {
+          margin-bottom: 0;
+        }
+        .id {
+          @include styleText($color-black-0, $fs-1, $fw-0);
+        }
+        .name {
+          @include styleText($color-black-0, $fs-3, $fw-2);
+        }
+        .category {
+          @include styleText($color-gray-1, $fs-1, $fw-0);
+        }
+      }
+      .tag-stars {
+        background: $color-yellow-0;
+        height: fit-content;
+        justify-content: flex-start;
+        border-radius: 3px;
+        padding: $pd-2 - 3 $pd-0;
+        @include styleText($color-white-0, $fs-1, $fw-0);
+        display: flex;
+        align-items: center;
+        span {
+          margin-left: $mg-0;
+        }
+      }
+    }
+    .body {
+      .body-title {
+        @include styleText($color-black-0, $fs-0, $fw-2);
+        border-bottom: 1px solid #e6e9f4;
+        margin-bottom: $mg-2;
+        padding-bottom: $pd-2;
+      }
+      .details-container {
+        margin-bottom: $mg-4;
+        .details-title {
+          margin-bottom: $mg-0 + 2;
+          @include styleText($color-black-0, $fs-0 - 1, $fw-1);
+        }
+        .details-info {
+          @include styleText($color-gray-1, $fs-0 - 1, $fw-0);
+        }
+      }
+      .total-consulation {
+        span {
+          color: $color-blue-0;
+        }
+      }
+    }
+    .footer {
+      margin-top: $mg-3;
+      display: flex;
+      justify-content: center;
+      .action-btn,
+      .btn {
+        padding: $pd-0 $pd-4;
+        border-radius: 8px;
+        &:first-child {
+          margin-right: $mg-4;
+        }
+      }
+    }
+  }
+}

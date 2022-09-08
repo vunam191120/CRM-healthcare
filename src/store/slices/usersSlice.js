@@ -3,23 +3,28 @@ import UserApi from '../../api/user';
 import { authenticationService } from '../../services/authentication.service';
 
 // Side Effect actions
-const fetchUsers = createAsyncThunk('usersSlice/getAllUsers', async () => {
-  try {
-    const data = await UserApi.getAll();
-    console.log(data);
-  } catch (err) {
-    console.log(err);
+
+export const fetchUsers = createAsyncThunk(
+  'usersSlice/getAllUsers',
+  async () => {
+    try {
+      const result = await UserApi.getAll();
+      const data = await result.json();
+      return data.users;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
   }
-});
+);
 
 export const login = createAsyncThunk(
   'usersSlice/login',
   async ({ username, password }) => {
-    return authenticationService.login(username, password);
+    let data = await authenticationService.login(username, password);
+    return data.user;
   }
 );
-
-// const addUsers = createAsyncThunk('usersSlice/');
 
 // Reducer
 const usersSlice = createSlice({
@@ -51,9 +56,10 @@ const usersSlice = createSlice({
       state.hasError = false;
     },
     [login.fulfilled]: (state, action) => {
-      console.log('Log in successfully', action.payload);
+      localStorage.setItem('currentUser', JSON.stringify(action.payload));
       state.isLoading = false;
       state.hasError = false;
+      window.location.href = '/';
     },
     [login.rejected]: (state, action) => {
       state.isLoading = false;

@@ -1,0 +1,39 @@
+.btn {
+  span {
+    display: block;
+  }
+}
+
+.button--main {
+  transition: 0.25s ease;
+  height: auto;
+  width: auto;
+  @include styleButton(
+    $color-white-0,
+    $color-blue-0,
+    $color-blue-0,
+    $fs-0,
+    $fw-1,
+    $pd-2,
+    $pd-3
+  );
+  &:hover {
+    @include hoverButton($color-white-0, $color-yellow-0, $color-yellow-0);
+  }
+}
+
+.button--light {
+  transition: 0.25s ease;
+  @include styleButton(
+    $color-blue-0,
+    $color-white-0,
+    $color-blue-0,
+    $fs-0,
+    $fw-1,
+    $pd-0 + 1,
+    $pd-0 + 2
+  );
+  &:hover {
+    @include hoverButton($color-white-0, $color-yellow-0, $color-yellow-0);
+  }
+}

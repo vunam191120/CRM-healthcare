@@ -1,17 +1,26 @@
 import User from '../pages/users';
-import { PATH_USERS, PATH_USERS_UPDATE } from './paths';
+import CreateUser from '../pages/users/create';
+import UpdateUser from '../pages/users/update';
+import { PATH_USERS, PATH_USERS_CREATE, PATH_USERS_UPDATE } from './paths';
 
-/* <Route path="/" element={} /> */
-
-export const appRoutes = [
+const appRoutes = [
   {
     path: PATH_USERS,
-    element: User,
+    element: <User />,
     roles: ['Admin'],
-  },
-  {
-    path: PATH_USERS_UPDATE,
-    element: 'hello',
-    roles: ['Admin'],
+    subpath: [
+      {
+        path: PATH_USERS_UPDATE,
+        element: <UpdateUser />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_USERS_CREATE,
+        element: <CreateUser />,
+        roles: ['Admin'],
+      },
+    ],
   },
 ];
+
+export default appRoutes;

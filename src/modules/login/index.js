@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Col, Row, Button } from 'antd';
 
 import Input from '../../components/Input';
 import loginBg from './../../assets/img/loginBg.png';
-import { isLogin } from '../../helpers/isLogin';
 import Spinner from '../../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -20,14 +18,9 @@ export default function LoginForm() {
   });
   const error = useSelector(selectUsersError);
   const isLoading = useSelector(selectUsersLoading);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isLogin()) {
-      navigate('/');
-    }
-  }, [navigate]);
+  useEffect(() => {}, []);
 
   const handleChange = (e) => {
     setAccount({

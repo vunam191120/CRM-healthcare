@@ -28,7 +28,7 @@
 // };
 
 const UserApi = {
-  getAll(username, password) {
+  getAll() {
     const url = `/users`;
     return fetch(url);
   },
