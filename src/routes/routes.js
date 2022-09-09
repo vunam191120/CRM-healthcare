@@ -8,18 +8,16 @@ const appRoutes = [
     path: PATH_USERS,
     element: <User />,
     roles: ['Admin'],
-    subpath: [
-      {
-        path: PATH_USERS_UPDATE,
-        element: <UpdateUser />,
-        roles: ['Admin'],
-      },
-      {
-        path: PATH_USERS_CREATE,
-        element: <CreateUser />,
-        roles: ['Admin'],
-      },
-    ],
+  },
+  {
+    path: PATH_USERS_CREATE,
+    element: <CreateUser />,
+    roles: ['Admin'],
+  },
+  {
+    path: PATH_USERS_UPDATE,
+    element: <UpdateUser />,
+    roles: ['Admin'],
   },
 ];
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row, Button } from 'antd';
 
 import Input from '../../components/Input';
 import loginBg from './../../assets/img/loginBg.png';
 import Spinner from '../../components/Spinner';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   login,
   selectUsersError,
@@ -19,8 +20,13 @@ export default function LoginForm() {
   const error = useSelector(selectUsersError);
   const isLoading = useSelector(selectUsersLoading);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem('currentUser'))) {
+      navigate('/');
+    }
+  }, []);
 
   const handleChange = (e) => {
     setAccount({

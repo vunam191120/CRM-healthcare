@@ -1,12 +1,13 @@
 import React from 'react';
-import healthCareLogo from './../../assets/img/healthCareLogo.png';
 import { ImExit } from 'react-icons/im';
+import { Link } from 'react-router-dom';
 
+import healthCareLogo from './../../assets/img/healthCareLogo.png';
 import { SidebarData } from './sidebarData';
 import SubMenu from '../SubMenu';
 import { authenticationService } from '../../services/authentication.service';
 
-export default function Sidebar() {
+const Sidebar = () => {
   // const [sidebar, setSidebar] = useState(false);
 
   const handleLogout = () => {
@@ -19,12 +20,12 @@ export default function Sidebar() {
 
   return (
     <div className="sidebar-container">
-      <div className="sidebar-logo">
+      <Link to="/" className="sidebar-logo">
         <img src={healthCareLogo} alt="HealthCare Logo" />
         <h4>
           Health<span>care</span>
         </h4>
-      </div>
+      </Link>
       <ul className="sidebar-content">
         {SidebarData.map((item, index) => (
           <SubMenu item={item} key={index} />
@@ -33,4 +34,6 @@ export default function Sidebar() {
       <ImExit onClick={handleLogout} className="logout-btn" />
     </div>
   );
-}
+};
+
+export default Sidebar;
