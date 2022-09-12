@@ -68,14 +68,7 @@ export default function UsersForm({ mode }) {
     title: '',
     src: '',
   });
-  const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-  ]);
+  const [fileList, setFileList] = useState([]);
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -100,6 +93,10 @@ export default function UsersForm({ mode }) {
         isOpen: true,
       });
     };
+  };
+
+  const handleClose = () => {
+    setPreview({ ...preview, isOpen: false });
   };
 
   const onFinish = (values) => {
@@ -300,13 +297,15 @@ export default function UsersForm({ mode }) {
       </Form>
       <Modal
         isOpen={preview.isOpen}
-        title={preview.title}
-        icon={null}
-        message={<img src={preview.src} alt="Preivew img" />}
-        onClose={() => ({ ...preview, isOpen: false })}
-        onConfirm={() => ({ ...preview, isOpen: false })}
+        header={<h4 className="modal__title">{preview.title}</h4>}
+        message={
+          <div>
+            <img className="modal__image" src={preview.src} alt="Preivew img" />
+          </div>
+        }
+        onClose={handleClose}
+        onConfirm={handleClose}
       />
-      <pre>{JSON.stringify(fileList, null, 2)}</pre>
     </>
   );
 }

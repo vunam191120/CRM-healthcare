@@ -5,43 +5,54 @@
   left: 0;
   right: 0;
   z-index: 30;
+  box-shadow: 0 3px 6px -4px #0000001f;
   background-color: rgba($color: $color-black-0, $alpha: 0.6);
-  .popup__container {
+  .modal__container {
     background-color: $color-white-0;
-    min-width: 400px;
-    min-height: 380px;
     position: absolute;
     top: 50%;
     left: 50%;
     z-index: 40;
     transform: translate(-50%, -50%);
-    border-radius: 5px;
-    padding: 20px;
-    font-size: 14px;
+    padding: $pd-3 0;
+    font-size: $fs-0;
     text-align: center;
     border: none;
-    .popupTitle {
-      color: #636363;
-      font-size: 26px;
-      font-weight: 500;
-      margin: 30px 0 -10px;
+    .modal__title {
+      @include styleText($color-black-0, $fs-5, $fw-0);
     }
-    .popup__close-btn {
-      padding: 0.675rem;
+    .modal__close-btn {
+      padding: 1rem;
       position: absolute;
       top: 0px;
       right: 0px;
       cursor: pointer;
-    }
-    .popupBody {
-      color: #999;
-      padding: 1rem;
-
-      & > p {
-        margin-bottom: 1rem;
+      .modal__close-icon {
+        @include styleText($color-gray-0, $fs-5, $fw-0);
+        transition: 0.25s ease;
+        &:hover {
+          color: $color-black-0;
+          transform: translateY(-3px);
+        }
       }
     }
-    .popupFooter {
+    .modal__body {
+      max-width: 400px;
+      min-height: 400px;
+      color: $color-brown-0;
+      padding: $pd-1;
+      border-top: 1px solid $color-brown-0;
+      & > p {
+        margin-bottom: $mg-4;
+      }
+      .modal__image {
+        object-fit: contain;
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+    }
+    .modal__footer {
       display: flex;
       justify-content: space-evenly;
     }
