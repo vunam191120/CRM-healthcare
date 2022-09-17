@@ -1,53 +1,63 @@
-// import axiosClient from '../axios.config';
+import axiosClient from '../axios.config';
 
+const accountAPI = {
+  create(user) {
+    const url = `/account/user`;
+    return axiosClient.post(url, user);
+  },
+  getAll() {
+    const url = `/account/user`;
+    return axiosClient.get(url);
+  },
+  getOne(email) {
+    const url = `/account/${email}`;
+    return axiosClient.get(url);
+  },
+  getIdentity(email) {
+    const url = `/account/user/${email}`;
+    return axiosClient.get(url);
+  },
+  login({ email, password }) {
+    const url = `/account/login`;
+    return axiosClient.post(url, { email, password });
+  },
+};
+
+// Mock API
 // const UserApi = {
+//   create(user) {
+//     const url = `/users/create`;
+//     return fetch(url, {
+//       method: 'POST',
+//       body: user,
+//     });
+//   },
+//   update(user) {
+//     const url = `/users/update/${user.id}`;
+//     return fetch(url, {
+//       method: 'PUT',
+//       body: user,
+//     });
+//   },
+//   getOne(userId) {
+//     const url = `/users/${userId}`;
+//     return fetch(url);
+//   },
 //   getAll() {
 //     const url = `/users`;
-//     return axiosClient.get(url);
+//     return fetch(url);
 //   },
-//   getOne(id) {
-//     const url = `/users/${id}`;
-//     return axiosClient.get(url);
-//   },
-//   add(user) {
-//     const url = `/users`;
-//     return axiosClient.post(url, user);
-//   },
-//   update(id, user) {
-//     const url = `/users/${id}`;
-//     return axiosClient.put(url, user);
-//   },
-//   remove(id) {
-//     const url = `/users/${id}`;
-//     return axiosClient.delete(url);
-//   },
-//   login(username, password) {
+//   login(email, password) {
 //     const url = `/login`;
-//     return axiosClient.post(url, { username, password });
+//     return fetch(url, {
+//       method: 'POST',
+//       header: { 'Content-type': 'application/json; charset=UTF-8' },
+//       body: JSON.stringify({
+//         email,
+//         password,
+//       }),
+//     });
 //   },
 // };
 
-const UserApi = {
-  getAll() {
-    const url = `/users`;
-    return fetch(url);
-  },
-  login(username, password) {
-    const url = `/login`;
-    return fetch(url, {
-      method: 'POST',
-      header: { 'Content-type': 'application/json; charset=UTF-8' },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
-  },
-};
-export default UserApi;
-
-/**
- * Using and call from action of store Redux
- * await UserApi.remove(id);
- *
- */
+export default accountAPI;

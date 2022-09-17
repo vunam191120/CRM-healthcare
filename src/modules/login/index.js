@@ -1,23 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Col, Row, Button } from 'antd';
+import { Col, Row, Form, Input } from 'antd';
 
-import Input from '../../components/Input';
 import loginBg from './../../assets/img/loginBg.png';
+import Button from '../../components/Button';
 import Spinner from '../../components/Spinner';
-import {
-  login,
-  selectUsersError,
-  selectUsersLoading,
-} from '../../store/slices/usersSlice';
+import { login, selectUsersLoading } from '../../store/slices/usersSlice';
+import healthCareLogo from './../../assets/img/healthCareLogo.png';
 
 export default function LoginForm() {
-  const [account, setAccount] = useState({
-    username: '',
-    password: '',
-  });
-  const error = useSelector(selectUsersError);
+  const [form] = Form.useForm();
+  // const error = useSelector(selectUsersError);
   const isLoading = useSelector(selectUsersLoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,66 +20,81 @@ export default function LoginForm() {
     if (JSON.parse(localStorage.getItem('currentUser'))) {
       navigate('/');
     }
-  }, []);
+  }, [navigate]);
 
-  const handleChange = (e) => {
-    setAccount({
-      ...account,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    dispatch(login({ username: account.username, password: account.password }));
+  const handleSubmit = ({ email, password }) => {
+    dispatch(login({ email, password }));
   };
 
   return (
     <section className="login-container">
       <Row className="login-row">
-        <Col md={20} xl={14}>
+        <Col xs={0} sm={0} md={12} lg={12} xl={14}>
           <img className="login__img" src={loginBg} alt="login img" />
         </Col>
-        <Col md={4} xl={10}>
-          <form className="login-content">
-            <h1>HealthCare</h1>
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta
-              nobis in repellat, animi quibusdam. Beatae, doloribus.
-            </p>
-            <div className="input-group">
-              <Input
-                id="username"
-                type="username"
-                name="username"
-                required
-                className="input-form"
-                placeholder="Username"
-                onChange={handleChange}
-                value={account.username}
+        <Col xs={24} sm={24} md={12} lg={12} xl={10}>
+          <Form
+            className="login-content"
+            form={form}
+            name="login"
+            onFinish={handleSubmit}
+            scrollToFirstError
+          >
+            {/* Text */}
+            <div className="login-text">
+              <img
+                src={healthCareLogo}
+                className="login__img--mobile"
+                alt="logo healthcare mobile"
               />
+              <h1>HealthCare</h1>
+              <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta
+                nobis in repellat, animi quibusdam. Beatae, doloribus.
+              </p>
             </div>
-            <div className="input-group">
-              <Input
-                id="password"
-                type="password"
-                name="password"
-                required
-                className="input-form"
-                placeholder="Password"
-                onChange={handleChange}
-                value={account.password}
-              />
-            </div>
-            <p className="login-error">{error}</p>
-            <Button
-              size="large"
-              className="login-btn"
-              type="submit"
-              onClick={handleSubmit}
+
+            {/* Email */}
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  type: 'email',
+                  message: 'The input is not valid E-mail!',
+                },
+                {
+                  required: true,
+                  message: 'Please input your E-mail!',
+                },
+              ]}
             >
-              {isLoading ? <Spinner /> : 'Login'}
-            </Button>
-          </form>
+              <Input className="login-input" placeholder="Enter your email!" />
+            </Form.Item>
+
+            {/* Password */}
+            <Form.Item
+              style={{ marginTop: 10 }}
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
+            >
+              <Input.Password
+                className="login-input"
+                placeholder="Enter your password!"
+              />
+            </Form.Item>
+
+            {/* Button */}
+            <Form.Item>
+              <Button className="login-btn" type="submit">
+                {isLoading ? <Spinner /> : 'Login'}
+              </Button>
+            </Form.Item>
+          </Form>
         </Col>
       </Row>
     </section>

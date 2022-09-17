@@ -9,7 +9,7 @@ import store from './store';
 import configServer from './helpers/fake-server-mirage';
 
 // Mock API
-configServer();
+// configServer();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

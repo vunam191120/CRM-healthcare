@@ -30,8 +30,10 @@
     $color-blue-0,
     $fs-0,
     $fw-1,
-    $pd-0 + 1,
-    $pd-0 + 2
+    // $pd-0 + 1,
+    // $pd-0 + 2
+    $pd-2,
+    $pd-3
   );
   &:hover {
     @include hoverButton($color-white-0, $color-yellow-0, $color-yellow-0);

@@ -14,17 +14,17 @@
 // Layouts
 @import './Layouts/sidebar.scss';
 @import './Layouts/layout.scss';
+@import './Layouts/headerTable.scss';
 
 // Components
-@import './Components/input.scss';
 @import './Components/modal.scss';
 @import './Components/spinner.scss';
 @import './Components/pagination.scss';
-@import './Components/table.scss';
 @import './Components/userDetail.scss';
 @import './Components/button.scss';
 
 // Pages
 @import './Pages/login';
+@import './Pages/userForm';
 
 // Theme

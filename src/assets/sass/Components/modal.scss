@@ -19,7 +19,7 @@
     text-align: center;
     border: none;
     .modal__title {
-      @include styleText($color-black-0, $fs-5, $fw-0);
+      @include styleText($color-black-0, $fs-3, $fw-0);
     }
     .modal__close-btn {
       padding: 1rem;

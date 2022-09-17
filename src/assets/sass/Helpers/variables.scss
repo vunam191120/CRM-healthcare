@@ -48,12 +48,14 @@ $pd-1: 15px;
 $pd-2: 5px;
 $pd-3: 20px;
 $pd-4: 35px;
+$pd-5: 60px;
 
 // Border-radius
 $border-radius: 2px;
 
 // Break points
 $breakpoints: (
+  'extra-extra-large': 1600px,
   'extra-large': 1200px,
   'large': 992px,
   'medium': 768px,

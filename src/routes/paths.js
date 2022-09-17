@@ -12,13 +12,13 @@
 
 // export const PATH_HOMEPAGE = '/homepage';
 
-export const PATH_USERS = '/users';
-export const PATH_USERS_CREATE = '/users/create';
-export const PATH_USERS_UPDATE = '/users/update/:id';
+export const PATH_ACCOUNTS = '/accounts';
+export const PATH_ACCOUNTS_CREATE = '/accounts/create';
+export const PATH_ACCOUNTS_UPDATE = '/accounts/update/:userId';
 
 export const PATH_CATEGORIES = '/categories';
 export const PATH_CATEGORIES_CREATE = '/categories/create';
-export const PATH_CATEGORIES_UPDATE = '/categories/update/:id';
+export const PATH_CATEGORIES_UPDATE = '/categories/update/:categoryId';
 
 // export const PATH_USERS = '/users';
 // export const PATH_USERS_CREATE = 'create';

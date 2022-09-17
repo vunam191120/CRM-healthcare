@@ -9,15 +9,29 @@
     .login__img {
       @extend %centerBlock;
       transform: translate(-50%, -50%);
+      width: 100%;
+      height: auto;
     }
     .login-content {
       text-align: center;
-      padding-right: 150px;
+      padding: 0 $pd-4;
       width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      // Test
+      .login-input {
+        border: none;
+        outline: none;
+        width: 100%;
+        background-color: $color-white-0;
+        padding: $pd-0 $pd-1;
+        transition: 0.25s ease;
+      }
+      .login__img--mobile {
+        display: none;
+      }
       p {
         margin-bottom: $mg-3;
         @include styleText($color-brown-1, $fs-0, $fw-0);
@@ -26,10 +40,6 @@
         @include styleText($color-brown-1, $fs-2, $fw-3);
         margin-bottom: $mg-2;
         white-space: nowrap;
-      }
-      .input-group {
-        width: 100%;
-        margin-bottom: $mg-1;
       }
       .login-btn {
         width: 50%;
@@ -55,6 +65,22 @@
       .login-error {
         margin-bottom: $mg-1;
         color: $color-red-0;
+      }
+
+      // Responsive
+      @include responsive('medium') {
+        & {
+          padding: 0 $pd-4;
+        }
+        .login__img--mobile {
+          display: block;
+          width: 250px;
+          height: auto;
+          margin: 0 auto;
+          margin-bottom: $mg-3;
+        }
+      }
+      @include responsive('small') {
       }
     }
   }

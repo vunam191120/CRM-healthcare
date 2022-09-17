@@ -1,17 +1,19 @@
 import React from 'react';
 import { ImExit } from 'react-icons/im';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import healthCareLogo from './../../assets/img/healthCareLogo.png';
 import { SidebarData } from './sidebarData';
 import SubMenu from '../SubMenu';
-import { authenticationService } from '../../services/authentication.service';
 
 const Sidebar = () => {
   // const [sidebar, setSidebar] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    authenticationService.logout();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('currentUser');
+    navigate('/login');
   };
 
   // const handleToggleSidebar = () => {

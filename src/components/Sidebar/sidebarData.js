@@ -8,32 +8,32 @@ import { MdOutlineCategory, MdOutlineDashboard } from 'react-icons/md';
 export const SidebarData = [
   {
     title: 'Dashboard',
-    path: '/',
+    path: '/dashboard',
     icon: <MdOutlineDashboard />,
   },
   {
     title: 'Appointments',
-    path: '/',
+    path: '/appointments',
     icon: <HiOutlineCalendar />,
   },
   {
-    title: 'Users',
-    path: '/users',
+    title: 'Accounts',
+    path: '/accounts',
     icon: <BiUser />,
   },
   {
     title: 'Department',
-    path: '/',
+    path: '/department',
     icon: <AiOutlineMedicineBox />,
   },
   {
     title: 'Categories',
-    path: '/',
+    path: '/categories',
     icon: <MdOutlineCategory />,
   },
   {
     title: 'Reports',
-    path: '/',
+    path: '/reports',
     icon: <HiOutlineDocumentText />,
     iconClosed: <RiArrowDownSFill />,
     iconOpened: <RiArrowUpSFill />,
@@ -62,7 +62,7 @@ export const SidebarData = [
   },
   {
     title: 'Setting',
-    path: '/',
+    path: '/setting',
     icon: <AiOutlineSetting />,
   },
 ];
