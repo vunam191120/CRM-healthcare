@@ -1,17 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Col, Row, Form, Input } from 'antd';
+import { Col, Row, Form, Input, Checkbox } from 'antd';
+import { IoClose } from 'react-icons/io5';
+import { RiLockPasswordFill } from 'react-icons/ri';
 
 import loginBg from './../../assets/img/loginBg.png';
 import Button from '../../components/Button';
 import Spinner from '../../components/Spinner';
-import { login, selectUsersLoading } from '../../store/slices/usersSlice';
+import {
+  forgotPassword,
+  login,
+  selectUsersLoading,
+} from '../../store/slices/usersSlice';
 import healthCareLogo from './../../assets/img/healthCareLogo.png';
+import Modal from '../../components/Modal';
 
 export default function LoginForm() {
   const [form] = Form.useForm();
-  // const error = useSelector(selectUsersError);
+  const [formForgot] = Form.useForm();
+  const [forgotPw, setForgotPw] = useState(false);
   const isLoading = useSelector(selectUsersLoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,6 +33,61 @@ export default function LoginForm() {
   const handleSubmit = ({ email, password }) => {
     dispatch(login({ email, password }));
   };
+
+  const handleSubmitForgot = (values) => {
+    dispatch(forgotPassword(values.email));
+    handleClickClose();
+  };
+
+  const handleClickClose = () => {
+    setForgotPw(false);
+  };
+
+  const renderBody = () => (
+    <div className="content content--forgot">
+      <div className="close-btn" onClick={handleClickClose}>
+        <IoClose className="close-icon" />
+      </div>
+      <h3 className="title">Forgot Password</h3>
+      <div className="icon-title">
+        <RiLockPasswordFill />
+      </div>
+      <p className="message">
+        Please Enter Your Email Address To Receive a Vertification Email.
+      </p>
+      <Form
+        className="forgot-form"
+        form={formForgot}
+        name="forgot"
+        onFinish={handleSubmitForgot}
+        scrollToFirstError
+      >
+        {/* Forgot Email */}
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
+            },
+            {
+              required: true,
+              message: 'Please input your E-mail!',
+            },
+          ]}
+        >
+          <Input className="forgot-input" placeholder="Enter your email!" />
+        </Form.Item>
+
+        {/* Button */}
+        <Form.Item className="button-container">
+          <Button className="button button--main" type="submit">
+            {isLoading ? <Spinner /> : 'Send'}
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
+  );
 
   return (
     <section className="login-container">
@@ -88,6 +151,21 @@ export default function LoginForm() {
               />
             </Form.Item>
 
+            {/* Forgot Password */}
+            <Form.Item
+              style={{ textAlign: 'right' }}
+              valuePropName="checked"
+              name="forgot_password"
+            >
+              <Checkbox
+                className="forgot-pw"
+                defaultChecked={false}
+                onChange={() => setForgotPw(true)}
+              >
+                Forgot password?
+              </Checkbox>
+            </Form.Item>
+
             {/* Button */}
             <Form.Item>
               <Button className="button button--main" type="submit">
@@ -97,6 +175,11 @@ export default function LoginForm() {
           </Form>
         </Col>
       </Row>
+      <Modal
+        isOpen={forgotPw}
+        className={forgotPw ? 'active' : ''}
+        renderBody={renderBody}
+      />
     </section>
   );
 }

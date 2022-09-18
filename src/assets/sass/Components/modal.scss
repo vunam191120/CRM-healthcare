@@ -83,6 +83,46 @@
         }
       }
     }
+
+    // Content for forgot password
+    &.content--forgot {
+      padding: 0 $pd-5 $pd-2 $pd-5;
+      text-align: center;
+      .title {
+        @include styleText($color-brown-1, $fs-5, $fw-0);
+        padding-top: $pd-1;
+      }
+      .icon-title {
+        width: 150px;
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        @include styleText($color-blue-0, $fs-7, $fw-0);
+        background-color: $color-brown-0;
+        border-radius: 50%;
+      }
+      .message {
+        margin-top: $mg-1;
+      }
+      .button-container {
+        margin-top: $mg-3;
+        display: flex;
+        justify-content: center;
+        .button--main {
+          display: block;
+          min-width: 200px;
+          margin: 0;
+        }
+      }
+    }
+    // Responsive
+    @include responsive('small') {
+      & {
+        // max-width: 400px;
+      }
+    }
   }
 }
 

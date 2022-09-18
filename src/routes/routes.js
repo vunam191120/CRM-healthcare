@@ -7,6 +7,7 @@ import {
   PATH_ACCOUNTS_CREATE,
   PATH_ACCOUNTS_UPDATE,
 } from './paths';
+// import NoMatch from '../components/NoMatch';
 
 const appRoutes = [
   {
@@ -15,13 +16,13 @@ const appRoutes = [
     roles: ['Admin'],
   },
   {
-    path: PATH_ACCOUNTS_CREATE,
-    element: <CreateAccount />,
+    path: PATH_ACCOUNTS_UPDATE,
+    element: <UpdateAccount />,
     roles: ['Admin'],
   },
   {
-    path: PATH_ACCOUNTS_UPDATE,
-    element: <UpdateAccount />,
+    path: PATH_ACCOUNTS_CREATE,
+    element: <CreateAccount />,
     roles: ['Admin'],
   },
 ];

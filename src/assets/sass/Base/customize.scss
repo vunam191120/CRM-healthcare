@@ -49,3 +49,8 @@
   // box-shadow: 0 0 0 30px white !important
   box-shadow: 0 0 0 30px white inset !important;
 }
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: $color-blue-0;
+  border-color: $color-blue-0;
+}

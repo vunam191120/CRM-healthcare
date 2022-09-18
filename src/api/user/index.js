@@ -25,6 +25,14 @@ const accountAPI = {
     const url = `/account/user/${id}`;
     return axiosClient.delete(url);
   },
+  forgotPassword(email) {
+    const url = `/account/forgot-password`;
+    return axiosClient.post(url, email);
+  },
+  resetPassword(token, passwords) {
+    const url = `/account/reset-password/${token}`;
+    return axiosClient.post(url, passwords);
+  },
   login({ email, password }) {
     const url = `/account/login`;
     return axiosClient.post(url, { email, password });

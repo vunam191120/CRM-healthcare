@@ -67,6 +67,35 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+export const forgotPassword = createAsyncThunk(
+  'usersSlice/forgotPassword',
+  async (email) => {
+    try {
+      const result = await accountAPI.forgotPassword({ email });
+      const resetPwToken = result.data.data.savedUser.reset_password_token;
+      localStorage.setItem('resetPasswordToken', resetPwToken);
+      return Promise.resolve(resetPwToken);
+    } catch (err) {
+      return Promise.reject(err.message);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'usersSlice/resetPassword',
+  async ({ token, new_password, confirm_password }) => {
+    try {
+      const result = await accountAPI.resetPassword(token, {
+        new_password,
+        confirm_password,
+      });
+      return Promise.resolve(result.data.data[0]);
+    } catch (err) {
+      return Promise.reject(err.message);
+    }
+  }
+);
+
 export const login = createAsyncThunk(
   'usersSlice/login',
   async ({ email, password }) => {
@@ -83,7 +112,7 @@ export const login = createAsyncThunk(
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
       return Promise.resolve('Logged in succesfully!');
     } catch (err) {
-      console.log('error: ', err);
+      return Promise.reject(err.message);
     }
   }
 );
@@ -208,6 +237,43 @@ const usersSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Forgot Password
+    [forgotPassword.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [forgotPassword.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 1)
+        .then(() =>
+          message.success('Sended validation letter to your email address!', 3)
+        );
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [forgotPassword.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Reset Password
+    [resetPassword.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [resetPassword.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 1)
+        .then(() => message.success(action.payload, 3));
+      // Auto login
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [resetPassword.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
     // Login
     [login.pending]: (state, action) => {
       state.isLoading = true;
@@ -226,7 +292,6 @@ const usersSlice = createSlice({
       state.isLoading = false;
       state.hasError = action.error.message;
     },
-    // Logout
   },
 });
 
