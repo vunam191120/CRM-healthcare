@@ -34,7 +34,7 @@
 .ant-table-thead {
   .ant-table-cell {
     &.column--width {
-      min-width: 130px;
+      // min-width: 130px;
       @include styleText($color-black-0, $fs-3 - 3, $fw-3);
       white-space: nowrap;
     }

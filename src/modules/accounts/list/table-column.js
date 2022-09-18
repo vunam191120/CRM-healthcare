@@ -3,8 +3,15 @@ import checkRole from '../../../helpers/checkRole';
 const usersColumn = [
   {
     title: 'Avatar',
-    dataIndex: 'avatar',
     key: 'avatar',
+    render: (text, record, index) => (
+      <img
+        src={`http://159.223.73.5:3002/${record.avatar}`}
+        alt="avatar user"
+        className="user-avatar"
+      />
+    ),
+    width: 100,
   },
   {
     title: 'First Name',
@@ -44,7 +51,9 @@ const usersColumn = [
 ];
 
 for (let index in usersColumn) {
-  usersColumn[index].className = 'column--width';
+  if (index !== 0) {
+    usersColumn[index].className = 'column--width';
+  }
 }
 
 export default usersColumn;

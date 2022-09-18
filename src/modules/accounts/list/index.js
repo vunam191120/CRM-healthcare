@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineUserAdd } from 'react-icons/ai';
+import { IoIosCloseCircleOutline } from 'react-icons/io';
+import { IoClose } from 'react-icons/io5';
 
 import {
   selectUsers,
@@ -11,21 +13,41 @@ import {
 import usersColumn from './table-column';
 import { fetchUsers } from '../../../store/slices/usersSlice';
 import UserDetail from '../detail';
-import checkRole from '../../../helpers/checkRole';
+import Modal from '../../../components/Modal';
+import Button from '../../../components/Button';
+import { deleteUser } from '../../../store/slices/usersSlice';
 
 const { Column } = Table;
 
 export default function AccountsList() {
   const [isShowDetail, setIsShowDetail] = useState(false);
+  const [isShowDelete, setIsShowDelete] = useState(false);
   const [userDetail, setUserDetail] = useState({});
-  // const [pagination, setPagination] = useState({
-  //   current: 1,
-  //   pageSize: 10,
-  // });
-
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
   const usersLoading = useSelector(selectUsersLoading);
+
+  const renderBody = () => (
+    <div className="content content--confirm">
+      <div className="close-btn" onClick={() => setIsShowDelete(false)}>
+        <IoClose className="close-icon" />
+      </div>
+      <IoIosCloseCircleOutline className="icon-title icon-title--delete" />
+      <h3 className="message">Are you sure to delete this account?</h3>
+      <h4 className="object">{userDetail.email}</h4>
+      <div className="btn-container">
+        <Button
+          className="button button--light"
+          onClick={() => setIsShowDelete(false)}
+        >
+          Cancel
+        </Button>
+        <Button className="button button--main" onClick={handleDeleteUser}>
+          Delete
+        </Button>
+      </div>
+    </div>
+  );
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -39,6 +61,11 @@ export default function AccountsList() {
     setIsShowDetail(false);
   };
 
+  const handleDeleteUser = () => {
+    dispatch(deleteUser(userDetail.user_id));
+    setIsShowDelete(false);
+  };
+
   return (
     <>
       <PageHeader
@@ -46,9 +73,9 @@ export default function AccountsList() {
         // onBack={() => null}
         title={'List User'}
         extra={
-          <Link className="add-link btn button--main" to="create">
+          <Link className="add-link button button--main" to="create">
             <AiOutlineUserAdd />
-            <span>Add New User</span>
+            <span style={{ marginLeft: 10 }}>Add New User</span>
           </Link>
         }
       />
@@ -79,6 +106,14 @@ export default function AccountsList() {
         user={userDetail}
         isShowDetail={isShowDetail}
         onClickClose={handleClickClose}
+        onClickDelete={() => setIsShowDelete(true)}
+      />
+      {/* Modal Confirm */}
+      <Modal
+        className={`${isShowDelete ? 'user-detail active' : 'user-detail'}`}
+        onClickClose={() => setIsShowDelete(false)}
+        isOpen={isShowDelete}
+        renderBody={renderBody}
       />
     </>
   );

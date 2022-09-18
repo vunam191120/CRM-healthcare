@@ -41,7 +41,7 @@
         margin-bottom: $mg-2;
         white-space: nowrap;
       }
-      .login-btn {
+      .button--main {
         width: 50%;
         height: 50px;
         color: $color-white-0;
@@ -52,6 +52,7 @@
         padding: $pd-0 0;
         background-color: $color-blue-0;
         transition: 0.25s ease;
+        cursor: pointer;
         &:hover {
           background-color: $color-yellow-0;
         }

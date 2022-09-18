@@ -1,33 +1,34 @@
-.modal {
+.modal__overlay {
+  display: none;
   position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
-  z-index: 30;
-  box-shadow: 0 3px 6px -4px #0000001f;
-  background-color: rgba($color: $color-black-0, $alpha: 0.6);
-  .modal__container {
-    background-color: $color-white-0;
+  bottom: 0;
+  background-color: rgba($color: #000000, $alpha: 0.6);
+  z-index: 90;
+  &.active {
+    display: flex;
+  }
+
+  .content {
+    // border-radius: 15px;
     position: absolute;
+    background-color: $color-white-0;
     top: 50%;
     left: 50%;
-    z-index: 40;
+    max-width: 500px;
     transform: translate(-50%, -50%);
-    padding: $pd-3 0;
-    font-size: $fs-0;
-    text-align: center;
-    border: none;
-    .modal__title {
-      @include styleText($color-black-0, $fs-3, $fw-0);
-    }
-    .modal__close-btn {
+    padding: 0 $pd-4 $pd-4;
+    animation: loadingDetail 0.4s ease;
+    z-index: 40;
+    .close-btn {
       padding: 1rem;
       position: absolute;
       top: 0px;
       right: 0px;
       cursor: pointer;
-      .modal__close-icon {
+      .close-icon {
         @include styleText($color-gray-0, $fs-5, $fw-0);
         transition: 0.25s ease;
         &:hover {
@@ -36,25 +37,61 @@
         }
       }
     }
-    .modal__body {
-      max-width: 400px;
-      min-height: 400px;
-      color: $color-brown-0;
-      padding: $pd-1;
-      border-top: 1px solid $color-brown-0;
-      & > p {
-        margin-bottom: $mg-4;
+
+    // Content for preview
+    &.content-preview {
+      padding: 0;
+      .title {
+        padding: $pd-1 $pd-3 + 4;
+        @include styleText($color-brown-1, $fs-0, $fw-1);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        margin-bottom: 0;
       }
-      .modal__image {
-        object-fit: contain;
-        display: block;
+      .modal-image {
+        padding: $pd-3;
         width: 100%;
         height: auto;
+        display: block;
       }
     }
-    .modal__footer {
-      display: flex;
-      justify-content: space-evenly;
+
+    // Content for confirm
+    &.content--confirm {
+      text-align: center;
+      height: fit-content;
+      padding: $pd-4;
+      .icon-title {
+        text-align: center;
+        font-size: $fs-6 + 10;
+        margin-bottom: $mg-4;
+      }
+      .icon-title--delete {
+        color: $color-red-0;
+      }
+      .message {
+        @include styleText($color-brown-1, $fs-5, $fw-1);
+      }
+      .object {
+        margin-bottom: $mg-2;
+        @include styleText($color-black-0, $fs-3, $fw-0);
+      }
+      .btn-container {
+        .btn {
+          &:first-child {
+            margin-right: $mg-1;
+          }
+        }
+      }
     }
+  }
+}
+
+// Test animation for loading detail
+@keyframes loadingDetail {
+  0% {
+    top: 35%;
+  }
+  100% {
+    top: 50%;
   }
 }

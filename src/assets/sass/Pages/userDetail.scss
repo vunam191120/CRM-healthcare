@@ -1,45 +1,15 @@
 .user-row {
   cursor: pointer;
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
 }
 
-.user-detail__overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba($color: #000000, $alpha: 0.6);
-  z-index: 90;
-  &.active {
-    display: flex;
-  }
+.modal__overlay.user-detail {
   .content {
-    border-radius: 15px;
-    position: absolute;
-    background-color: $color-white-0;
-    top: 50%;
-    left: 50%;
-    min-height: calc(86%);
-    max-width: 500px;
-    transform: translate(-50%, -50%);
-    padding: 0 $pd-1 + 1 $pd-1 + 1;
-    animation: loadingDetail 0.4s ease;
-    .close-btn {
-      padding: 1rem;
-      position: absolute;
-      top: 0px;
-      right: 0px;
-      cursor: pointer;
-      .close-icon {
-        @include styleText($color-gray-0, $fs-5, $fw-0);
-        transition: 0.25s ease;
-        &:hover {
-          color: $color-black-0;
-          transform: translateY(-3px);
-        }
-      }
-    }
+    // Content for user detail
     .title {
       padding: $pd-1 + 1;
       text-align: center;
@@ -115,23 +85,12 @@
       display: flex;
       justify-content: center;
       .action-btn,
-      .btn {
+      .button {
         padding: $pd-0 $pd-4;
-        border-radius: 8px;
         &:first-child {
           margin-right: $mg-4;
         }
       }
     }
-  }
-}
-
-// Test animation for loading detail
-@keyframes loadingDetail {
-  0% {
-    top: 35%;
-  }
-  100% {
-    top: 50%;
   }
 }

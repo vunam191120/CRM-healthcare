@@ -90,7 +90,7 @@ export default function LoginForm() {
 
             {/* Button */}
             <Form.Item>
-              <Button className="login-btn" type="submit">
+              <Button className="button button--main" type="submit">
                 {isLoading ? <Spinner /> : 'Login'}
               </Button>
             </Form.Item>

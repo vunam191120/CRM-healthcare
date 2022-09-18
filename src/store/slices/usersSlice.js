@@ -1,9 +1,6 @@
-import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
-import axios from 'axios';
-import axiosClient from '../../api/axios.config';
 import accountAPI from '../../api/user';
-import UserApi from '../../api/user';
 import checkRole from '../../helpers/checkRole';
 
 // Side Effect actions
@@ -19,13 +16,13 @@ export const fetchUsers = createAsyncThunk(
 
 export const fetchUser = createAsyncThunk(
   'usersSlice/getUser',
-  async (userId) => {
-    const result = await UserApi.getOne(userId);
-    const data = await result.json();
-    if (data.status === 404) {
-      return Promise.reject(data.message);
+  async (email) => {
+    try {
+      const result = await accountAPI.getOne(email);
+      return result.data.data;
+    } catch (err) {
+      return Promise.reject(err.message);
     }
-    return data;
   }
 );
 
@@ -44,21 +41,50 @@ export const createUser = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   'usersSlice/updateUser',
   async (user) => {
-    const result = await UserApi.update(user);
+    const user_id = user.get('user_id');
+    try {
+      const result = await accountAPI.update(user, user_id);
+      return Promise.resolve(result);
+    } catch (err) {
+      return Promise.reject(err.message);
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  'usersSlice/deleteUser',
+  async (user_id) => {
+    try {
+      const result = await accountAPI.delete(user_id);
+      if (result.data.data === 1) {
+        return user_id;
+      } else {
+        return Promise.reject('Delete failed!');
+      }
+    } catch (err) {
+      return Promise.reject(err.message);
+    }
   }
 );
 
 export const login = createAsyncThunk(
   'usersSlice/login',
   async ({ email, password }) => {
-    const resultToken = await accountAPI.login({ email, password });
-    localStorage.setItem('accessToken', resultToken.data.token);
-    localStorage.setItem('refreshToken', resultToken.data.refreshToken);
-    const resultUser = await accountAPI.getIdentity(email);
-    let currentUser = resultUser.data.data;
-    currentUser = { ...currentUser, role: checkRole(currentUser.role_id) };
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    return Promise.resolve('Logged in succesfully!');
+    try {
+      const resultToken = await accountAPI.login({ email, password });
+      if (!resultToken.data.token) {
+        return Promise.reject(resultToken.data);
+      }
+      localStorage.setItem('accessToken', resultToken.data.token);
+      localStorage.setItem('refreshToken', resultToken.data.refreshToken);
+      const resultUser = await accountAPI.getIdentity(email);
+      let currentUser = resultUser.data.data;
+      currentUser = { ...currentUser, role: checkRole(currentUser.role_id) };
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      return Promise.resolve('Logged in succesfully!');
+    } catch (err) {
+      console.log('error: ', err);
+    }
   }
 );
 
@@ -67,11 +93,22 @@ const usersSlice = createSlice({
   name: 'usersSlice',
   initialState: {
     users: [],
-    updateUser: {},
+    userNeedUpdate: {},
     isLoading: false,
     hasError: false,
   },
-  reducers: {},
+  reducers: {
+    changeUserNeedUpdateAvatar: (state, action) => {
+      state.userNeedUpdate.avatar[0] = {
+        ...state.userNeedUpdate.avatar[0],
+        ...action.payload,
+        title: action.payload.name,
+      };
+    },
+    deleteUserNeedUpdateAvatar: (state, action) => {
+      state.userNeedUpdate.avatar = [];
+    },
+  },
   extraReducers: {
     // Fetch Users
     [fetchUsers.pending]: (state) => {
@@ -93,7 +130,19 @@ const usersSlice = createSlice({
       state.hasError = false;
     },
     [fetchUser.fulfilled]: (state, action) => {
-      state.updateUser = action.payload;
+      state.userNeedUpdate = action.payload;
+      // Modify avatar property to be more apporiate with fileList at upload component antd
+      state.userNeedUpdate = {
+        ...state.userNeedUpdate,
+        avatar: [
+          {
+            uid: `${action.payload.avatar}${action.payload.user_id}`,
+            status: 'done',
+            url: `http://159.223.73.5:3002/${action.payload.avatar}`,
+            title: action.payload.avatar.slice(4),
+          },
+        ],
+      };
       state.isLoading = false;
       state.hasError = false;
     },
@@ -112,10 +161,49 @@ const usersSlice = createSlice({
       message
         .loading('Action in progress..', 1)
         .then(() => message.success('Added new user successfully!', 3));
+      state.users = [...state.users, action.payload];
       state.isLoading = false;
       state.hasError = false;
     },
     [createUser.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Update User
+    [updateUser.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [updateUser.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 1)
+        .then(() => message.success('Update user successfully!', 3));
+      // state.users = [...state.users, action.payload];
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [updateUser.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Delete User
+    [deleteUser.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [deleteUser.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 1)
+        .then(() => message.success('Deleted user successfully!', 3));
+      state.users = state.users.filter(
+        (user) => user.user_id !== action.payload
+      );
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [deleteUser.rejected]: (state, action) => {
       message.error(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;
@@ -134,13 +222,17 @@ const usersSlice = createSlice({
       state.hasError = false;
     },
     [login.rejected]: (state, action) => {
-      // message.error('Email or password is incorrect. Try again!', 4);
+      message.error(action.error.message, 4);
       state.isLoading = false;
       state.hasError = action.error.message;
     },
     // Logout
   },
 });
+
+// Actions
+export const { changeUserNeedUpdateAvatar, deleteUserNeedUpdateAvatar } =
+  usersSlice.actions;
 
 // Selectors
 export const selectUsersLoading = (state) => state.users.isLoading;
@@ -149,6 +241,6 @@ export const selectUsers = (state) => state.users.users;
 
 export const selectUsersError = (state) => state.users.hasError;
 
-export const selectUpdateUser = (state) => state.users.updateUser;
+export const selectUserNeedUpdate = (state) => state.users.userNeedUpdate;
 
 export default usersSlice.reducer;

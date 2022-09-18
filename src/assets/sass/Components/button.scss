@@ -1,4 +1,8 @@
-.btn {
+.button {
+  cursor: pointer;
+  &:last-child {
+    margin-left: $mg-1;
+  }
   span {
     display: block;
   }

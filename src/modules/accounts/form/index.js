@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PlusOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { IoClose } from 'react-icons/io5';
 import {
   Switch,
   Checkbox,
@@ -19,11 +20,15 @@ import Button from '../../../components/Button';
 import Spinner from '../../../components/Spinner';
 import {
   createUser,
+  updateUser,
   fetchUser,
-  selectUpdateUser,
+  selectUserNeedUpdate,
   selectUsersLoading,
+  changeUserNeedUpdateAvatar,
+  deleteUserNeedUpdateAvatar,
 } from '../../../store/slices/usersSlice';
 import { ROLES } from '../../../constants';
+import checkRole from '../../../helpers/checkRole';
 
 const { Option } = Select;
 const formItemLayout = {
@@ -74,11 +79,13 @@ const tailFormItemLayout = {
 };
 
 export default function AccountForm({ mode }) {
+  const formData = useMemo(() => new FormData(), []);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [oldImage, setOldImage] = useState(false);
   const isLoading = useSelector(selectUsersLoading);
-  const updateUser = useSelector(selectUpdateUser);
-  const { userId } = useParams();
+  const userNeedUpdate = useSelector(selectUserNeedUpdate);
+  const { email } = useParams();
   const [form] = Form.useForm();
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -87,7 +94,7 @@ export default function AccountForm({ mode }) {
           width: 70,
         }}
       >
-        <Option value="84">+84</Option>
+        <Option value="0">+ 84</Option>
       </Select>
     </Form.Item>
   );
@@ -101,41 +108,44 @@ export default function AccountForm({ mode }) {
   // Get user need to update
   useEffect(() => {
     if (mode === 'update') {
-      dispatch(fetchUser(userId));
+      dispatch(fetchUser(email));
     }
-  }, [mode, dispatch, userId]);
+  }, [mode, dispatch, email]);
 
   // Fill values after getting needed user
   useEffect(() => {
-    if (Object.keys(updateUser).length > 0) {
+    if (Object.keys(userNeedUpdate).length > 0) {
       form.setFieldsValue({
-        firstName: updateUser.firstName,
-        lastName: updateUser.lastName,
-        email: updateUser.email,
-        password: updateUser.password,
-        confirm: updateUser.password,
-        phone: updateUser.phone,
-        experiences: updateUser.experiences,
-        gender: updateUser.gender,
-        role: updateUser.role,
-        dateOfBirth: moment(updateUser.dateOfBirth, 'DDMMYYYY'),
-        profileStatus: true,
+        first_name: userNeedUpdate.first_name,
+        last_name: userNeedUpdate.last_name,
+        email: userNeedUpdate.email,
+        phone: userNeedUpdate.phone,
+        gender: userNeedUpdate.gender,
+        role: checkRole(userNeedUpdate.role_id),
+        // date_of_birth: moment('19-11-2000', 'DD-MM-YYYY'),
+        date_of_birth: moment(userNeedUpdate.date_of_birth, 'DD-MM-YYYY'),
+        profile_status: userNeedUpdate.profile_status,
         agreement: true,
       });
     }
-  }, [form, updateUser]);
+  }, [form, userNeedUpdate]);
 
-  const handlePreview = async (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (event) => {
+  const handlePreview = (file) => {
+    if (mode === 'update') {
       setPreview({
         ...preview,
-        src: event.target.result,
-        title: file.name,
+        src: userNeedUpdate.avatar[0].url,
+        title: userNeedUpdate.avatar[0].title,
         isOpen: true,
       });
-    };
+    } else {
+      setPreview({
+        ...preview,
+        src: file.url,
+        title: file.title,
+        isOpen: true,
+      });
+    }
   };
 
   const handleClose = () => {
@@ -143,29 +153,22 @@ export default function AccountForm({ mode }) {
   };
 
   const handleSubmit = (values) => {
-    const formData = new FormData();
-    formData.append('first_name', values.firstName);
-    formData.append('last_name', values.lastName);
+    formData.append('first_name', values.first_name);
+    formData.append('last_name', values.last_name);
     formData.append('email', values.email);
-    formData.append('password', values.password);
     formData.append('phone', values.prefix + values.phone);
-    // formData.append('gender', values.gender);
-    formData.append('avatar', fileList);
-    formData.append('role_id', values.role);
-    //     "email": "admin@gmail.com",
-    // "last_name": "last_name",
-    // "first_name": "first_name",
-    // "phone": "88888888",
-    // "role_id": 1,
-    // "password": "123456789",
-    // "avatar": "test"
-    // formData.append('date_of_birth', values.dateOfBirth);
+    formData.append('gender', values.gender);
+    formData.append('date_of_birth', values.date_of_birth.format('DD-MM-YYYY'));
+    formData.append('profile_status', values.profile_status);
+    formData.append('old_image', oldImage);
     // formData.append('experience', values.prefix + values.experience);
-    // formData.append('documents', fileList);
     if (mode === 'create') {
+      formData.append('role_id', values.role);
+      formData.append('password', values.password);
       dispatch(createUser(formData));
     } else if (mode === 'update') {
-      formData.append('id', userId);
+      formData.append('role_id', ROLES[values.role.toUpperCase()]);
+      formData.append('user_id', userNeedUpdate.user_id);
       dispatch(updateUser(formData));
     }
   };
@@ -173,8 +176,8 @@ export default function AccountForm({ mode }) {
   // Fill method for testing
   const onFill = () => {
     form.setFieldsValue({
-      firstName: 'Vu',
-      lastName: 'Nam',
+      first_name: 'Vu',
+      last_name: 'Nam',
       email: 'admin@gmail.com',
       password: 'admin',
       confirm: 'admin',
@@ -182,8 +185,8 @@ export default function AccountForm({ mode }) {
       experiences: '22 years of being a couch potato :D',
       gender: 'Male',
       role: '1',
-      dateOfBirth: moment('19112000', 'DDMMYYYY'),
-      profileStatus: true,
+      date_of_birth: moment('19112000', 'DD-MM-YYYY'),
+      profile_status: true,
       agreement: true,
     });
   };
@@ -194,6 +197,13 @@ export default function AccountForm({ mode }) {
 
   return (
     <>
+      <pre>
+        FormData value: {JSON.stringify(formData.get('avatar'), null, 2)}
+      </pre>
+      <pre>
+        Check FormData{' '}
+        {JSON.stringify(formData.get('avatar') instanceof File, null, 2)}
+      </pre>
       <PageHeader
         className="site-page-header"
         onBack={() => navigate('/accounts')}
@@ -207,13 +217,13 @@ export default function AccountForm({ mode }) {
         name="register"
         onFinish={handleSubmit}
         initialValues={{
-          prefix: '84',
+          prefix: '0',
         }}
         scrollToFirstError
       >
         {/* First Name */}
         <Form.Item
-          name="firstName"
+          name="first_name"
           label="First Name"
           rules={[
             {
@@ -227,7 +237,7 @@ export default function AccountForm({ mode }) {
 
         {/* Last Name */}
         <Form.Item
-          name="lastName"
+          name="last_name"
           label="Last Name"
           rules={[
             {
@@ -254,50 +264,56 @@ export default function AccountForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter your email!" />
+          <Input disabled={mode === 'update'} placeholder="Enter your email!" />
         </Form.Item>
 
         {/* Password */}
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password placeholder="Enter your password!" />
-        </Form.Item>
+        {mode === 'create' && (
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your password!',
+              },
+            ]}
+            hasFeedback
+          >
+            <Input.Password placeholder="Enter your password!" />
+          </Form.Item>
+        )}
 
         {/* Confirm Password */}
-        <Form.Item
-          name="confirm"
-          label="Confirm Password"
-          dependencies={['password']}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: 'Please confirm your password!',
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
-
-                return Promise.reject(
-                  new Error('The two passwords that you entered do not match!')
-                );
+        {mode === 'create' && (
+          <Form.Item
+            name="confirm"
+            label="Confirm Password"
+            dependencies={['password']}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Please confirm your password!',
               },
-            }),
-          ]}
-        >
-          <Input.Password placeholder="Confirm your password!" />
-        </Form.Item>
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+
+                  return Promise.reject(
+                    new Error(
+                      'The two passwords that you entered do not match!'
+                    )
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password placeholder="Confirm your password!" />
+          </Form.Item>
+        )}
 
         {/* Phone */}
         <Form.Item
@@ -331,9 +347,9 @@ export default function AccountForm({ mode }) {
           ]}
         >
           <Select placeholder="Select your gender">
-            <Option value="male">Male</Option>
-            <Option value="female">Female</Option>
-            <Option value="other">Other</Option>
+            <Option value="Male">Male</Option>
+            <Option value="Female">Female</Option>
+            <Option value="Other">Other</Option>
           </Select>
         </Form.Item>
 
@@ -356,51 +372,52 @@ export default function AccountForm({ mode }) {
         </Form.Item>
 
         {/* Date of Birth */}
-        <Form.Item name="dateOfBirth" label="Date of Birth">
+        <Form.Item name="date_of_birth" label="Date of Birth">
           <DatePicker allowClear={false} format="DD-MM-YYYY" />
         </Form.Item>
 
-        {/* Experiences */}
-        {/* <Form.Item
-          name="experiences"
-          label="Experiences"
-          rules={[
-            {
-              required: true,
-              message: 'Please input experience',
-            },
-          ]}
-        >
-          <Input.TextArea
-            placeholder="Enter your experiences"
-            showCount
-            maxLength={100}
-          />
-        </Form.Item> */}
-
-        {/* Documents */}
+        {/* Avatar */}
         <Form.Item label="Avatar" valuePropName="fileList">
           <Upload
             onRemove={(file) => {
-              const index = fileList.indexOf(file);
-              const newFileList = fileList.slice();
-              newFileList.splice(index, 1);
-              setFileList(newFileList);
+              if (mode === 'update') {
+                dispatch(deleteUserNeedUpdateAvatar());
+              } else {
+                const index = fileList.indexOf(file);
+                const newFileList = fileList.slice();
+                newFileList.splice(index, 1);
+                setFileList(newFileList);
+              }
             }}
             beforeUpload={(file) => {
               // Fake sending document to action props succesfully
+              if (mode === 'update') {
+                setOldImage(true);
+              }
               file.status = 'done';
               const reader = new FileReader();
               reader.readAsDataURL(file);
               reader.onload = (event) => {
-                file.thumbUrl = event.target.result;
+                file.url = event.target.result;
+                if (mode === 'update') {
+                  formData.append('avatar', oldImage ? {} : file);
+                  dispatch(changeUserNeedUpdateAvatar(file));
+                } else if (mode === 'create') {
+                  formData.append('avatar', file);
+                  setFileList([
+                    {
+                      ...fileList[0],
+                      ...file,
+                      title: file.name,
+                    },
+                  ]);
+                }
               };
-              setFileList((fileList) => [...fileList, file]);
               return false;
             }}
             listType="picture-card"
             // multiple
-            fileList={fileList}
+            fileList={mode === 'update' ? userNeedUpdate.avatar : fileList}
             onPreview={handlePreview}
           >
             <div>
@@ -418,11 +435,16 @@ export default function AccountForm({ mode }) {
 
         {/* Profile status */}
         <Form.Item
-          name="profileStatus"
+          name="profile_status"
           valuePropName="checked"
           label="Profile status"
         >
-          <Switch defaultChecked className="switch" />
+          <Switch
+            defaultChecked={
+              mode === 'update' ? userNeedUpdate.profile_status : false
+            }
+            className="switch"
+          />
         </Form.Item>
 
         {/* Agreement */}
@@ -446,7 +468,7 @@ export default function AccountForm({ mode }) {
 
         {/* Button */}
         <Form.Item {...tailFormItemLayout}>
-          <Button className="button--main" type="submit">
+          <Button className="button button--main" type="submit">
             {/* Show spinner whenever click this button */}
             {isLoading ? (
               <Spinner />
@@ -460,24 +482,27 @@ export default function AccountForm({ mode }) {
             </Link>
           )}
           <Button
-            className="button--light"
+            className="button button--light"
             type="button"
-            handleClick={handleReset}
+            onClick={handleReset}
           >
             Reset
           </Button>
         </Form.Item>
       </Form>
       <Modal
+        className={preview.isOpen && 'active'}
         isOpen={preview.isOpen}
-        header={<h4 className="modal__title">{preview.title}</h4>}
-        message={
-          <div>
-            <img className="modal__image" src={preview.src} alt="Preivew img" />
+        renderBody={() => (
+          <div className="content content-preview">
+            <div className="close-btn" onClick={handleClose}>
+              <IoClose className="close-icon" />
+            </div>
+            <h3 className="title">{preview.title}</h3>
+            <img className="modal-image" src={preview.src} alt="Preivew img" />
           </div>
-        }
+        )}
         onClose={handleClose}
-        onConfirm={handleClose}
       />
     </>
   );

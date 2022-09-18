@@ -10,12 +10,20 @@ const accountAPI = {
     return axiosClient.get(url);
   },
   getOne(email) {
-    const url = `/account/${email}`;
+    const url = `/account/user/${email}`;
     return axiosClient.get(url);
   },
   getIdentity(email) {
     const url = `/account/user/${email}`;
     return axiosClient.get(url);
+  },
+  update(user, user_id) {
+    const url = `/account/user/${user_id}`;
+    return axiosClient.put(url, user);
+  },
+  delete(id) {
+    const url = `/account/user/${id}`;
+    return axiosClient.delete(url);
   },
   login({ email, password }) {
     const url = `/account/login`;
