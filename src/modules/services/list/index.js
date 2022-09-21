@@ -72,7 +72,7 @@ export default function ServicesList() {
           value: 'Nutrition',
         },
       ],
-      filteredValue: filteredInfo.address || null,
+      // filteredValue: filteredInfo.address || null,
       onFilter: (value, record) =>
         record.category.category_name.includes(value),
     },
