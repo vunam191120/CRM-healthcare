@@ -8,9 +8,13 @@ import checkRole from '../../helpers/checkRole';
 export const fetchUsers = createAsyncThunk(
   'usersSlice/getAllUsers',
   async () => {
-    const result = await accountAPI.getAll();
-    const { rows } = result.data.data;
-    return rows;
+    try {
+      const result = await accountAPI.getAll();
+      const { rows } = result.data.data;
+      return rows;
+    } catch (err) {
+      return Promise.reject(err.message);
+    }
   }
 );
 
@@ -73,7 +77,6 @@ export const forgotPassword = createAsyncThunk(
     try {
       const result = await accountAPI.forgotPassword({ email });
       const resetPwToken = result.data.data.savedUser.reset_password_token;
-      localStorage.setItem('resetPasswordToken', resetPwToken);
       return Promise.resolve(resetPwToken);
     } catch (err) {
       return Promise.reject(err.message);
@@ -149,7 +152,8 @@ const usersSlice = createSlice({
       state.isLoading = false;
       state.hasError = false;
     },
-    [fetchUsers.rejected]: (state) => {
+    [fetchUsers.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;
     },
@@ -167,7 +171,7 @@ const usersSlice = createSlice({
           {
             uid: `${action.payload.avatar}${action.payload.user_id}`,
             status: 'done',
-            url: `http://159.223.73.5:3002/${action.payload.avatar}`,
+            url: `${action.payload.avatar}`,
             title: action.payload.avatar.slice(4),
           },
         ],
@@ -188,7 +192,7 @@ const usersSlice = createSlice({
     [createUser.fulfilled]: (state, action) => {
       state.users = [...state.users, action.payload];
       message
-        .loading('Action in progress..', 1)
+        .loading('Action in progress..', 0.5)
         .then(() => message.success('Added new user successfully!', 3));
       state.users = [...state.users, action.payload];
       state.isLoading = false;

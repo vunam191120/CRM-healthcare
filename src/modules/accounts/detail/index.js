@@ -5,7 +5,6 @@ import { AiTwotoneStar } from 'react-icons/ai';
 import { IoClose } from 'react-icons/io5';
 
 import Button from '../../../components/Button';
-import doctorAvt from '../../../assets/img/doctor-avatar.jpeg';
 import Modal from '../../../components/Modal';
 
 export default function UserDetail({
@@ -21,7 +20,7 @@ export default function UserDetail({
       </div>
       <h3 className="title">User Detail</h3>
       <div className="head">
-        <img className="avatar" src={doctorAvt} alt="Doctor Detail Avatar" />
+        <img className="avatar" src={user.avatar} alt="Doctor Detail Avatar" />
         <div className="description">
           <p className="id">#{user.user_id}</p>
           <h3 className="name">

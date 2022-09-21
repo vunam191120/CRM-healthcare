@@ -3,8 +3,44 @@
   &:last-child {
     margin-left: $mg-1;
   }
-  span {
-    display: block;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  .button--update,
+  .button--delete {
+    display: flex;
+    align-items: center;
+    transition: 0.25s ease;
+    position: relative;
+    span:last-child {
+      margin-left: $mg-0 - 2;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 0px;
+      height: 1px;
+      display: block;
+      background: $color-blue-0;
+      transition: 300ms;
+    }
+    &:hover {
+      color: $color-blue-0;
+    }
+    &:hover::after {
+      width: 100%;
+    }
+  }
+  .button--update {
+    color: $color-black-0;
+  }
+  .button--delete {
+    margin-left: $mg-4;
+    color: $color-red-0;
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PlusOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -79,7 +79,6 @@ const tailFormItemLayout = {
 };
 
 export default function AccountForm({ mode }) {
-  const formData = useMemo(() => new FormData(), []);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [oldImage, setOldImage] = useState(false);
@@ -103,7 +102,7 @@ export default function AccountForm({ mode }) {
     title: '',
     src: '',
   });
-  const [fileList, setFileList] = useState([]);
+  const [avatar, setAvatar] = useState([]);
 
   // Get user need to update
   useEffect(() => {
@@ -114,21 +113,23 @@ export default function AccountForm({ mode }) {
 
   // Fill values after getting needed user
   useEffect(() => {
-    if (Object.keys(userNeedUpdate).length > 0) {
-      form.setFieldsValue({
-        first_name: userNeedUpdate.first_name,
-        last_name: userNeedUpdate.last_name,
-        email: userNeedUpdate.email,
-        phone: userNeedUpdate.phone,
-        gender: userNeedUpdate.gender,
-        role: checkRole(userNeedUpdate.role_id),
-        // date_of_birth: moment('19-11-2000', 'DD-MM-YYYY'),
-        date_of_birth: moment(userNeedUpdate.date_of_birth, 'DD-MM-YYYY'),
-        profile_status: userNeedUpdate.profile_status,
-        agreement: true,
-      });
+    if (mode === 'update') {
+      if (Object.keys(userNeedUpdate).length > 0) {
+        form.setFieldsValue({
+          first_name: userNeedUpdate.first_name,
+          last_name: userNeedUpdate.last_name,
+          email: userNeedUpdate.email,
+          phone: userNeedUpdate.phone,
+          gender: userNeedUpdate.gender,
+          role: checkRole(userNeedUpdate.role_id),
+          // date_of_birth: moment('19-11-2000', 'DD-MM-YYYY'),
+          date_of_birth: moment(userNeedUpdate.date_of_birth, 'DD-MM-YYYY'),
+          profile_status: userNeedUpdate.profile_status,
+          agreement: true,
+        });
+      }
     }
-  }, [form, userNeedUpdate]);
+  }, [form, mode, userNeedUpdate]);
 
   const handlePreview = (file) => {
     if (mode === 'update') {
@@ -153,6 +154,7 @@ export default function AccountForm({ mode }) {
   };
 
   const handleSubmit = (values) => {
+    const formData = new FormData();
     formData.append('first_name', values.first_name);
     formData.append('last_name', values.last_name);
     formData.append('email', values.email);
@@ -163,10 +165,13 @@ export default function AccountForm({ mode }) {
     formData.append('old_image', oldImage);
     // formData.append('experience', values.prefix + values.experience);
     if (mode === 'create') {
+      formData.append('avatar', avatar[0]);
       formData.append('role_id', values.role);
       formData.append('password', values.password);
       dispatch(createUser(formData));
     } else if (mode === 'update') {
+      oldImage && formData.append('avatar', avatar[0]);
+      console.log(formData.get('avatar'));
       formData.append('role_id', ROLES[values.role.toUpperCase()]);
       formData.append('user_id', userNeedUpdate.user_id);
       dispatch(updateUser(formData));
@@ -197,13 +202,6 @@ export default function AccountForm({ mode }) {
 
   return (
     <>
-      <pre>
-        FormData value: {JSON.stringify(formData.get('avatar'), null, 2)}
-      </pre>
-      <pre>
-        Check FormData{' '}
-        {JSON.stringify(formData.get('avatar') instanceof File, null, 2)}
-      </pre>
       <PageHeader
         className="site-page-header"
         onBack={() => navigate('/accounts')}
@@ -382,12 +380,8 @@ export default function AccountForm({ mode }) {
             onRemove={(file) => {
               if (mode === 'update') {
                 dispatch(deleteUserNeedUpdateAvatar());
-              } else {
-                const index = fileList.indexOf(file);
-                const newFileList = fileList.slice();
-                newFileList.splice(index, 1);
-                setFileList(newFileList);
               }
+              setAvatar([]);
             }}
             beforeUpload={(file) => {
               // Fake sending document to action props succesfully
@@ -400,24 +394,15 @@ export default function AccountForm({ mode }) {
               reader.onload = (event) => {
                 file.url = event.target.result;
                 if (mode === 'update') {
-                  formData.append('avatar', oldImage ? {} : file);
+                  setAvatar([file]);
                   dispatch(changeUserNeedUpdateAvatar(file));
-                } else if (mode === 'create') {
-                  formData.append('avatar', file);
-                  setFileList([
-                    {
-                      ...fileList[0],
-                      ...file,
-                      title: file.name,
-                    },
-                  ]);
                 }
+                setAvatar([file]);
               };
               return false;
             }}
             listType="picture-card"
-            // multiple
-            fileList={mode === 'update' ? userNeedUpdate.avatar : fileList}
+            fileList={mode === 'update' ? userNeedUpdate.avatar : avatar}
             onPreview={handlePreview}
           >
             <div>

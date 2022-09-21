@@ -68,6 +68,7 @@
       .forgot-pw {
         @include styleText($color-black-0, $fs-0, $fw-0);
         transition: 0.25s ease;
+        cursor: pointer;
         position: relative;
         &::after {
           content: '';

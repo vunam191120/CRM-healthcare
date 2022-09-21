@@ -2,8 +2,12 @@
 import { AiOutlineSetting, AiOutlineMedicineBox } from 'react-icons/ai';
 import { BiUser } from 'react-icons/bi';
 import { RiArrowDownSFill, RiArrowUpSFill } from 'react-icons/ri';
-import { HiOutlineDocumentText, HiOutlineCalendar } from 'react-icons/hi';
-import { MdOutlineCategory, MdOutlineDashboard } from 'react-icons/md';
+import { HiOutlineDocumentText } from 'react-icons/hi';
+import {
+  MdOutlineCategory,
+  MdOutlineDashboard,
+  MdOutlineMedicalServices,
+} from 'react-icons/md';
 
 export const SidebarData = [
   {
@@ -12,9 +16,9 @@ export const SidebarData = [
     icon: <MdOutlineDashboard />,
   },
   {
-    title: 'Appointments',
-    path: '/appointments',
-    icon: <HiOutlineCalendar />,
+    title: 'Services',
+    path: '/services',
+    icon: <MdOutlineMedicalServices />,
   },
   {
     title: 'Accounts',

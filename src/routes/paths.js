@@ -18,7 +18,11 @@ export const PATH_ACCOUNTS_UPDATE = '/accounts/update/:email';
 
 export const PATH_CATEGORIES = '/categories';
 export const PATH_CATEGORIES_CREATE = '/categories/create';
-export const PATH_CATEGORIES_UPDATE = '/categories/update/:categoryId';
+export const PATH_CATEGORIES_UPDATE = '/categories/update/:category_id';
+
+export const PATH_SERVICES = '/services';
+export const PATH_SERVICES_CREATE = '/services/create';
+export const PATH_SERVICES_UPDATE = '/services/update/:service_id';
 
 // export const PATH_USERS = '/users';
 // export const PATH_USERS_CREATE = 'create';

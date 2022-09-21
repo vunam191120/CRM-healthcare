@@ -4,10 +4,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import PrivateRoute from '../routes/PrivateRoute';
 import appRoutes from './../routes/routes';
 import Sidebar from '../components/Sidebar';
-import Account from '../pages/accounts';
-import UpdateAccount from '../pages/accounts/update';
-import CreateAccount from '../pages/accounts/create';
-
 export default function Layout() {
   const [collapsed, setCollapsed] = useState(false);
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Col, Row, Form, Input, Checkbox } from 'antd';
+import { Col, Row, Form, Input } from 'antd';
 import { IoClose } from 'react-icons/io5';
 import { RiLockPasswordFill } from 'react-icons/ri';
 
@@ -157,13 +157,13 @@ export default function LoginForm() {
               valuePropName="checked"
               name="forgot_password"
             >
-              <Checkbox
+              <span
                 className="forgot-pw"
                 defaultChecked={false}
-                onChange={() => setForgotPw(true)}
+                onClick={() => setForgotPw(true)}
               >
                 Forgot password?
-              </Checkbox>
+              </span>
             </Form.Item>
 
             {/* Button */}

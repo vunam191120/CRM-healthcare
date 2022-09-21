@@ -39,6 +39,8 @@ const accountAPI = {
   },
 };
 
+export default accountAPI;
+
 // Mock API
 // const UserApi = {
 //   create(user) {
@@ -75,5 +77,3 @@ const accountAPI = {
 //     });
 //   },
 // };
-
-export default accountAPI;

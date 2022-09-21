@@ -2,14 +2,15 @@ import checkRole from '../../../helpers/checkRole';
 
 const usersColumn = [
   {
+    title: 'No',
+    key: 'index',
+    render: (text, record, index) => index + 1,
+  },
+  {
     title: 'Avatar',
     key: 'avatar',
     render: (text, record, index) => (
-      <img
-        src={`http://159.223.73.5:3002/${record.avatar}`}
-        alt="avatar user"
-        className="user-avatar"
-      />
+      <img src={`${record.avatar}`} alt="avatar user" className="user-avatar" />
     ),
     width: 100,
   },
@@ -43,17 +44,6 @@ const usersColumn = [
     dataIndex: 'dateOfBirth',
     key: 'dateOfBirth',
   },
-  // {
-  //   title: 'Experiences',
-  //   dataIndex: 'experiences',
-  //   key: 'experiences',
-  // },
 ];
-
-for (let index in usersColumn) {
-  if (index !== 0) {
-    usersColumn[index].className = 'column--width';
-  }
-}
 
 export default usersColumn;
