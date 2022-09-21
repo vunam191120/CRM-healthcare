@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import PrivateRoute from '../routes/PrivateRoute';
-import appRoutes from './../routes/routes';
+import appRoutes from '../routes/routes';
 import Sidebar from '../components/Sidebar';
 
 export default function Layout() {
