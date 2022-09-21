@@ -35,35 +35,35 @@ export const SidebarData = [
     path: '/categories',
     icon: <MdOutlineCategory />,
   },
-  {
-    title: 'Reports',
-    path: '/reports',
-    icon: <HiOutlineDocumentText />,
-    iconClosed: <RiArrowDownSFill />,
-    iconOpened: <RiArrowUpSFill />,
-    subNav: [
-      {
-        title: 'Appointment',
-        // path: '/reports/appoitment',
-        path: '/',
-      },
-      {
-        title: 'Income',
-        // path: '/reports/income',
-        path: '/',
-      },
-      {
-        title: 'Invoice',
-        // path: '/reports/invoice',
-        path: '/',
-      },
-      {
-        title: 'Users',
-        // path: '/reports/users',
-        path: '/',
-      },
-    ],
-  },
+  // {
+  //   title: 'Reports',
+  //   path: '/reports',
+  //   icon: <HiOutlineDocumentText />,
+  //   iconClosed: <RiArrowDownSFill />,
+  //   iconOpened: <RiArrowUpSFill />,
+  //   subNav: [
+  //     {
+  //       title: 'Appointment',
+  //       // path: '/reports/appoitment',
+  //       path: '/',
+  //     },
+  //     {
+  //       title: 'Income',
+  //       // path: '/reports/income',
+  //       path: '/',
+  //     },
+  //     {
+  //       title: 'Invoice',
+  //       // path: '/reports/invoice',
+  //       path: '/',
+  //     },
+  //     {
+  //       title: 'Users',
+  //       // path: '/reports/users',
+  //       path: '/',
+  //     },
+  //   ],
+  // },
   {
     title: 'Setting',
     path: '/setting',

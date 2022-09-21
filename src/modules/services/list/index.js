@@ -21,14 +21,18 @@ const { Column } = Table;
 
 export default function ServicesList() {
   const [isShowDelete, setIsShowDelete] = useState(false);
+  const [sortedInfo, setSortedInfo] = useState({});
+  const [filteredInfo, setFilteredInfo] = useState({});
   const [serviceId, setServiceId] = useState();
   const services = useSelector(selectServices);
   const serviceLoading = useSelector(selectServicesLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchServices());
-  }, [dispatch]);
+    if (Object.keys(services).length === 0) {
+      dispatch(fetchServices());
+    }
+  }, [dispatch, services]);
 
   const serviceColumns = [
     {
@@ -40,6 +44,10 @@ export default function ServicesList() {
       title: 'Name',
       dataIndex: 'service_name',
       key: 'service name',
+      filteredValue: filteredInfo.service_name || null,
+      sorter: (a, b) => a.service_name - b.service_name,
+      sortOrder:
+        sortedInfo.columnKey === 'service_name' ? sortedInfo.order : null,
     },
     {
       title: 'Description',
@@ -50,6 +58,23 @@ export default function ServicesList() {
       title: 'Category',
       key: 'category name',
       render: (text, record, index) => <p>{record.category.category_name}</p>,
+      filters: [
+        {
+          text: 'Dermatology',
+          value: 'Dermatology',
+        },
+        {
+          text: 'Ophthalmology',
+          value: 'Ophthalmology',
+        },
+        {
+          text: 'Nutrition',
+          value: 'Nutrition',
+        },
+      ],
+      filteredValue: filteredInfo.address || null,
+      onFilter: (value, record) =>
+        record.category.category_name.includes(value),
     },
     {
       title: 'Actions',

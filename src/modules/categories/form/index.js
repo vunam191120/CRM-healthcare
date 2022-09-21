@@ -93,6 +93,7 @@ export default function CategoryForm({ mode }) {
         localStorage.getItem('currentUser')
       ).user_id;
       dispatch(createCategory(newCate));
+      form.resetFields();
     }
     if (mode === 'update') {
       newCate.category_id = category_id;

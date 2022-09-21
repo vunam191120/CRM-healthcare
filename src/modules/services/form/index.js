@@ -105,6 +105,7 @@ export default function ServiceForm({ mode }) {
     newService.category_id = values.category;
     if (mode === 'create') {
       dispatch(createService(newService));
+      form.resetFields();
     }
     if (mode === 'update') {
       newService.service_id = service_id;
