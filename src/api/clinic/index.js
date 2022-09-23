@@ -21,6 +21,10 @@ const clinicAPI = {
     const url = `/clinic/${clinic_id}`;
     return axiosClient.delete(url);
   },
+  deleteImage(image_id) {
+    const url = `/clinic/image/${image_id}`;
+    return axiosClient.delete(url);
+  },
 };
 
 export default clinicAPI;

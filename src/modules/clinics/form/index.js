@@ -12,6 +12,9 @@ import {
   selectClinicsLoading,
   selectClinicNeedUpdate,
   updateClinic,
+  addClinicNeedUpdateImage,
+  deleteClinicNeedUpdateImage,
+  deleteImage,
 } from '../../../store/slices/clinicsSlice';
 import { fetchUsers, selectUsersAdmin } from '../../../store/slices/usersSlice';
 
@@ -88,12 +91,12 @@ export default function ClinicsForm({ mode }) {
     if (mode === 'update') {
       if (Object.keys(clinicNeedUpdate).length > 0) {
         form.setFieldsValue({
-          name: clinicNeedUpdate.clinic_name,
-          description: clinicNeedUpdate.description,
-          address: clinicNeedUpdate.address,
-          city: clinicNeedUpdate.city,
-          state: clinicNeedUpdate.state,
-          manager: clinicNeedUpdate.manager_id,
+          name: clinicNeedUpdate.clinic.clinic_name,
+          description: clinicNeedUpdate.clinic.description,
+          address: clinicNeedUpdate.clinic.address,
+          city: clinicNeedUpdate.clinic.city,
+          state: clinicNeedUpdate.clinic.state,
+          manager: clinicNeedUpdate.clinic.manager_id,
         });
       }
     }
@@ -241,10 +244,17 @@ export default function ClinicsForm({ mode }) {
         <Form.Item label="Documents" valuePropName="fileList">
           <Upload
             onRemove={(file) => {
-              const index = fileList.indexOf(file);
-              const newFileList = fileList.slice();
-              newFileList.splice(index, 1);
-              setFileList(newFileList);
+              if (mode === 'create') {
+                const index = fileList.indexOf(file);
+                const newFileList = fileList.slice();
+                newFileList.splice(index, 1);
+                setFileList(newFileList);
+              } else {
+                dispatch(deleteClinicNeedUpdateImage(file));
+                if (file.old_file) {
+                  dispatch(deleteImage(file.uid));
+                }
+              }
             }}
             beforeUpload={(file) => {
               // Fake sending document to action props succesfully
@@ -255,18 +265,17 @@ export default function ClinicsForm({ mode }) {
               const reader = new FileReader();
               reader.readAsDataURL(file);
               reader.onload = (event) => {
-                file.url = event.target.result;
-                // if (mode === 'update') {
-                //   setAvatar([file]);
-                //   dispatch(changeUserNeedUpdateAvatar(file));
-                // }
+                if (mode === 'update') {
+                  file.url = event.target.result;
+                  dispatch(addClinicNeedUpdateImage(file));
+                }
                 setFileList((oldFile) => [...oldFile, file]);
               };
               return false;
             }}
             multiple
             listType="picture-card"
-            fileList={mode === 'update' ? clinicNeedUpdate.avatar : fileList}
+            fileList={mode === 'update' ? clinicNeedUpdate.images : fileList}
             // onPreview={handlePreview}
           >
             <div>

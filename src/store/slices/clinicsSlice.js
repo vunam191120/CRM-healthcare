@@ -68,6 +68,19 @@ export const deleteClinic = createAsyncThunk(
   }
 );
 
+export const deleteImage = createAsyncThunk(
+  'clinicsSlice/deleteImage',
+  async (image_id) => {
+    try {
+      const result = clinicAPI.deleteImage(image_id);
+      console.log(result);
+      return result.data;
+    } catch (err) {
+      return err;
+    }
+  }
+);
+
 // Reducer
 
 const clinicsSlice = createSlice({
@@ -78,7 +91,20 @@ const clinicsSlice = createSlice({
     isLoading: false,
     hasError: false,
   },
-  reducers: {},
+  reducers: {
+    addClinicNeedUpdateImage: (state, action) => {
+      state.clinicNeedUpdate.images = [
+        ...state.clinicNeedUpdate.images,
+        action.payload,
+      ];
+    },
+    deleteClinicNeedUpdateImage: (state, action) => {
+      const index = state.clinicNeedUpdate.images.indexOf(action.payload);
+      const newFileList = state.clinicNeedUpdate.images.slice();
+      newFileList.splice(index, 1);
+      state.clinicNeedUpdate.images = newFileList;
+    },
+  },
   extraReducers: {
     // Fetch Clinics
     [fetchClinics.pending]: (state) => {
@@ -101,14 +127,13 @@ const clinicsSlice = createSlice({
       state.hasError = false;
     },
     [fetchClinic.fulfilled]: (state, action) => {
-      console.log(action.payload.images);
       const images = action.payload.images.map((img) => ({
-        uid: img,
+        uid: img.image_id,
         status: 'done',
-        url: img,
-        title: img,
+        url: img.url,
+        title: img.url,
+        old_file: true,
       }));
-      console.log('images: ', images);
       state.clinicNeedUpdate = {
         ...state.clinicNeedUpdate,
         ...action.payload,
@@ -177,6 +202,23 @@ const clinicsSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Delete Image
+    [deleteImage.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [deleteImage.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 0.5)
+        .then(() => message.success('Deleted old image successfully!', 3));
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [deleteImage.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
   },
 });
 
@@ -188,5 +230,8 @@ export const selectClinicsLoading = (state) => state.clinics.isLoading;
 export const selectClinicsError = (state) => state.clinics.hasError;
 
 export const selectClinicNeedUpdate = (state) => state.clinics.clinicNeedUpdate;
+
+export const { addClinicNeedUpdateImage, deleteClinicNeedUpdateImage } =
+  clinicsSlice.actions;
 
 export default clinicsSlice.reducer;

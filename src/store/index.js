@@ -24,6 +24,8 @@ export default configureStore({
           'servicesSlice/createService/fulfilled',
           'servicesSlice/updateService/fulfilled',
           'clinicsSlice/updateClinic/fulfilled',
+          'clinicSlice/addClinicNeedUpdateImage',
+          'clinicSlice/deleteClinicNeedUpdateImage',
         ],
         // Ignore these field paths in all actions
         ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
