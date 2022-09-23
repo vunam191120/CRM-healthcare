@@ -70,11 +70,15 @@ export const deleteClinic = createAsyncThunk(
 
 export const deleteImage = createAsyncThunk(
   'clinicsSlice/deleteImage',
-  async (image_id) => {
+  async (file) => {
     try {
-      const result = clinicAPI.deleteImage(image_id);
-      console.log(result);
-      return result.data;
+      // If image is new and not on sever, delete only by slicing
+      if (!file.old_file) {
+        return file;
+      }
+      const result = await clinicAPI.deleteImage(file.uid);
+      console.log('result at delete image clinic: ', result);
+      return file;
     } catch (err) {
       return err;
     }
@@ -97,12 +101,6 @@ const clinicsSlice = createSlice({
         ...state.clinicNeedUpdate.images,
         action.payload,
       ];
-    },
-    deleteClinicNeedUpdateImage: (state, action) => {
-      const index = state.clinicNeedUpdate.images.indexOf(action.payload);
-      const newFileList = state.clinicNeedUpdate.images.slice();
-      newFileList.splice(index, 1);
-      state.clinicNeedUpdate.images = newFileList;
     },
   },
   extraReducers: {
@@ -211,6 +209,10 @@ const clinicsSlice = createSlice({
       message
         .loading('Action in progress..', 0.5)
         .then(() => message.success('Deleted old image successfully!', 3));
+      const newFileList = state.clinicNeedUpdate.images.filter(
+        (image) => image.uid !== action.payload.uid
+      );
+      state.clinicNeedUpdate.images = newFileList;
       state.isLoading = false;
       state.hasError = false;
     },
@@ -231,7 +233,6 @@ export const selectClinicsError = (state) => state.clinics.hasError;
 
 export const selectClinicNeedUpdate = (state) => state.clinics.clinicNeedUpdate;
 
-export const { addClinicNeedUpdateImage, deleteClinicNeedUpdateImage } =
-  clinicsSlice.actions;
+export const { addClinicNeedUpdateImage } = clinicsSlice.actions;
 
 export default clinicsSlice.reducer;

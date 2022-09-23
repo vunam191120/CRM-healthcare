@@ -21,7 +21,9 @@ export default function ClinicsList() {
   const clinicsLoading = useSelector(selectClinicsLoading);
 
   useEffect(() => {
+    // if (Object.keys(clinics).length === 0) {
     dispatch(fetchClinics());
+    // }
   }, [dispatch]);
 
   useEffect(() => {

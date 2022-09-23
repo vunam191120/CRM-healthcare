@@ -13,7 +13,6 @@ import {
   selectClinicNeedUpdate,
   updateClinic,
   addClinicNeedUpdateImage,
-  deleteClinicNeedUpdateImage,
   deleteImage,
 } from '../../../store/slices/clinicsSlice';
 import { fetchUsers, selectUsersAdmin } from '../../../store/slices/usersSlice';
@@ -71,7 +70,6 @@ export default function ClinicsForm({ mode }) {
   const dispatch = useDispatch();
   const { clinic_id } = useParams();
   const [form] = Form.useForm();
-  const [oldImage, setOldImage] = useState(false);
   const [fileList, setFileList] = useState([]);
   const isLoading = useSelector(selectClinicsLoading);
   const clinicNeedUpdate = useSelector(selectClinicNeedUpdate);
@@ -250,17 +248,11 @@ export default function ClinicsForm({ mode }) {
                 newFileList.splice(index, 1);
                 setFileList(newFileList);
               } else {
-                dispatch(deleteClinicNeedUpdateImage(file));
-                if (file.old_file) {
-                  dispatch(deleteImage(file.uid));
-                }
+                dispatch(deleteImage(file));
               }
             }}
             beforeUpload={(file) => {
               // Fake sending document to action props succesfully
-              if (mode === 'update') {
-                setOldImage(true);
-              }
               file.status = 'done';
               const reader = new FileReader();
               reader.readAsDataURL(file);
