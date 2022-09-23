@@ -32,7 +32,7 @@ export const createService = createAsyncThunk(
   async (service) => {
     try {
       const result = await serviceAPI.create(service);
-      return result;
+      return result.data.data;
     } catch (err) {
       return Promise.reject(err.response.data.errors[0]);
     }
@@ -44,10 +44,10 @@ export const updateService = createAsyncThunk(
   async (service) => {
     try {
       const result = await serviceAPI.update(service);
-      console.log(result);
       return result;
     } catch (err) {
-      return Promise.reject(err);
+      console.log('Error catched', err);
+      return Promise.reject(err.message);
     }
   }
 );
@@ -67,6 +67,8 @@ export const deleteService = createAsyncThunk(
     }
   }
 );
+
+// Reducer
 
 const servicesSlice = createSlice({
   name: 'servicesSlice',
@@ -147,7 +149,7 @@ const servicesSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
-    // Delete Category
+    // Delete Service
     [deleteService.pending]: (state) => {
       state.isLoading = true;
       state.hasError = false;
@@ -175,7 +177,7 @@ export const selectServices = (state) => state.services.services;
 
 export const selectServicesLoading = (state) => state.services.isLoading;
 
-export const selectCategoriesError = (state) => state.services.hasError;
+export const selectServicesError = (state) => state.services.hasError;
 
 export const selectServiceNeedUpdate = (state) =>
   state.services.serviceNeedUpdate;

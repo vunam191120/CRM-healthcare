@@ -27,3 +27,43 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
+
+.input-detail--category,
+.input-detail {
+  &:disabled {
+    background: none;
+    border: none;
+    color: $color-black-0;
+  }
+  & > textarea:disabled {
+    background: none;
+    border: none;
+    color: $color-black-0;
+  }
+}
+
+.view-detail-service {
+  text-align: center;
+}
+
+.view-detail-serivce__icon {
+  @include styleText($color-gray-1, $fs-3, $fw-0);
+  transition: 0.25s ease;
+  &:hover {
+    @include styleText($color-blue-0, $fs-3, $fw-0);
+    transform: translateY(-2px);
+  }
+}
+
+.user-row {
+  cursor: pointer;
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}
+
+.service_row {
+  cursor: default;
+}

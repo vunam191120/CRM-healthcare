@@ -9,13 +9,13 @@ import { IoClose } from 'react-icons/io5';
 import {
   selectUsers,
   selectUsersLoading,
+  fetchUsers,
+  deleteUser,
 } from '../../../store/slices/usersSlice';
 import usersColumn from './table-column';
-import { fetchUsers } from '../../../store/slices/usersSlice';
 import UserDetail from '../detail';
 import Modal from '../../../components/Modal';
 import Button from '../../../components/Button';
-import { deleteUser } from '../../../store/slices/usersSlice';
 
 const { Column } = Table;
 

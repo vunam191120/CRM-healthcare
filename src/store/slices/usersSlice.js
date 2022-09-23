@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
 import accountAPI from '../../api/user';
 import checkRole from '../../helpers/checkRole';
+import { ROLES } from '../../constants';
 
 // Side Effect actions
 
@@ -311,5 +312,8 @@ export const selectUsers = (state) => state.users.users;
 export const selectUsersError = (state) => state.users.hasError;
 
 export const selectUserNeedUpdate = (state) => state.users.userNeedUpdate;
+
+export const selectUsersAdmin = (state) =>
+  state.users.users.filter((user) => user.role_id === ROLES.ADMIN);
 
 export default usersSlice.reducer;

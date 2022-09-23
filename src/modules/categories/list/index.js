@@ -5,6 +5,7 @@ import { BiCategoryAlt, BiPencil } from 'react-icons/bi';
 import { FiTrash2 } from 'react-icons/fi';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
+import { ImEye } from 'react-icons/im';
 
 import Button from '../../../components/Button';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +16,10 @@ import {
   selectCategoriesLoading,
 } from '../../../store/slices/categoriesSlice';
 import Modal from '../../../components/Modal';
+import {
+  fetchServices,
+  selectServices,
+} from '../../../store/slices/servicesSlice';
 
 const { Column } = Table;
 
@@ -22,8 +27,34 @@ export default function CategoriesList() {
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [categoryId, setCategoryId] = useState();
   const categories = useSelector(selectCategories);
+  const services = useSelector(selectServices);
   const categoriesLoading = useSelector(selectCategoriesLoading);
   const dispatch = useDispatch();
+
+  const nestedColumns = [
+    {
+      title: 'Service Name',
+      key: 'service name',
+      dataIndex: 'service_name',
+      width: 200,
+    },
+    {
+      title: 'Description',
+      key: 'description',
+      dataIndex: 'description',
+    },
+    {
+      title: 'View Detail',
+      key: 'view detail',
+      width: 120,
+      className: 'view-detail-service',
+      render: (record) => (
+        <Link to={`/services/detail/${record.service_id}`}>
+          <ImEye className="view-detail-serivce__icon" />
+        </Link>
+      ),
+    },
+  ];
 
   const categoriesColumns = [
     {
@@ -52,13 +83,21 @@ export default function CategoriesList() {
       render: (text, record, index) => (
         <div className="button-container">
           <Link
+            style={{ marginRight: 10 }}
+            className={'button button--view'}
+            to={`/categories/detail/${record.category_id}`}
+          >
+            <ImEye />
+            <span>View</span>
+          </Link>
+          <Link
             className={'button button--update'}
             to={`/categories/update/${record.category_id}`}
           >
             <BiPencil />
             <span>Update</span>
           </Link>
-          <Link
+          {/* <Link
             to=""
             className="button button--delete"
             onClick={() => {
@@ -68,7 +107,7 @@ export default function CategoriesList() {
           >
             <FiTrash2 />
             <span>Delete</span>
-          </Link>
+          </Link> */}
         </div>
       ),
     },
@@ -99,6 +138,10 @@ export default function CategoriesList() {
     dispatch(fetchCategories());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(fetchServices());
+  }, [dispatch]);
+
   const handleDeleteCategory = () => {
     dispatch(deleteCategory(categoryId));
     setIsShowDelete(false);
@@ -121,13 +164,34 @@ export default function CategoriesList() {
         x={true}
         loading={categoriesLoading}
         columns={categoriesColumns}
-        bordered
+        // bordered
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],
         }}
         dataSource={categories}
         rowKey={(record) => record.category_id}
+        expandable={{
+          rowExpandable: (record) =>
+            services.find(
+              (service) => service.category_id === record.category_id
+            ),
+          expandedRowRender: (record) => {
+            return (
+              <Table
+                bordered
+                pagination={false}
+                rowKey={(record) =>
+                  `${record.service_id} ${record.service_name}`
+                }
+                dataSource={services.filter(
+                  (service) => service.category_id === record.category_id
+                )}
+                columns={nestedColumns}
+              ></Table>
+            );
+          },
+        }}
       >
         <Column title={categoriesColumns.title} key={categoriesColumns.key} />
       </Table>

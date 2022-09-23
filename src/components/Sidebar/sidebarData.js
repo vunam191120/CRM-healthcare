@@ -1,6 +1,6 @@
 // import GoThreeBars from 'react-icons/go';
 import { AiOutlineSetting, AiOutlineMedicineBox } from 'react-icons/ai';
-import { BiUser } from 'react-icons/bi';
+import { BiUser, BiClinic } from 'react-icons/bi';
 import { RiArrowDownSFill, RiArrowUpSFill } from 'react-icons/ri';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import {
@@ -26,14 +26,14 @@ export const SidebarData = [
     icon: <BiUser />,
   },
   {
-    title: 'Department',
-    path: '/department',
-    icon: <AiOutlineMedicineBox />,
-  },
-  {
     title: 'Categories',
     path: '/categories',
     icon: <MdOutlineCategory />,
+  },
+  {
+    title: 'Clinics',
+    path: '/clinics',
+    icon: <BiClinic />,
   },
   // {
   //   title: 'Reports',

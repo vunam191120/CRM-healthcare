@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Table, PageHeader } from 'antd';
+import React, { useEffect, useState, useRef } from 'react';
+import { Table, PageHeader, Input, Space, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { BiCategoryAlt, BiPencil } from 'react-icons/bi';
+import { HiSearch } from 'react-icons/hi';
 import { FiTrash2 } from 'react-icons/fi';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
+import { ImEye } from 'react-icons/im';
+import Highlighter from 'react-highlight-words';
 
-import Button from '../../../components/Button';
+import ButtonApp from '../../../components/Button';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '../../../components/Modal';
@@ -21,18 +24,124 @@ const { Column } = Table;
 
 export default function ServicesList() {
   const [isShowDelete, setIsShowDelete] = useState(false);
-  const [sortedInfo, setSortedInfo] = useState({});
-  const [filteredInfo, setFilteredInfo] = useState({});
   const [serviceId, setServiceId] = useState();
   const services = useSelector(selectServices);
   const serviceLoading = useSelector(selectServicesLoading);
   const dispatch = useDispatch();
 
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
+  const [sortedInfo, setSortedInfo] = useState({});
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('');
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            // icon={<HiSearch />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <HiSearch
+        style={{
+          color: filtered ? '#1890ff' : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+
   useEffect(() => {
-    if (Object.keys(services).length === 0) {
-      dispatch(fetchServices());
-    }
-  }, [dispatch, services]);
+    // if (Object.keys(services).length === 0) {
+    dispatch(fetchServices());
+    // }
+  }, [dispatch]);
 
   const serviceColumns = [
     {
@@ -44,10 +153,10 @@ export default function ServicesList() {
       title: 'Name',
       dataIndex: 'service_name',
       key: 'service name',
-      filteredValue: filteredInfo.service_name || null,
-      sorter: (a, b) => a.service_name - b.service_name,
+      ...getColumnSearchProps('service_name'),
+      sorter: (a, b) => a.service_name.length - b.service_name.length,
       sortOrder:
-        sortedInfo.columnKey === 'service_name' ? sortedInfo.order : null,
+        sortedInfo.columnKey === 'service name' ? sortedInfo.order : null,
     },
     {
       title: 'Description',
@@ -56,7 +165,7 @@ export default function ServicesList() {
     },
     {
       title: 'Category',
-      key: 'category name',
+      key: 'category_name',
       render: (text, record, index) => <p>{record.category.category_name}</p>,
       filters: [
         {
@@ -72,7 +181,6 @@ export default function ServicesList() {
           value: 'Nutrition',
         },
       ],
-      // filteredValue: filteredInfo.address || null,
       onFilter: (value, record) =>
         record.category.category_name.includes(value),
     },
@@ -81,6 +189,14 @@ export default function ServicesList() {
       key: 'actions',
       render: (text, record, index) => (
         <div className="button-container">
+          <Link
+            style={{ marginRight: 10 }}
+            className={'button button--view'}
+            to={`/services/detail/${record.service_id}`}
+          >
+            <ImEye />
+            <span>View</span>
+          </Link>
           <Link
             className={'button button--update'}
             to={`/services/update/${record.service_id}`}
@@ -112,15 +228,18 @@ export default function ServicesList() {
       <IoIosCloseCircleOutline className="icon-title icon-title--delete" />
       <h3 className="message">Are you sure to delete this category?</h3>
       <div className="btn-container">
-        <Button
+        <ButtonApp
           className="button button--light"
           onClick={() => setIsShowDelete(false)}
         >
           Cancel
-        </Button>
-        <Button className="button button--main" onClick={handleDeleteService}>
+        </ButtonApp>
+        <ButtonApp
+          className="button button--main"
+          onClick={handleDeleteService}
+        >
           Delete
-        </Button>
+        </ButtonApp>
       </div>
     </div>
   );
@@ -128,6 +247,10 @@ export default function ServicesList() {
   const handleDeleteService = () => {
     dispatch(deleteService(serviceId));
     setIsShowDelete(false);
+  };
+
+  const handleChange = (pagination, filter, sorter) => {
+    setSortedInfo(sorter);
   };
 
   return (
@@ -143,11 +266,12 @@ export default function ServicesList() {
         }
       />
       <Table
+        onChange={handleChange}
         rowClassName="service-row"
         x={true}
         loading={serviceLoading}
-        columns={serviceColumns}
         bordered
+        columns={serviceColumns}
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],

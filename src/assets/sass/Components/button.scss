@@ -3,17 +3,31 @@
   &:last-child {
     margin-left: $mg-1;
   }
+  &:disabled {
+    background-color: $color-gray-0;
+    border: 1px solid $color-gray-0;
+    color: $color-gray-1;
+    cursor: default;
+    &:hover {
+      background-color: $color-gray-0;
+      border: 1px solid $color-gray-0;
+      cursor: default;
+      color: $color-gray-1;
+    }
+  }
 }
 
 .button-container {
   display: flex;
   align-items: center;
+  .button--view,
   .button--update,
   .button--delete {
     display: flex;
     align-items: center;
     transition: 0.25s ease;
     position: relative;
+
     span:last-child {
       margin-left: $mg-0 - 2;
     }
@@ -35,8 +49,11 @@
       width: 100%;
     }
   }
-  .button--update {
+  .button--view {
     color: $color-black-0;
+  }
+  .button--update {
+    color: $color-purple-0;
   }
   .button--delete {
     margin-left: $mg-4;
