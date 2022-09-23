@@ -14,6 +14,7 @@ import {
   updateClinic,
   addClinicNeedUpdateImage,
   deleteImage,
+  setClinicNeedUpdate,
 } from '../../../store/slices/clinicsSlice';
 import { fetchUsers, selectUsersAdmin } from '../../../store/slices/usersSlice';
 
@@ -86,19 +87,17 @@ export default function ClinicsForm({ mode }) {
   }, [mode, dispatch, clinic_id]);
 
   useEffect(() => {
-    if (mode === 'update') {
-      if (Object.keys(clinicNeedUpdate).length > 0) {
-        form.setFieldsValue({
-          name: clinicNeedUpdate.clinic.clinic_name,
-          description: clinicNeedUpdate.clinic.description,
-          address: clinicNeedUpdate.clinic.address,
-          city: clinicNeedUpdate.clinic.city,
-          state: clinicNeedUpdate.clinic.state,
-          manager: clinicNeedUpdate.clinic.manager_id,
-        });
-      }
+    if (mode === 'update' && Object.keys(clinicNeedUpdate).length > 0) {
+      form.setFieldsValue({
+        name: clinicNeedUpdate.clinic.clinic_name,
+        description: clinicNeedUpdate.clinic.description,
+        address: clinicNeedUpdate.clinic.address,
+        city: clinicNeedUpdate.clinic.city,
+        state: clinicNeedUpdate.clinic.state,
+        manager: clinicNeedUpdate.clinic.manager_id,
+      });
     }
-  }, [form, clinicNeedUpdate, mode]);
+  }, [clinicNeedUpdate, form, mode]);
 
   const handleSubmit = (values) => {
     const formData = new FormData();
@@ -152,7 +151,16 @@ export default function ClinicsForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter your clinic name!" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setClinicNeedUpdate({
+                  clinic_name: e.target.value,
+                })
+              )
+            }
+            placeholder="Enter your clinic name!"
+          />
         </Form.Item>
 
         {/* Address */}
@@ -166,7 +174,16 @@ export default function ClinicsForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter address!" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setClinicNeedUpdate({
+                  address: e.target.value,
+                })
+              )
+            }
+            placeholder="Enter address!"
+          />
         </Form.Item>
 
         {/* City */}
@@ -180,7 +197,16 @@ export default function ClinicsForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter city!" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setClinicNeedUpdate({
+                  city: e.target.value,
+                })
+              )
+            }
+            placeholder="Enter city!"
+          />
         </Form.Item>
 
         {/* State */}
@@ -194,7 +220,16 @@ export default function ClinicsForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter state" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setClinicNeedUpdate({
+                  state: e.target.value,
+                })
+              )
+            }
+            placeholder="Enter state"
+          />
         </Form.Item>
 
         {/* Manager */}
@@ -209,7 +244,16 @@ export default function ClinicsForm({ mode }) {
               },
             ]}
           >
-            <Select placeholder="Select your manager">
+            <Select
+              onChange={(value) => {
+                dispatch(
+                  setClinicNeedUpdate({
+                    manager_id: value,
+                  })
+                );
+              }}
+              placeholder="Select your manager"
+            >
               {usersAdmin.map((user, index) => (
                 <Option
                   value={user.user_id}
@@ -232,6 +276,13 @@ export default function ClinicsForm({ mode }) {
           ]}
         >
           <Input.TextArea
+            onBlur={(e) =>
+              dispatch(
+                setClinicNeedUpdate({
+                  description: e.target.value,
+                })
+              )
+            }
             placeholder="Enter your description"
             showCount
             maxLength={100}

@@ -102,6 +102,12 @@ const clinicsSlice = createSlice({
         action.payload,
       ];
     },
+    setClinicNeedUpdate: (state, action) => {
+      state.clinicNeedUpdate.clinic = {
+        ...state.clinicNeedUpdate.clinic,
+        ...action.payload,
+      };
+    },
   },
   extraReducers: {
     // Fetch Clinics
@@ -233,6 +239,7 @@ export const selectClinicsError = (state) => state.clinics.hasError;
 
 export const selectClinicNeedUpdate = (state) => state.clinics.clinicNeedUpdate;
 
-export const { addClinicNeedUpdateImage } = clinicsSlice.actions;
+export const { addClinicNeedUpdateImage, setClinicNeedUpdate } =
+  clinicsSlice.actions;
 
 export default clinicsSlice.reducer;

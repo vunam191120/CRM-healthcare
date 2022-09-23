@@ -77,7 +77,14 @@ const categoriesSlice = createSlice({
     isLoading: false,
     hasError: false,
   },
-  reducers: {},
+  reducers: {
+    // setCategoryNeedUpdate: (state, action) => {
+    //   state.categoryNeedUpdate = {
+    //     ...state.categoryNeedUpdate,
+    //     ...action.payload,
+    //   };
+    // },
+  },
   extraReducers: {
     // Fetch Categories
     [fetchCategories.pending]: (state) => {
@@ -174,6 +181,8 @@ const categoriesSlice = createSlice({
 // Actions
 
 // Selectors
+// export const { setCategoryNeedUpdate } = categoriesSlice.actions;
+
 export const selectCategories = (state) => state.categories.categories;
 
 export const selectCategoriesLoading = (state) => state.categories.isLoading;

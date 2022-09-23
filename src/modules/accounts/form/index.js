@@ -26,6 +26,7 @@ import {
   selectUsersLoading,
   changeUserNeedUpdateAvatar,
   deleteUserNeedUpdateAvatar,
+  setUserNeedUpdate,
 } from '../../../store/slices/usersSlice';
 import { ROLES } from '../../../constants';
 import checkRole from '../../../helpers/checkRole';
@@ -158,7 +159,7 @@ export default function AccountForm({ mode }) {
     formData.append('first_name', values.first_name);
     formData.append('last_name', values.last_name);
     formData.append('email', values.email);
-    formData.append('phone', values.prefix + values.phone);
+    formData.append('phone', `${values.prefix}${values.phone}`);
     formData.append('gender', values.gender);
     formData.append('date_of_birth', values.date_of_birth.format('DD-MM-YYYY'));
     formData.append('profile_status', values.profile_status);
@@ -230,7 +231,16 @@ export default function AccountForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter your first name!" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setUserNeedUpdate({
+                  first_name: e.target.value,
+                })
+              )
+            }
+            placeholder="Enter your first name!"
+          />
         </Form.Item>
 
         {/* Last Name */}
@@ -244,7 +254,16 @@ export default function AccountForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter your last name!" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setUserNeedUpdate({
+                  last_name: e.target.value,
+                })
+              )
+            }
+            placeholder="Enter your last name!"
+          />
         </Form.Item>
 
         {/* Email */}
@@ -325,6 +344,13 @@ export default function AccountForm({ mode }) {
           ]}
         >
           <Input
+            onBlur={(e) =>
+              dispatch(
+                setUserNeedUpdate({
+                  phone: e.target.value,
+                })
+              )
+            }
             placeholder="Enter your phone!"
             addonBefore={prefixSelector}
             style={{
@@ -344,7 +370,16 @@ export default function AccountForm({ mode }) {
             },
           ]}
         >
-          <Select placeholder="Select your gender">
+          <Select
+            onChange={(value) => {
+              dispatch(
+                setUserNeedUpdate({
+                  gender: value,
+                })
+              );
+            }}
+            placeholder="Select your gender"
+          >
             <Option value="Male">Male</Option>
             <Option value="Female">Female</Option>
             <Option value="Other">Other</Option>
@@ -362,7 +397,16 @@ export default function AccountForm({ mode }) {
             },
           ]}
         >
-          <Select placeholder="Select your role!">
+          <Select
+            onChange={(value) => {
+              dispatch(
+                setUserNeedUpdate({
+                  role_id: value,
+                })
+              );
+            }}
+            placeholder="Select your role!"
+          >
             <Option value={ROLES.ADMIN}>Admin</Option>
             <Option value={ROLES.SALE}>Sale</Option>
             <Option value={ROLES.BACK_OFFICER}>Back Officer</Option>
@@ -425,6 +469,13 @@ export default function AccountForm({ mode }) {
           label="Profile status"
         >
           <Switch
+            onChange={(value) =>
+              dispatch(
+                setUserNeedUpdate({
+                  profile_status: value,
+                })
+              )
+            }
             defaultChecked={
               mode === 'update' ? userNeedUpdate.profile_status : false
             }

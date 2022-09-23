@@ -141,6 +141,12 @@ const usersSlice = createSlice({
     deleteUserNeedUpdateAvatar: (state, action) => {
       state.userNeedUpdate.avatar = [];
     },
+    setUserNeedUpdate: (state, action) => {
+      state.userNeedUpdate = {
+        ...state.userNeedUpdate,
+        ...action.payload,
+      };
+    },
   },
   extraReducers: {
     // Fetch Users
@@ -301,8 +307,11 @@ const usersSlice = createSlice({
 });
 
 // Actions
-export const { changeUserNeedUpdateAvatar, deleteUserNeedUpdateAvatar } =
-  usersSlice.actions;
+export const {
+  changeUserNeedUpdateAvatar,
+  deleteUserNeedUpdateAvatar,
+  setUserNeedUpdate,
+} = usersSlice.actions;
 
 // Selectors
 export const selectUsersLoading = (state) => state.users.isLoading;
