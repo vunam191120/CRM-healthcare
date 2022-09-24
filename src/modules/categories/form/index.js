@@ -8,7 +8,6 @@ import {
   fetchCategory,
   selectCategoriesLoading,
   selectCategoryNeedUpdate,
-  setCategoryNeedUpdate,
   updateCategory,
 } from '../../../store/slices/categoriesSlice';
 import Spinner from '../../../components/Spinner';

@@ -1,0 +1,28 @@
+.clinic-detail-header {
+  .clinic-detail__title {
+    @include styleText($color-brown-1, $fs-5, $fw-1);
+  }
+  .clinic-detail__navbar {
+    list-style-type: none;
+    display: flex;
+    margin-bottom: 0;
+    .navbar__link {
+      display: flex;
+      align-items: center;
+      @include styleText($color-gray-1, $fs-3, $fw-0);
+      padding: $pd-2 $pd-0;
+      border-radius: 4px;
+      margin-right: $mg-4;
+      transition: 0.3s ease;
+      &.active,
+      &:hover {
+        color: $color-blue-0;
+        background-color: rgba($color: $color-gray-0, $alpha: 0.2);
+      }
+      .text {
+        display: inline-block;
+        margin-left: $mg-0;
+      }
+    }
+  }
+}
