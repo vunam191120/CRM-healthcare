@@ -66,7 +66,7 @@ const tailFormItemLayout = {
 };
 
 const { Option } = Select;
-export default function ClinicsForm({ mode }) {
+export default function ClinicsForm({ mode, customPageHeader }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { clinic_id } = useParams();
@@ -126,12 +126,16 @@ export default function ClinicsForm({ mode }) {
 
   return (
     <>
-      <PageHeader
-        className="site-page-header"
-        onBack={() => navigate('/clinics')}
-        title={mode === 'create' ? 'Add clinic' : 'Update clinic'}
-        subTitle="This is a subtitle"
-      />
+      {!customPageHeader ? (
+        <PageHeader
+          className="site-page-header"
+          onBack={() => navigate('/clinics')}
+          title={mode === 'create' ? 'Add clinic' : 'Update clinic'}
+          subTitle="This is a subtitle"
+        />
+      ) : (
+        customPageHeader
+      )}
       <Form
         className="clinicForm"
         {...formItemLayout}
@@ -348,3 +352,7 @@ export default function ClinicsForm({ mode }) {
     </>
   );
 }
+
+ClinicsForm.defaultProps = {
+  customPageHeader: false,
+};

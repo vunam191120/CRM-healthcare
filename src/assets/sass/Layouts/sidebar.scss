@@ -11,11 +11,38 @@
   top: 0;
   bottom: 0;
   z-index: 10;
-  //   box-shadow: 0px 7px 10px #eef1fe;
+  transition: 0.4s ease;
+  // box-shadow: 0px 7px 10px #eef1fe;
+  .expand-btn {
+    outline: none;
+    position: absolute;
+    top: 50%;
+    right: -14px;
+    background-color: $color-white-0;
+    border: 1px solid $color-gray-0;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    transition: 0.6s ease-in-out;
+    @extend %centerFlex;
+    cursor: pointer;
+    .expand-icon {
+      display: block;
+      @include styleText($color-brown-1, $fs-5 + 4 + 2, $fw-0);
+      transition: 0.25s ease;
+    }
+    &:hover {
+      background-color: $color-yellow-0;
+      .expand-icon {
+        color: $color-white-0;
+      }
+    }
+  }
   .sidebar-logo {
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
     img {
       width: 50px;
       height: 50px;
@@ -24,6 +51,8 @@
     }
     h4 {
       @include styleText($color-white-0, $fs-3, $fw-4);
+      transition: 0.25s ease;
+
       span {
         @include styleText($color-white-0, $fs-3, $fw-0);
       }
@@ -63,7 +92,9 @@
       padding: $pd-3 $pd-3;
       .sidebar-link {
         display: flex;
+        width: 100%;
         align-items: center;
+        transition: 0.25s ease;
         @include styleText($color-white-0, $fs-0, $fw-0);
         .sidebar-icon {
           margin-right: $mg-4;
@@ -103,6 +134,40 @@
     &:hover {
       transform: translateY(-3px);
       color: $color-yellow-0;
+    }
+  }
+
+  // Collapsed sidebar
+  &.shrunk {
+    width: 100px;
+    .expand-btn {
+      transform: rotate(540deg);
+    }
+    .sidebar-logo {
+      h4 {
+        display: none;
+      }
+    }
+    .sidebar-item {
+      .sidebar-link {
+        justify-content: center;
+        @include styleText($color-white-0, $fs-3 + 4, $fw-0);
+        .sidebar-icon {
+          margin: 0;
+        }
+        .sidebar-text {
+          font-size: 0;
+        }
+        .sidebar-subnav__btn {
+          margin-left: 0;
+        }
+      }
+    }
+    .logout-btn {
+      @include styleText($color-white-0, $fs-3 + 2, $fw-0);
+      &:hover {
+        color: $color-yellow-0;
+      }
     }
   }
 }

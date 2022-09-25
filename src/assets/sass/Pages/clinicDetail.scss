@@ -1,3 +1,4 @@
+// Header
 .clinic-detail-header {
   .clinic-detail__title {
     @include styleText($color-brown-1, $fs-5, $fw-1);
@@ -9,7 +10,7 @@
     .navbar__link {
       display: flex;
       align-items: center;
-      @include styleText($color-gray-1, $fs-3, $fw-0);
+      @include styleText($color-gray-1, $fs-0, $fw-0);
       padding: $pd-2 $pd-0;
       border-radius: 4px;
       margin-right: $mg-4;
@@ -25,4 +26,62 @@
       }
     }
   }
+}
+
+.clinic-detail-content {
+  border: 1px solid rgb(235, 237, 240);
+  padding: $pd-1 $pd-3 + 4;
+  .title {
+    @include styleText($color-brown-1, $fs-3, $fw-1);
+    margin-bottom: $mg-4;
+  }
+  // Clinic
+  .clinic-content-detail {
+    display: flex;
+    .clinic-form,
+    .clinic-info {
+      width: 50%;
+    }
+    .clinic-form {
+      padding-left: $pd-0;
+    }
+    .clinic-info {
+      .info-list {
+        list-style-type: none;
+        padding: 0 $pd-4 + 30 0 $pd-3;
+        .info-item {
+          padding: $pd-1 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          @include styleText($color-gray-1, $fs-0, $fs-0);
+          border-bottom: 1px solid $color-line-0;
+          .value {
+            border: 1px solid $color-smoke;
+            border-radius: 20px;
+            padding: 0 $pd-3;
+          }
+        }
+      }
+    }
+  }
+  // Category, Service
+  .category-content-detail,
+  .service-content-detail {
+    .header {
+      display: flex;
+      justify-content: space-between;
+      .title {
+        margin-bottom: 0;
+      }
+      margin-bottom: $mg-2;
+    }
+    .button-container {
+      .button:last-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  // Service
 }

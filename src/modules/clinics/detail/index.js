@@ -1,12 +1,6 @@
 import React from 'react';
-import { PageHeader } from 'antd';
-import {
-  NavLink,
-  Link,
-  Outlet,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { PageHeader, Tabs } from 'antd';
+import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { ReconciliationOutlined } from '@ant-design/icons';
@@ -117,8 +111,7 @@ export default function ClinicDetailLayout() {
         onBack={() => navigate('/clinics')}
         title={renderTitle()}
       />
-      <div className="detail-content">
-        <h3>Page Clinic detail</h3>
+      <div className="clinic-detail-content">
         <Outlet />
       </div>
     </>

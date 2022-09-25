@@ -25,6 +25,23 @@ const clinicAPI = {
     const url = `/clinic/image/${image_id}`;
     return axiosClient.delete(url);
   },
+  // Details
+  getCategories(clinic_id) {
+    const url = `/clinic/category/${clinic_id}`;
+    return axiosClient.get(url);
+  },
+  getServices(clinic_id) {
+    const url = `/clinic/service/${clinic_id}`;
+    return axiosClient.get(url);
+  },
+  updateCategories(data) {
+    const url = `/clinic/category`;
+    return axiosClient.put(url, data);
+  },
+  updateServices(data) {
+    const url = `/clinic/service`;
+    return axiosClient.put(url, data);
+  },
 };
 
 export default clinicAPI;

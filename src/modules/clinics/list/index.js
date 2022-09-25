@@ -79,7 +79,7 @@ export default function ClinicsList() {
         <div className="button-container">
           <Link
             className={'button button--view'}
-            to={`/clinics/detail/${record.clinic_id}`}
+            to={`/clinics/detail/${record.clinic_id}/clinic`}
           >
             <ImEye />
             <span>View</span>

@@ -17,6 +17,12 @@
   top: 50%;
 }
 
+%centerFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 %input {
   border: none;
   outline: none;

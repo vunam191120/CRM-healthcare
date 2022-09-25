@@ -14,7 +14,7 @@ export default function SubMenu({ item }) {
         onClick={item.subNav && handleToggleSubnav}
       >
         <span className="sidebar-icon">{item.icon}</span>
-        <span>{item.title}</span>
+        <span className="sidebar-text">{item.title}</span>
         <span className="sidebar-subnav__btn">
           {item.subNav && subnav
             ? item.iconOpened

@@ -1,13 +1,14 @@
 import React from 'react';
 import { ImExit } from 'react-icons/im';
 import { Link, useNavigate } from 'react-router-dom';
+import { BiChevronLeft } from 'react-icons/bi';
 
 import healthCareLogo from './../../assets/img/healthCareLogo.png';
 import { SidebarData } from './sidebarData';
 import SubMenu from '../SubMenu';
+import Button from '../Button';
 
-const Sidebar = () => {
-  // const [sidebar, setSidebar] = useState(false);
+const Sidebar = ({ expanded, toggleExpanded }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -16,12 +17,11 @@ const Sidebar = () => {
     navigate('/login');
   };
 
-  // const handleToggleSidebar = () => {
-  //   setSidebar(!sidebar);
-  // };
-
   return (
-    <div className="sidebar-container">
+    <div className={`sidebar-container ${!expanded ? 'shrunk' : ''}`}>
+      <Button className="expand-btn" onClick={toggleExpanded}>
+        <BiChevronLeft className="expand-icon" />
+      </Button>
       <Link to="/" className="sidebar-logo">
         <img src={healthCareLogo} alt="HealthCare Logo" />
         <h4>

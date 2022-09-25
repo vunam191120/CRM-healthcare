@@ -1,10 +1,16 @@
 .layout-container {
   padding-left: 200px;
-  // background-color: $color-white-1;
+  padding-right: $pd-0;
   min-height: 100vh;
+  transition: 0.4s ease;
   .layout-content {
     background-color: $color-white-0;
     padding: $pd-4 $pd-1;
     min-height: 100vh;
+  }
+
+  // Collapsed sidebar
+  &.shrunk {
+    padding-left: 100px;
   }
 }
