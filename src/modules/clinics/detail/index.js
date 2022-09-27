@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Tabs } from 'antd';
+import { PageHeader } from 'antd';
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -10,6 +10,7 @@ import {
   MdMeetingRoom,
   MdOutlineMedicalServices,
 } from 'react-icons/md';
+import { TbBed } from 'react-icons/tb';
 import { FaUserNurse } from 'react-icons/fa';
 import { BsCalendar2Date, BsPeopleFill } from 'react-icons/bs';
 import { fetchClinic } from '../../../store/slices/clinicsSlice';
@@ -40,46 +41,10 @@ export default function ClinicDetailLayout() {
         <li className="navbar__item">
           <NavLink
             className="navbar__link"
-            to={`/clinics/detail/${clinic_id}/appointments`}
-          >
-            <BsCalendar2Date />
-            <span className="text">Appointments</span>
-          </NavLink>
-        </li>
-        <li className="navbar__item">
-          <NavLink
-            className="navbar__link"
             to={`/clinics/detail/${clinic_id}/categories`}
           >
             <MdOutlineCategory />
             <span className="text">Categories</span>
-          </NavLink>
-        </li>
-        <li className="navbar__item">
-          <NavLink
-            className="navbar__link"
-            to={`/clinics/detail/${clinic_id}/doctors`}
-          >
-            <FaUserNurse />
-            <span className="text">Doctors</span>
-          </NavLink>
-        </li>
-        <li className="navbar__item">
-          <NavLink
-            className="navbar__link"
-            to={`/clinics/detail/${clinic_id}/payments`}
-          >
-            <MdPayment />
-            <span className="text">Payments</span>
-          </NavLink>
-        </li>
-        <li className="navbar__item">
-          <NavLink
-            className="navbar__link"
-            to={`/clinics/detail/${clinic_id}/rooms`}
-          >
-            <MdMeetingRoom />
-            <span className="text">Rooms</span>
           </NavLink>
         </li>
         <li className="navbar__item">
@@ -94,10 +59,55 @@ export default function ClinicDetailLayout() {
         <li className="navbar__item">
           <NavLink
             className="navbar__link"
+            to={`/clinics/detail/${clinic_id}/appointments`}
+          >
+            <BsCalendar2Date />
+            <span className="text">Appointments</span>
+          </NavLink>
+        </li>
+        <li className="navbar__item">
+          <NavLink
+            className="navbar__link"
+            to={`/clinics/detail/${clinic_id}/rooms`}
+          >
+            <MdMeetingRoom />
+            <span className="text">Rooms</span>
+          </NavLink>
+        </li>
+        {/* <li className="navbar__item">
+          <NavLink
+            className="navbar__link"
+            to={`/clinics/detail/${clinic_id}/beds`}
+          >
+            <TbBed />
+            <span className="text">Beds</span>
+          </NavLink>
+        </li> */}
+        <li className="navbar__item">
+          <NavLink
+            className="navbar__link"
+            to={`/clinics/detail/${clinic_id}/doctors`}
+          >
+            <FaUserNurse />
+            <span className="text">Doctors</span>
+          </NavLink>
+        </li>
+        <li className="navbar__item">
+          <NavLink
+            className="navbar__link"
             to={`/clinics/detail/${clinic_id}/staffs`}
           >
             <BsPeopleFill />
             <span className="text">Staffs</span>
+          </NavLink>
+        </li>
+        <li className="navbar__item">
+          <NavLink
+            className="navbar__link"
+            to={`/clinics/detail/${clinic_id}/payments`}
+          >
+            <MdPayment />
+            <span className="text">Payments</span>
           </NavLink>
         </li>
       </ul>
@@ -108,7 +118,7 @@ export default function ClinicDetailLayout() {
     <>
       <PageHeader
         className="site-page-header clinic-detail-header"
-        onBack={() => navigate('/clinics')}
+        onBack={() => navigate(-1)}
         title={renderTitle()}
       />
       <div className="clinic-detail-content">

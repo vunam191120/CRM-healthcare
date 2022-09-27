@@ -19,6 +19,11 @@ import {
   PATH_CLINICS_DETAIL_DOCTORS,
   PATH_CLINICS_DETAIL_PAYMENTS,
   PATH_CLINICS_DETAIL_ROOMS,
+  PATH_CLINICS_DETAIL_ROOMS_CREATE,
+  PATH_CLINICS_DETAIL_ROOMS_UPDATE,
+  PATH_CLINICS_DETAIL_BEDS,
+  PATH_CLINICS_DETAIL_BEDS_CREATE,
+  PATH_CLINICS_DETAIL_BEDS_UPDATE,
   PATH_CLINICS_DETAIL_SERVICES,
   PATH_CLINICS_DETAIL_STAFFS,
   PATH_CLINICS_DETAIL_CLINIC,
@@ -42,7 +47,12 @@ import ClinicAppointments from '../modules/clinics/detail/appointments';
 import ClinicCategories from '../modules/clinics/detail/categories';
 import ClinicDoctors from '../modules/clinics/detail/doctors';
 import ClinicPayments from '../modules/clinics/detail/payments';
-import ClinicRooms from '../modules/clinics/detail/rooms';
+import Room from '../pages/rooms';
+import CreateRoom from '../pages/rooms/create';
+import UpdateRoom from '../pages/rooms/update';
+import Bed from '../pages/beds';
+import CreateBed from '../pages/beds/create';
+import UpdateBed from '../pages/beds/update';
 import ClinicServices from '../modules/clinics/detail/services';
 import ClinicStaffs from '../modules/clinics/detail/staffs';
 import ClinicClinic from '../modules/clinics/detail/clinic';
@@ -151,7 +161,32 @@ const appRoutes = [
       },
       {
         path: PATH_CLINICS_DETAIL_ROOMS,
-        element: <ClinicRooms />,
+        element: <Room />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_ROOMS_CREATE,
+        element: <CreateRoom />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_ROOMS_UPDATE,
+        element: <UpdateRoom />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_BEDS,
+        element: <Bed />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_BEDS_CREATE,
+        element: <CreateBed />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_BEDS_UPDATE,
+        element: <UpdateBed />,
         roles: ['Admin'],
       },
       {

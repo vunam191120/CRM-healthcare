@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Input, PageHeader, Select } from 'antd';
@@ -69,8 +69,8 @@ const { Option } = Select;
 export default function ServiceForm({ mode }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { service_id } = useParams();
   const [form] = Form.useForm();
+  const { service_id } = useParams();
   const isLoading = useSelector(selectServicesLoading);
   const categories = useSelector(selectCategories);
   const serviceNeedUpdate = useSelector(selectServiceNeedUpdate);

@@ -105,8 +105,8 @@ export const login = createAsyncThunk(
   async ({ email, password }) => {
     try {
       const resultToken = await accountAPI.login({ email, password });
-      if (!resultToken.data.token) {
-        return Promise.reject(resultToken.data);
+      if (!resultToken.data) {
+        return Promise.reject(resultToken.response.data.errors[0]);
       }
       localStorage.setItem('accessToken', resultToken.data.token);
       localStorage.setItem('refreshToken', resultToken.data.refreshToken);

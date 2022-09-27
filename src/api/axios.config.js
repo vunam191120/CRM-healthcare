@@ -25,7 +25,7 @@ axiosClient.interceptors.response.use(
       localStorage.removeItem('accessToken');
       window.location.href = '/login';
     }
-    console.log('Error at interceptor: ', error);
+    console.log('Error at interceptor: ', error.response.data.errors);
     return error;
     // switch (error.response.status) {
     //   case 401:

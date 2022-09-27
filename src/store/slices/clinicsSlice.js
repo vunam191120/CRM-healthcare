@@ -135,7 +135,7 @@ export const deleteImage = createAsyncThunk(
 // Reducer
 
 const clinicsSlice = createSlice({
-  name: 'clinicSlice',
+  name: 'clinicsSlice',
   initialState: {
     clinics: [],
     categories: [],

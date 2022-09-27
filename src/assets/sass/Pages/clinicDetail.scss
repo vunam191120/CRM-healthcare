@@ -65,9 +65,11 @@
       }
     }
   }
-  // Category, Service
+  // Category, Service, Room, Bed
   .category-content-detail,
-  .service-content-detail {
+  .service-content-detail,
+  .room-content-detail,
+  .bed-content-detail {
     .header {
       display: flex;
       justify-content: space-between;
@@ -82,6 +84,18 @@
       }
     }
   }
+
+  // .room-content-detail {
+  //   .header {
+  //     margin-bottom: $mg-3;
+  //   }
+  //   .body {
+  //     display: flex;
+  //   }
+  //   .roomTable {
+  //     flex: 1;
+  //   }
+  // }
 
   // Service
 }
