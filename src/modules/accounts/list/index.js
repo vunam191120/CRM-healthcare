@@ -92,7 +92,6 @@ export default function AccountsList() {
           },
         })}
         columns={usersColumn}
-        bordered
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],

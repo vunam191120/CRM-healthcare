@@ -280,7 +280,8 @@ const clinicsSlice = createSlice({
         action.payload.categories.find((item) => {
           if (item.category_id === cate.category_id) {
             // cate.status = item.status;
-            cate.status = !cate.status;
+            cate.status = item.status;
+            return item;
           }
           return false;
         });

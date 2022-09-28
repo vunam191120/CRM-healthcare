@@ -85,17 +85,21 @@
     }
   }
 
-  // .room-content-detail {
-  //   .header {
-  //     margin-bottom: $mg-3;
-  //   }
-  //   .body {
-  //     display: flex;
-  //   }
-  //   .roomTable {
-  //     flex: 1;
-  //   }
-  // }
-
-  // Service
+  // Bed
+  .bed-content-detail {
+    .bed-body {
+      display: flex;
+      .bed-table {
+        padding: 0 0 0 $pd-4;
+        flex: 2;
+      }
+      .bed-form-update {
+        flex: 1;
+        // Input at table antd
+        .ant-form-horizontal .ant-form-item-control {
+          margin-left: auto;
+        }
+      }
+    }
+  }
 }

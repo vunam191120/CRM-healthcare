@@ -10,6 +10,10 @@ import {
   selectClinicsLoading,
   updateCategoriesStatus,
 } from '../../../../store/slices/clinicsSlice';
+import {
+  fetchCategories,
+  selectCategories,
+} from '../../../../store/slices/categoriesSlice';
 import Modal from '../../../../components/Modal';
 import Button from '../../../../components/Button';
 import Spinner from '../../../../components/Spinner';
@@ -52,13 +56,20 @@ export default function ClinicCategories() {
   const [form] = Form.useForm();
   const { clinic_id } = useParams();
   const [isShowUpdate, setIsShowUpdate] = useState(false);
+  // Categories filtered by clinic
   const categories = useSelector(selectCategoriesByClinic);
+  // List of categories
+  const allCategories = useSelector(selectCategories);
   const clinicLoading = useSelector(selectClinicsLoading);
   const [newCates, setNewCates] = useState([]);
 
   useEffect(() => {
     dispatch(fetchCategoriesByClinic(clinic_id));
   }, [clinic_id, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   const categoriesColumns = [
     {
@@ -99,18 +110,27 @@ export default function ClinicCategories() {
       >
         <div className="form-container">
           {/* Switch */}
-          {categories.map((cate, index) => (
-            <Form.Item key={index} name="status" valuePropName="checked">
-              <div className="category-item">
-                <p className="name">{cate.category.category_name}</p>
-                <Switch
-                  onChange={(values) => handleChangeStatus(values, cate)}
-                  defaultChecked={cate.status}
-                  className="switch"
-                />
-              </div>
-            </Form.Item>
-          ))}
+          {allCategories.map((cate, index) => {
+            cate = { ...cate, status: false };
+            const result = categories.find((item) => {
+              if (item.category_id === cate.category_id) {
+                cate = { ...cate, status: item.status };
+                return item;
+              }
+            });
+            return (
+              <Form.Item key={index} name="status" valuePropName="checked">
+                <div className="category-item">
+                  <p className="name">{cate.category_name}</p>
+                  <Switch
+                    onChange={(values) => handleChangeStatus(values, cate)}
+                    defaultChecked={cate.status}
+                    className="switch"
+                  />
+                </div>
+              </Form.Item>
+            );
+          })}
         </div>
 
         {/* Button */}
@@ -152,7 +172,7 @@ export default function ClinicCategories() {
   const handleSubmit = () => {
     if (newCates.length > 0) {
       const result = [];
-      categories.forEach((cate) => {
+      allCategories.forEach((cate) => {
         let cateFound = newCates.find((item) => {
           if (cate.category_id === item.category_id) {
             return cate.status !== item.status;
@@ -165,15 +185,6 @@ export default function ClinicCategories() {
       });
 
       if (result.length > 0) {
-        // Change true to 1 and false to 0;
-        // for (let index in result) {
-        //   if (result[index].status) {
-        //     result[index].status = 1;
-        //   } else {
-        //     result[index].status = 0;
-        //   }
-        // }
-
         dispatch(
           updateCategoriesStatus({
             clinic_id: Number(clinic_id),
@@ -183,7 +194,7 @@ export default function ClinicCategories() {
       }
     }
 
-    // setIsShowUpdate(false);
+    setIsShowUpdate(false);
   };
 
   return (
@@ -191,7 +202,10 @@ export default function ClinicCategories() {
       <div className="header">
         <h4 className="title">Category Information</h4>
         <Button
-          onClick={() => setIsShowUpdate(true)}
+          onClick={() => {
+            setIsShowUpdate(true);
+            // setNewCates([]);
+          }}
           className="button button--main"
           type="button"
         >
@@ -200,18 +214,16 @@ export default function ClinicCategories() {
       </div>
 
       <Table
-        rowClassName="category-row"
+        rowClassName="custom-row"
         x={true}
         loading={clinicLoading}
         columns={categoriesColumns}
-        bordered
+        // bordered
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],
         }}
         dataSource={categories.filter((cate) => cate.status === true)}
-        // dataSource={categories.filter((cate) => cate.status === 1)}
-        // dataSource={categories}
         rowKey={(record) => record.category_id}
       ></Table>
       <Modal

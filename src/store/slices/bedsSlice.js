@@ -6,7 +6,6 @@ export const fetchBeds = createAsyncThunk(
   'bedsSlice/fetchBeds',
   async (room_id) => {
     try {
-      console.log('Room_id: ', room_id);
       const result = await bedAPI.getAll(room_id);
       return result.data.data;
     } catch (err) {
@@ -15,22 +14,23 @@ export const fetchBeds = createAsyncThunk(
   }
 );
 
-// export const fetchRoom = createAsyncThunk(
-//   'bedsSlice/fetchRoom',
-//   async (room_id) => {
-//     try {
-//       return Promise.fulfilled(room_id);
-//     } catch (err) {
-//       return Promise.reject(err.message);
-//     }
-//   }
-// );
+export const fetchBed = createAsyncThunk(
+  'bedsSlice/fetchBed',
+  async (bed_id) => {
+    try {
+      const result = await bedAPI.getOne(bed_id);
+      return result.data.data;
+    } catch (err) {
+      return Promise.reject(err.message);
+    }
+  }
+);
 
 export const createBed = createAsyncThunk(
   'bedsSlice/createBed',
-  async (room) => {
+  async (bed) => {
     try {
-      const result = await bedAPI.create(room);
+      const result = await bedAPI.create(bed);
       return result.data.data;
     } catch (err) {
       return Promise.reject(err.response.data.errors[0]);
@@ -40,10 +40,10 @@ export const createBed = createAsyncThunk(
 
 export const updateBed = createAsyncThunk(
   'bedsSlice/updateBed',
-  async (room) => {
+  async (bed) => {
     try {
-      const result = await bedAPI.update(room);
-      return result;
+      const result = await bedAPI.update(bed);
+      return bed;
     } catch (err) {
       return Promise.reject(err.message);
     }
@@ -92,6 +92,21 @@ const bedsSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Fetch Bed
+    [fetchBed.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchBed.fulfilled]: (state, action) => {
+      state.bedNeedUpdate = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchBed.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
     // Create Bed
     [createBed.pending]: (state) => {
       state.isLoading = true;
@@ -119,6 +134,13 @@ const bedsSlice = createSlice({
       message
         .loading('Action in progress..', 0.5)
         .then(() => message.success('Update bed successfully!', 3));
+      state.beds = state.beds.map((bed) => {
+        if (bed.bed_id === action.payload.bed_id) {
+          bed = { ...bed, ...action.payload };
+        }
+        return bed;
+      });
+      state.bedNeedUpdate = { ...state.bedNeedUpdate, ...action.payload };
       state.isLoading = false;
       state.hasError = false;
     },

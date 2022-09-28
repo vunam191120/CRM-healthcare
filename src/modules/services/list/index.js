@@ -267,7 +267,7 @@ export default function ServicesList() {
       />
       <Table
         onChange={handleChange}
-        rowClassName="service-row"
+        rowClassName="custom-row"
         x={true}
         loading={serviceLoading}
         bordered

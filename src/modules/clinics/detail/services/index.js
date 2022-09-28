@@ -12,6 +12,10 @@ import {
   selectServicesByClinic,
   updateServicesStatus,
 } from '../../../../store/slices/clinicsSlice';
+import {
+  fetchServices,
+  selectServices,
+} from '../../../../store/slices/servicesSlice';
 import Modal from '../../../../components/Modal';
 import Button from '../../../../components/Button';
 import Spinner from '../../../../components/Spinner';
@@ -55,10 +59,22 @@ export default function ClinicServices() {
   const { clinic_id } = useParams();
   const [isShowUpdate, setIsShowUpdate] = useState(false);
   const [newServices, setNewServices] = useState([]);
-  const categories = useSelector(selectCategoriesByClinic);
-  const services = useSelector(selectServicesByClinic);
   const clinicLoading = useSelector(selectClinicsLoading);
+  const categories = useSelector(selectCategoriesByClinic);
   const listCatesActive = categories.filter((cate) => cate.status === true);
+  // Actived services by clinic
+  const services = useSelector(selectServicesByClinic);
+  // All services
+  const allServices = useSelector(selectServices);
+  // All services filtered by available category in clinic
+  const filterService = allServices.filter((service) => {
+    const result = listCatesActive.find(
+      (item) => item.category_id === service.category_id
+    );
+    if (result) {
+      return service;
+    }
+  });
 
   useEffect(() => {
     dispatch(fetchCategoriesByClinic(clinic_id));
@@ -67,6 +83,10 @@ export default function ClinicServices() {
   useEffect(() => {
     dispatch(fetchServicesByClinic(clinic_id));
   }, [clinic_id, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchServices());
+  }, [dispatch, clinic_id]);
 
   const categoriesColumns = [
     {
@@ -121,10 +141,9 @@ export default function ClinicServices() {
       >
         <div className="form-container">
           {/* Switch */}
-          {renderServices()}
+          {renderSwitchs()}
         </div>
 
-        {/* Button */}
         <Form.Item {...tailFormItemLayout}>
           <Button className="button--main" type="submit">
             {/* Show spinner whenever click this button */}
@@ -160,35 +179,10 @@ export default function ClinicServices() {
     }
   };
 
-  const renderServices = () => {
-    let listServices = [];
-    services.forEach((service, index) => {
-      // Check which services are including in activated activated category
-      const result = listCatesActive.find(
-        (cate) => cate.category_id === service.service.category_id
-      );
-      if (result) {
-        listServices.push(
-          <Form.Item key={index} name="status" valuePropName="checked">
-            <div className="category-item">
-              <p className="name">{service.service.service_name}</p>
-              <Switch
-                onChange={(values) => handleChangeStatus(values, service)}
-                defaultChecked={service.status}
-                className="switch"
-              />
-            </div>
-          </Form.Item>
-        );
-      }
-    });
-    return listServices;
-  };
-
   const handleSubmit = () => {
     if (newServices.length > 0) {
       const result = [];
-      services.forEach((service) => {
+      filterService.forEach((service) => {
         let serviceFound = newServices.find((item) => {
           if (service.service_id === item.service_id) {
             return service.status !== item.status;
@@ -201,15 +195,6 @@ export default function ClinicServices() {
       });
 
       if (result.length > 0) {
-        // Change true to 1 and false to 0;
-        // for (let index in result) {
-        //   if (result[index].status) {
-        //     result[index].status = 1;
-        //   } else {
-        //     result[index].status = 0;
-        //   }
-        // }
-
         dispatch(
           updateServicesStatus({
             clinic_id: Number(clinic_id),
@@ -219,7 +204,37 @@ export default function ClinicServices() {
       }
     }
 
-    // setIsShowUpdate(false);
+    setIsShowUpdate(false);
+  };
+
+  const renderSwitchs = () => {
+    return filterService.map((service, index) => {
+      service = { ...service, status: false };
+      services.find((item) => {
+        if (item.service_id === service.service_id) {
+          service = { ...service, status: item.status };
+        }
+      });
+
+      return (
+        <Form.Item key={index} name="status" valuePropName="checked">
+          <div className="category-item">
+            <p className="name">{`${service.service_id} - ${
+              service.service_name
+            } - ${
+              categories.find(
+                (cate) => cate.category_id === service.category_id
+              ).category.category_name
+            }`}</p>
+            <Switch
+              onChange={(values) => handleChangeStatus(values, service)}
+              defaultChecked={service.status}
+              className="switch"
+            />
+          </div>
+        </Form.Item>
+      );
+    });
   };
 
   return (
@@ -235,7 +250,7 @@ export default function ClinicServices() {
         </Button>
       </div>
       <Table
-        rowClassName="service-row"
+        rowClassName="custom-row"
         x={true}
         loading={clinicLoading}
         columns={categoriesColumns}
@@ -254,12 +269,13 @@ export default function ClinicServices() {
           expandedRowRender: (record) => {
             return (
               <Table
-                bordered
+                rowClassName="custom-row"
                 pagination={false}
                 rowKey={(record) => record.service_id}
                 dataSource={services.filter(
                   (service) =>
-                    service.service.category_id === record.category_id
+                    service.service.category_id === record.category_id &&
+                    service.status === true
                 )}
                 columns={nestedColumns}
               ></Table>

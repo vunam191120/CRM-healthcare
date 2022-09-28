@@ -160,7 +160,7 @@ export default function CategoriesList() {
         }
       />
       <Table
-        rowClassName="category-row"
+        rowClassName="custom-row"
         x={true}
         loading={categoriesLoading}
         columns={categoriesColumns}
@@ -187,6 +187,7 @@ export default function CategoriesList() {
                 dataSource={services.filter(
                   (service) => service.category_id === record.category_id
                 )}
+                rowClassName="custom-row"
                 columns={nestedColumns}
               ></Table>
             );

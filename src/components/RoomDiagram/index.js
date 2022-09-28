@@ -1,32 +1,12 @@
 import React from 'react';
-import { FaBed } from 'react-icons/fa';
 
-export default function RoomDiagram() {
+export default function RoomDiagram({ renderBeds, roomID }) {
   return (
     <div className="diagram-container">
-      <h5 className="title">Room Diagram</h5>
       <div className="diagram-content">
+        <h4 className="title-room">Room {roomID}</h4>
         <div className="room">
-          <div className="bed-list">
-            <div className="bed-item">
-              <FaBed className="bed-icon" />
-            </div>
-            <div className="bed-item">
-              <FaBed className="bed-icon" />
-            </div>
-            <div className="bed-item">
-              <FaBed className="bed-icon" />
-            </div>
-            <div className="bed-item">
-              <FaBed className="bed-icon" />
-            </div>
-            <div className="bed-item">
-              <FaBed className="bed-icon" />
-            </div>
-            <div className="bed-item">
-              <FaBed className="bed-icon" />
-            </div>
-          </div>
+          <div className="bed-list">{renderBeds()}</div>
         </div>
       </div>
     </div>

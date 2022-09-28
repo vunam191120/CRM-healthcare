@@ -10,6 +10,7 @@ import {
   selectRoomsLoading,
   fetchRoom,
   createRoom,
+  updateRoom,
 } from '../../../../../store/slices/roomsSlice';
 
 const formItemLayout = {
@@ -63,6 +64,7 @@ export default function RoomForm({ mode }) {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { room_id } = useParams();
+  const { clinic_id } = useParams();
   const roomLoading = useSelector(selectRoomsLoading);
   const roomNeedUpdate = useSelector(selectRoomNeedUpdate);
 
@@ -72,15 +74,29 @@ export default function RoomForm({ mode }) {
     }
   }, [room_id, dispatch, mode]);
 
+  useEffect(() => {
+    if (Object.keys(roomNeedUpdate).length > 0) {
+      form.setFieldsValue({
+        room_id,
+        bed_number: roomNeedUpdate.bed_number,
+        slot: roomNeedUpdate.slot,
+        price: roomNeedUpdate.price,
+      });
+    }
+  }, [form, roomNeedUpdate, room_id]);
+
   const handleSubmit = (values) => {
     let newRoom = {};
     newRoom.price = Number(values.price);
     newRoom.bed_number = values.bed_number;
+    newRoom.slot = values.slot;
+    newRoom.clinic_id = clinic_id;
     // newRoom.description = values.description;
     if (mode === 'create') {
       dispatch(createRoom(newRoom));
     } else {
-      dispatch();
+      newRoom.room_id = room_id;
+      dispatch(updateRoom(newRoom));
     }
   };
 
@@ -100,10 +116,18 @@ export default function RoomForm({ mode }) {
         initialValues={{
           bed_number: '4',
           price: '100',
+          slot: '4',
         }}
         scrollToFirstError
       >
-        {/* Service Name */}
+        {/* Room ID */}
+        {mode === 'update' && (
+          <Form.Item name="room_id" label="Room ID">
+            <InputNumber disabled />
+          </Form.Item>
+        )}
+
+        {/* Bed number */}
         <Form.Item
           name="bed_number"
           label="Bed number"
@@ -111,6 +135,20 @@ export default function RoomForm({ mode }) {
             {
               required: true,
               message: 'Please input bed number!',
+            },
+          ]}
+        >
+          <InputNumber min={1} max={6} />
+        </Form.Item>
+
+        {/* Slot */}
+        <Form.Item
+          name="slot"
+          label="Slot"
+          rules={[
+            {
+              required: true,
+              message: 'Please input slot',
             },
           ]}
         >

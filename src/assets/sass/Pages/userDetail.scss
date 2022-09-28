@@ -1,6 +1,7 @@
 .modal__overlay.user-detail {
   .content {
     // Content for user detail
+    border-radius: 10px;
     .title {
       padding: $pd-1 + 1;
       text-align: center;

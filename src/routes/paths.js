@@ -25,7 +25,5 @@ export const PATH_CLINICS_DETAIL_ROOMS = 'rooms';
 export const PATH_CLINICS_DETAIL_ROOMS_CREATE = 'rooms/create';
 export const PATH_CLINICS_DETAIL_ROOMS_UPDATE = 'rooms/update/:room_id';
 export const PATH_CLINICS_DETAIL_BEDS = 'beds/:room_id';
-export const PATH_CLINICS_DETAIL_BEDS_CREATE = 'beds/:room_id/create';
-export const PATH_CLINICS_DETAIL_BEDS_UPDATE = 'beds/:room_id/update/:bed_id';
 export const PATH_CLINICS_DETAIL_SERVICES = 'services';
 export const PATH_CLINICS_DETAIL_STAFFS = 'staffs';

@@ -1,10 +1,20 @@
 .diagram-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: $mg-2;
   .diagram-content {
     min-width: 300px;
-    min-height: 300px;
     max-width: 500px;
     display: inline-block;
     padding: $pd-0;
+    position: relative;
+    .title-room {
+      position: absolute;
+      text-align: center;
+      left: 50%;
+      top: 10;
+      transform: translateX(-50%);
+    }
     .room {
       width: 100%;
       height: 100%;
@@ -30,6 +40,15 @@
           text-align: center;
           .bed-icon {
             @include styleText($color-gray-0, $fs-2, $fw-0);
+            transition: 0.25s ease;
+            cursor: pointer;
+            &.active {
+              @include styleText($color-blue-0, $fs-2, $fw-0);
+            }
+            &:hover {
+              transform: translateY(-2px);
+              @include styleText($color-blue-0, $fs-2, $fw-0);
+            }
           }
         }
       }

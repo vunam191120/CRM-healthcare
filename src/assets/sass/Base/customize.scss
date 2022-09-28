@@ -51,3 +51,85 @@
   background-color: $color-blue-0;
   border-color: $color-blue-0;
 }
+
+// Antd table
+.ant-table-thead {
+  background-color: $color-blue-0;
+}
+
+.input-detail--category,
+.input-custom-disabled,
+.input-detail {
+  &:disabled {
+    background: none;
+    border: none;
+    color: $color-black-0;
+  }
+  & > textarea:disabled {
+    background: none;
+    border: none;
+    color: $color-black-0;
+  }
+  // input-disabled at clinic bed
+}
+
+.ant-input-number-disabled {
+  background: none;
+  border: none;
+  color: $color-black-0;
+}
+
+.view-detail-service {
+  text-align: center;
+}
+
+.view-detail-serivce__icon {
+  @include styleText($color-gray-1, $fs-3, $fw-0);
+  transition: 0.25s ease;
+  &:hover {
+    @include styleText($color-blue-0, $fs-3, $fw-0);
+    transform: translateY(-2px);
+  }
+}
+
+.user-row {
+  cursor: pointer;
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}
+
+.service_row {
+  cursor: default;
+}
+
+// .ant-table-row:hover {
+//   &.custom-row {
+//     background-color: rgba($color: $color-gray-1, $alpha: 1);
+//   }
+// }
+
+thead[class*='ant-table-thead'] th {
+  background-color: rgba(86, 190, 209, 0.6);
+}
+
+.ant-input,
+.ant-input-password {
+  border-radius: 10px;
+}
+
+.ant-table-wrapper {
+  border: 1px solid $color-line-0;
+  border-radius: 10px;
+
+  .ant-table-content {
+    border-radius: 10px;
+    .ant-table-thead {
+      .ant-table-cell {
+        color: $color-white-0;
+      }
+    }
+  }
+}

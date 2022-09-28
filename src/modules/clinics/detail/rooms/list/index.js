@@ -11,6 +11,7 @@ import { ImEye } from 'react-icons/im';
 import Modal from '../../../../../components/Modal';
 import Button from '../../../../../components/Button';
 import {
+  deleteRoom,
   fetchRooms,
   selectRooms,
   selectRoomsLoading,
@@ -108,7 +109,10 @@ export default function ClinicRooms() {
     </div>
   );
 
-  const handleDeleteRoom = () => {};
+  const handleDeleteRoom = () => {
+    dispatch(deleteRoom(roomId));
+    setIsShowDelete(false);
+  };
 
   return (
     <div className="room-content-detail">
@@ -124,7 +128,7 @@ export default function ClinicRooms() {
       </div>
       <Table
         className="roomTable"
-        rowClassName="room-row"
+        rowClassName="custom-row"
         x={true}
         loading={roomsLoading}
         columns={roomsColumns}

@@ -285,6 +285,7 @@ export default function Detail() {
         <Table
           loading={serviceLoading}
           bordered
+          rowClassName="custom-row"
           pagination={{
             position: ['bottomCenter'],
           }}

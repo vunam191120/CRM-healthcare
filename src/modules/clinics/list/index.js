@@ -110,7 +110,7 @@ export default function ClinicsList() {
       />
       <Table
         // onChange={handleChange}
-        rowClassName="service-row"
+        rowClassName="custom-row"
         x={true}
         loading={clinicsLoading}
         bordered
