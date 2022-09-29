@@ -242,7 +242,10 @@ export default function ClinicServices() {
       <div className="header">
         <h4 className="title">Service Information</h4>
         <Button
-          onClick={() => setIsShowUpdate(true)}
+          onClick={() => {
+            setIsShowUpdate(true);
+            setNewServices([]);
+          }}
           className="button button--main"
           type="button"
         >

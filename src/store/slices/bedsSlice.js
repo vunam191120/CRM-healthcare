@@ -94,18 +94,18 @@ const bedsSlice = createSlice({
     },
     // Fetch Bed
     [fetchBed.pending]: (state) => {
-      state.isLoading = true;
-      state.hasError = false;
+      // state.isLoading = true;
+      // state.hasError = false;
     },
     [fetchBed.fulfilled]: (state, action) => {
       state.bedNeedUpdate = action.payload;
-      state.isLoading = false;
-      state.hasError = false;
+      // state.isLoading = false;
+      // state.hasError = false;
     },
     [fetchBed.rejected]: (state, action) => {
       message.err(action.error.message, 3);
-      state.isLoading = false;
-      state.hasError = true;
+      // state.isLoading = false;
+      // state.hasError = true;
     },
     // Create Bed
     [createBed.pending]: (state) => {

@@ -1,4 +1,4 @@
-import { Form, Table, Select, InputNumber } from 'antd';
+import { Form, Table, InputNumber, message } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -161,6 +161,12 @@ export default function ClinicBeds() {
   };
 
   const handleCreateBed = () => {
+    if (beds.length >= 4) {
+      return message.warning(
+        `Can't create more bed, the room has reached a maximum of 4 beds!`,
+        3
+      );
+    }
     const newBed = {
       room_id,
       slot: 10,
