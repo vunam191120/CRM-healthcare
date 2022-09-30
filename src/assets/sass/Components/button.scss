@@ -16,6 +16,18 @@
       color: $color-gray-1;
     }
   }
+  // Button for actions types and tags
+  &.button-edit-cell {
+    display: flex;
+    align-items: center;
+    &:last-child {
+      margin-left: $mg-4;
+    }
+    .icon {
+      font-size: $fs-0;
+      margin-right: $mg-0;
+    }
+  }
 }
 
 .button-container {
@@ -48,6 +60,9 @@
     }
     &:hover::after {
       width: 100%;
+    }
+    &.ant-typography-disabled::after {
+      width: 0;
     }
   }
   .button--view {

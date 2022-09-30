@@ -8,12 +8,17 @@ import {
   PATH_SERVICES,
   PATH_SERVICES_CREATE,
   PATH_SERVICES_UPDATE,
-  PATH_SERVICE_DETAIL,
+  PATH_SERVICES_DETAIL,
   PATH_CLINICS,
   PATH_CLINICS_CREATE,
   PATH_CLINICS_UPDATE,
   PATH_CLINICS_DETAIL,
   PATH_CATEGORIES_DETAIL,
+  PATH_ARTICLES,
+  PATH_ARTICLES_CREATE,
+  PATH_ARTICLES_UPDATE,
+  PATH_TYPES,
+  PATH_TAGS,
   PATH_CLINICS_DETAIL_APPOINTMENTS,
   PATH_CLINICS_DETAIL_CATEGORIES,
   PATH_CLINICS_DETAIL_DOCTORS,
@@ -37,6 +42,11 @@ import Services from '../pages/services';
 import CreateService from '../pages/services/create';
 import UpdateService from '../pages/services/update';
 import ServiceDetail from '../pages/services/detail';
+import Articles from '../pages/articles';
+import CreateArticle from '../pages/articles/create';
+import UpdateArticle from '../pages/articles/update';
+import Types from '../pages/articles/types';
+import Tags from '../pages/articles/tags';
 import Clinics from '../pages/clinics';
 import CreateClinic from '../pages/clinics/create';
 import UpdateClinic from '../pages/clinics/update';
@@ -56,6 +66,7 @@ import ClinicClinic from '../modules/clinics/detail/clinic';
 // import NoMatch from '../components/NoMatch';
 
 const appRoutes = [
+  // Accounts
   {
     path: PATH_ACCOUNTS,
     element: <Accounts />,
@@ -71,6 +82,7 @@ const appRoutes = [
     element: <UpdateAccount />,
     roles: ['Admin'],
   },
+  // Categories
   {
     path: PATH_CATEGORIES,
     element: <Categories />,
@@ -90,6 +102,7 @@ const appRoutes = [
     path: PATH_CATEGORIES_DETAIL,
     element: <CategoryDetail />,
   },
+  // Services
   {
     path: PATH_SERVICES,
     element: <Services />,
@@ -106,10 +119,39 @@ const appRoutes = [
     roles: ['Admin'],
   },
   {
-    path: PATH_SERVICE_DETAIL,
+    path: PATH_SERVICES_DETAIL,
     element: <ServiceDetail />,
     roles: ['Admin'],
   },
+  // Articles
+  {
+    path: PATH_ARTICLES,
+    element: <Articles />,
+    roles: ['Admin'],
+  },
+  {
+    path: PATH_ARTICLES_CREATE,
+    element: <CreateArticle />,
+    roles: ['Admin'],
+  },
+  {
+    path: PATH_ARTICLES_UPDATE,
+    element: <UpdateArticle />,
+    roles: ['Admin'],
+  },
+  // Types
+  {
+    path: PATH_TYPES,
+    element: <Types />,
+    roles: ['Admin'],
+  },
+  // Tags
+  {
+    path: PATH_TAGS,
+    element: <Tags />,
+    roles: ['Admin'],
+  },
+  // Clinic
   {
     path: PATH_CLINICS,
     element: <Clinics />,
@@ -125,6 +167,7 @@ const appRoutes = [
     element: <UpdateClinic />,
     roles: ['Admin'],
   },
+  // Clinic detail
   {
     path: PATH_CLINICS_DETAIL,
     element: <ClinicDetail />,

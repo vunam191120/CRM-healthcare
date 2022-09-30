@@ -1,7 +1,11 @@
 // import GoThreeBars from 'react-icons/go';
 import { AiOutlineSetting, AiOutlineMedicineBox } from 'react-icons/ai';
 import { BiUser, BiClinic } from 'react-icons/bi';
-import { RiArrowDownSFill, RiArrowUpSFill } from 'react-icons/ri';
+import {
+  RiArrowDownSFill,
+  RiArrowUpSFill,
+  RiArticleLine,
+} from 'react-icons/ri';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import {
   MdOutlineCategory,
@@ -64,6 +68,11 @@ export const SidebarData = [
   //     },
   //   ],
   // },
+  {
+    title: 'Articles',
+    path: '/articles',
+    icon: <RiArticleLine />,
+  },
   {
     title: 'Setting',
     path: '/setting',

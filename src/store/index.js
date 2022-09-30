@@ -1,9 +1,12 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import articlesSlice from './slices/articlesSlice';
 import bedsSlice from './slices/bedsSlice';
 import categoriesSlice from './slices/categoriesSlice';
 import clinicsSlice from './slices/clinicsSlice';
 import roomsSlice from './slices/roomsSlice';
 import servicesSlice from './slices/servicesSlice';
+import tagsSlice from './slices/tagsSlice';
+import typesSlice from './slices/typesSlice';
 import usersReducer from './slices/usersSlice';
 
 export default configureStore({
@@ -14,6 +17,9 @@ export default configureStore({
     clinics: clinicsSlice,
     rooms: roomsSlice,
     beds: bedsSlice,
+    articles: articlesSlice,
+    tags: tagsSlice,
+    types: typesSlice,
   },
   middleware: () =>
     getDefaultMiddleware({
