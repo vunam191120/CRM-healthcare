@@ -79,7 +79,7 @@ export const updateCategoriesStatus = createAsyncThunk(
   'clinicsSlice/updateCategoriesStatus',
   async (data) => {
     try {
-      const result = await clinicAPI.updateCategories(data);
+      await clinicAPI.updateCategories(data);
       return data;
     } catch (err) {
       return Promise.reject(err.message);
@@ -91,7 +91,7 @@ export const updateServicesStatus = createAsyncThunk(
   'clinicsSlice/updateServicesStatus',
   async (data) => {
     try {
-      const result = await clinicAPI.updateServices(data);
+      await clinicAPI.updateServices(data);
       return data;
     } catch (err) {
       return Promise.reject(err.message);

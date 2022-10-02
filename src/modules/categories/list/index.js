@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Table, PageHeader } from 'antd';
 import { Link } from 'react-router-dom';
 import { BiCategoryAlt, BiPencil } from 'react-icons/bi';
-import { FiTrash2 } from 'react-icons/fi';
-import { IoIosCloseCircleOutline } from 'react-icons/io';
-import { IoClose } from 'react-icons/io5';
 import { ImEye } from 'react-icons/im';
 
-import Button from '../../../components/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  deleteCategory,
   fetchCategories,
   selectCategories,
   selectCategoriesLoading,
 } from '../../../store/slices/categoriesSlice';
-import Modal from '../../../components/Modal';
 import {
   fetchServices,
   selectServices,
@@ -24,8 +18,6 @@ import {
 const { Column } = Table;
 
 export default function CategoriesList() {
-  const [isShowDelete, setIsShowDelete] = useState(false);
-  const [categoryId, setCategoryId] = useState();
   const categories = useSelector(selectCategories);
   const services = useSelector(selectServices);
   const categoriesLoading = useSelector(selectCategoriesLoading);
@@ -97,42 +89,10 @@ export default function CategoriesList() {
             <BiPencil />
             <span>Update</span>
           </Link>
-          {/* <Link
-            to=""
-            className="button button--delete"
-            onClick={() => {
-              setIsShowDelete(true);
-              setCategoryId(record.category_id);
-            }}
-          >
-            <FiTrash2 />
-            <span>Delete</span>
-          </Link> */}
         </div>
       ),
     },
   ];
-
-  const renderBody = () => (
-    <div className="content content--confirm">
-      <div className="close-btn" onClick={() => setIsShowDelete(false)}>
-        <IoClose className="close-icon" />
-      </div>
-      <IoIosCloseCircleOutline className="icon-title icon-title--delete" />
-      <h3 className="message">Are you sure to delete this category?</h3>
-      <div className="btn-container">
-        <Button
-          className="button button--light"
-          onClick={() => setIsShowDelete(false)}
-        >
-          Cancel
-        </Button>
-        <Button className="button button--main" onClick={handleDeleteCategory}>
-          Delete
-        </Button>
-      </div>
-    </div>
-  );
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -141,11 +101,6 @@ export default function CategoriesList() {
   useEffect(() => {
     dispatch(fetchServices());
   }, [dispatch]);
-
-  const handleDeleteCategory = () => {
-    dispatch(deleteCategory(categoryId));
-    setIsShowDelete(false);
-  };
 
   return (
     <>
@@ -164,7 +119,7 @@ export default function CategoriesList() {
         x={true}
         loading={categoriesLoading}
         columns={categoriesColumns}
-        // bordered
+        //
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],
@@ -179,7 +134,6 @@ export default function CategoriesList() {
           expandedRowRender: (record) => {
             return (
               <Table
-                bordered
                 pagination={false}
                 rowKey={(record) =>
                   `${record.service_id} ${record.service_name}`
@@ -196,12 +150,6 @@ export default function CategoriesList() {
       >
         <Column title={categoriesColumns.title} key={categoriesColumns.key} />
       </Table>
-      <Modal
-        className={`${isShowDelete ? 'active' : ''}`}
-        onClickClose={() => setIsShowDelete(false)}
-        isOpen={isShowDelete}
-        renderBody={renderBody}
-      />
     </>
   );
 }

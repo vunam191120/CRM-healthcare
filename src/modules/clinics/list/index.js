@@ -113,7 +113,6 @@ export default function ClinicsList() {
         rowClassName="custom-row"
         x={true}
         loading={clinicsLoading}
-        bordered
         columns={clinicCloumns}
         scroll={{ x: 300 }}
         pagination={{

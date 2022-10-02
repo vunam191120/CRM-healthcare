@@ -112,11 +112,12 @@ export default function ClinicCategories() {
           {/* Switch */}
           {allCategories.map((cate, index) => {
             cate = { ...cate, status: false };
-            const result = categories.find((item) => {
+            categories.find((item) => {
               if (item.category_id === cate.category_id) {
                 cate = { ...cate, status: item.status };
                 return item;
               }
+              return false;
             });
             return (
               <Form.Item key={index} name="status" valuePropName="checked">
@@ -218,7 +219,7 @@ export default function ClinicCategories() {
         x={true}
         loading={clinicLoading}
         columns={categoriesColumns}
-        // bordered
+        //
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],

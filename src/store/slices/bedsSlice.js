@@ -42,7 +42,7 @@ export const updateBed = createAsyncThunk(
   'bedsSlice/updateBed',
   async (bed) => {
     try {
-      const result = await bedAPI.update(bed);
+      await bedAPI.update(bed);
       return bed;
     } catch (err) {
       return Promise.reject(err.message);

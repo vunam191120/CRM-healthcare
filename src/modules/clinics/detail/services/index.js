@@ -74,6 +74,7 @@ export default function ClinicServices() {
     if (result) {
       return service;
     }
+    return false;
   });
 
   useEffect(() => {
@@ -213,7 +214,9 @@ export default function ClinicServices() {
       services.find((item) => {
         if (item.service_id === service.service_id) {
           service = { ...service, status: item.status };
+          return item;
         }
+        return false;
       });
 
       return (
@@ -257,7 +260,7 @@ export default function ClinicServices() {
         x={true}
         loading={clinicLoading}
         columns={categoriesColumns}
-        // bordered
+        //
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],

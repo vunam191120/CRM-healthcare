@@ -1,12 +1,7 @@
 // import GoThreeBars from 'react-icons/go';
-import { AiOutlineSetting, AiOutlineMedicineBox } from 'react-icons/ai';
+import { AiOutlineSetting } from 'react-icons/ai';
 import { BiUser, BiClinic } from 'react-icons/bi';
-import {
-  RiArrowDownSFill,
-  RiArrowUpSFill,
-  RiArticleLine,
-} from 'react-icons/ri';
-import { HiOutlineDocumentText } from 'react-icons/hi';
+import { RiArticleLine } from 'react-icons/ri';
 import {
   MdOutlineCategory,
   MdOutlineDashboard,

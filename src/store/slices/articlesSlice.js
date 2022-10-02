@@ -54,7 +54,7 @@ export const updateArticle = createAsyncThunk(
   'articlesSlice/updateArticle',
   async (article) => {
     try {
-      const result = await articleAPI.update(article);
+      await articleAPI.update(article);
       return article;
     } catch (err) {
       return Promise.reject(err.message);

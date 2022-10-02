@@ -1,0 +1,168 @@
+.article-input-container {
+  .articleForm {
+    .article-input-group {
+      border: 1px solid $color-line-0;
+      border-radius: $border-radius-2;
+      .title {
+        padding: $pd-0;
+        margin-bottom: 0;
+        position: relative;
+        @include styleText($color-brown-1, $fs-3, $fw-1);
+        &:after {
+          content: '';
+          height: 1px;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 100%;
+          background-color: $color-line-0;
+          display: block;
+        }
+      }
+      .input {
+        margin-top: 1px;
+        border: none;
+        border-radius: $border-radius-2;
+        padding-top: $pd-0;
+        padding-bottom: $pd-3;
+        @include styleText($color-black-0, $fs-0, $fw-0);
+        &:focus {
+          box-shadow: none;
+        }
+        &.ant-input-textarea {
+          padding-bottom: 0;
+        }
+      }
+      .ql-toolbar.ql-snow {
+        border: none;
+        border-top: 1px solid $color-line-0;
+        border-bottom: 1px solid $color-line-0;
+      }
+      .ql-container.ql-snow {
+        border: none;
+        min-height: 200px;
+        width: 100%;
+        max-height: 600px;
+        overflow: auto;
+        .ql-editor.ql-blank {
+          height: 100%;
+          position: absolute;
+          width: 100%;
+        }
+      }
+      .ant-input-textarea {
+        .ant-input,
+        &:focus {
+          box-shadow: none;
+          border: none;
+        }
+      }
+      .ant-select:not(.ant-select-customize-input),
+      .ant-select-selector,
+      .ant-select-selector:focus {
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid $color-line-0;
+        border-bottom: 1px solid $color-line-0;
+      }
+    }
+    .left {
+      padding-right: $pd-3;
+    }
+    .right {
+      .create-tag-btn {
+        margin: $mg-4 0;
+        display: flex;
+        align-items: center;
+        padding-left: $pd-0;
+        cursor: pointer;
+        transition: 0.25s ease;
+        span {
+          margin-left: $mg-0;
+        }
+        &:hover {
+          transform: translateY(-2px);
+        }
+      }
+      .create-tag-container {
+        // display: none;
+        &.active {
+          display: block;
+        }
+        .create-tag-content {
+          border-top: 1px solid $color-line-0;
+          padding: $pd-0;
+          background-color: $color-gray-3;
+          border-bottom-left-radius: $border-radius-2;
+          border-bottom-right-radius: $border-radius-2;
+          .input {
+            border: 1px solid $color-line-0;
+            padding: $pd-2 $pd-0;
+          }
+          .ant-form-item-control {
+            margin-bottom: $mg-0;
+          }
+          .button-container {
+            justify-content: space-evenly;
+            margin: $mg-0 0;
+            .button--main {
+              .spinner {
+                margin: 0 auto;
+                width: 24px;
+                height: 24px;
+                border-width: 3px;
+              }
+            }
+            .button:last-child {
+              margin: 0;
+            }
+          }
+        }
+      }
+      .note {
+        padding-left: $pd-0;
+        font-style: italic;
+        @include styleText($color-gray-0, $fs-1, $fw-0);
+      }
+      .info-container {
+        padding: $pd-0;
+        .item {
+          display: flex;
+          align-items: center;
+          .icon {
+            margin-right: $mg-0;
+          }
+          .text {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+            .edit-btn {
+              transition: 0.25s ease;
+              color: $color-link-0;
+              margin-left: $mg-0;
+              cursor: pointer;
+              &:hover {
+                color: $color-blue-0;
+              }
+            }
+          }
+        }
+      }
+      .submit-container {
+        border-bottom-left-radius: $border-radius-2;
+        border-bottom-right-radius: $border-radius-2;
+        .submit-content {
+          padding: $pd-0;
+          border-top: 1px solid $color-line-0;
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+    .title-upload,
+    .title-preview {
+      padding-left: $pd-0;
+      @include styleText($color-brown-1, $fs-3, $fw-1);
+    }
+  }
+}

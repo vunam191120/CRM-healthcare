@@ -19,23 +19,16 @@ axiosClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
-      alert('Login session has expired!');
-      localStorage.removeItem('currentUser');
-      localStorage.removeItem('accessToken');
-      window.location.href = '/login';
+    switch (error.response.status) {
+      case 401:
+        alert('Login session has expired, you will be redirected to login!');
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('accessToken');
+        window.location.href = '/login';
+        break;
+      default:
+        return error;
     }
-    return error;
-    // switch (error.response.status) {
-    //   case 401:
-    //     alert('Login session has expired!');
-    //     localStorage.removeItem('currentUser');
-    //     localStorage.removeItem('accessToken');
-    //     window.location.href = '/login';
-    //     break;
-    //   default:
-    //     return error;
-    // }
   }
 );
 

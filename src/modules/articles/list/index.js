@@ -150,7 +150,6 @@ export default function ArticlesList() {
         rowClassName="custom-row"
         x={true}
         loading={aritclesLoading}
-        bordered
         columns={articlesColumns}
         scroll={{ x: 300 }}
         pagination={{

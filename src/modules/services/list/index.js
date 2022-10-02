@@ -2,7 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Table, PageHeader, Input, Space, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { BiCategoryAlt, BiPencil } from 'react-icons/bi';
-import { HiSearch } from 'react-icons/hi';
+import {
+  SearchOutlined,
+  FilterOutlined,
+  CaretUpOutlined,
+  CaretDownOutlined,
+} from '@ant-design/icons';
 import { FiTrash2 } from 'react-icons/fi';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
@@ -108,9 +113,9 @@ export default function ServicesList() {
       </div>
     ),
     filterIcon: (filtered) => (
-      <HiSearch
+      <SearchOutlined
         style={{
-          color: filtered ? '#1890ff' : undefined,
+          color: filtered ? '#1890ff' : 'white',
         }}
       />
     ),
@@ -150,7 +155,26 @@ export default function ServicesList() {
       render: (text, record, index) => index + 1,
     },
     {
-      title: 'Name',
+      title: 'Service Name',
+      // title: ({ sortColumns }) => {
+      //   const sortedColumn = sortColumns?.find(
+      //     ({ column }) => column.key === 'service name'
+      //   );
+      //   return (
+      //     <div>
+      //       <span>Service Name</span>
+      //       {sortedColumn ? (
+      //         sortedColumn.order === 'ascend' ? (
+      //           <CaretUpOutlined
+      //             style={{ color: 'white', marginLeft: 'auto' }}
+      //           />
+      //         ) : (
+      //           <CaretDownOutlined style={{ color: 'white' }} />
+      //         )
+      //       ) : null}
+      //     </div>
+      //   );
+      // },
       dataIndex: 'service_name',
       key: 'service name',
       ...getColumnSearchProps('service_name'),
@@ -183,6 +207,13 @@ export default function ServicesList() {
       ],
       onFilter: (value, record) =>
         record.category.category_name.includes(value),
+      filterIcon: (filtered) => (
+        <FilterOutlined
+          style={{
+            color: filtered ? '#1890ff' : 'white',
+          }}
+        />
+      ),
     },
     {
       title: 'Actions',
@@ -270,7 +301,6 @@ export default function ServicesList() {
         rowClassName="custom-row"
         x={true}
         loading={serviceLoading}
-        bordered
         columns={serviceColumns}
         scroll={{ x: 300 }}
         pagination={{

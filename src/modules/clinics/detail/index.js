@@ -10,7 +10,6 @@ import {
   MdMeetingRoom,
   MdOutlineMedicalServices,
 } from 'react-icons/md';
-import { TbBed } from 'react-icons/tb';
 import { FaUserNurse } from 'react-icons/fa';
 import { BsCalendar2Date, BsPeopleFill } from 'react-icons/bs';
 import { fetchClinic } from '../../../store/slices/clinicsSlice';

@@ -42,7 +42,7 @@ export const updateType = createAsyncThunk(
   'typesSlice/updateType',
   async (type) => {
     try {
-      const result = await typeAPI.update(type);
+      await typeAPI.update(type);
       return type;
     } catch (err) {
       return Promise.reject(err.message);

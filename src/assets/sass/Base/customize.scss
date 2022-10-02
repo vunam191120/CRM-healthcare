@@ -1,4 +1,4 @@
-// Owl Carousel
+// ------------ Owl Carousel -------------
 .owl-carousel {
   .owl-nav {
     button {
@@ -24,7 +24,7 @@
   }
 }
 
-// Antd
+// --------------------- Antd ----------------------
 // .ant-form-item-label {
 //   text-align-last: left;
 // }
@@ -43,7 +43,6 @@
 }
 
 .login-content .ant-input-affix-wrapper > input.ant-input:focus {
-  // box-shadow: 0 0 0 30px white !important
   box-shadow: 0 0 0 30px white inset !important;
 }
 
@@ -70,9 +69,9 @@
     border: none;
     color: $color-black-0;
   }
-  // input-disabled at clinic bed
 }
 
+// input-disabled at clinic bed
 .ant-input-number-disabled {
   background: none;
   border: none;
@@ -105,12 +104,6 @@
   cursor: default;
 }
 
-// .ant-table-row:hover {
-//   &.custom-row {
-//     background-color: rgba($color: $color-gray-1, $alpha: 1);
-//   }
-// }
-
 thead[class*='ant-table-thead'] th {
   background-color: rgba(86, 190, 209, 0.6);
 }
@@ -132,4 +125,47 @@ thead[class*='ant-table-thead'] th {
       }
     }
   }
+}
+
+// hide sorter icon in table, apply when use custom sort icon in table
+// .ant-table-column-sorter {
+//   display: none;
+// }
+
+// ---------------- React Quill -------------
+/* Set content for font-families */
+.ql-font-arial,
+.ql-font span[data-value='arial']::before {
+  font-family: Arial, sans-serif;
+}
+.ql-font-comic-sans,
+.ql-font span[data-value='comic-sans']::before {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+.ql-font-courier-new,
+.ql-font span[data-value='courier-new']::before {
+  font-family: 'Courier New';
+}
+.ql-font-georgia,
+.ql-font span[data-value='georgia']::before {
+  font-family: Georgia, serif;
+}
+.ql-font-helvetica,
+.ql-font span[data-value='helvetica']::before {
+  font-family: Helvetica, sans-serif;
+}
+.ql-font-lucida,
+.ql-font span[data-value='lucida']::before {
+  font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+}
+
+// --------------- Quill Editor ---------------
+.ql-toolbar.ql-snow {
+  border-top-left-radius: $border-radius-1;
+  border-top-right-radius: $border-radius-1;
+}
+
+.ql-container.ql-snow {
+  border-bottom-left-radius: $border-radius-1;
+  border-bottom-right-radius: $border-radius-1;
 }

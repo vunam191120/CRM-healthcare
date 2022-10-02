@@ -132,7 +132,6 @@ export default function ClinicRooms() {
         x={true}
         loading={roomsLoading}
         columns={roomsColumns}
-        bordered
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],

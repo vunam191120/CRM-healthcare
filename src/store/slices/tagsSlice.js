@@ -39,7 +39,7 @@ export const updateTag = createAsyncThunk(
   'tagsSlice/updateTag',
   async (tag) => {
     try {
-      const result = await tagAPI.update(tag);
+      await tagAPI.update(tag);
       return tag;
     } catch (err) {
       return Promise.reject(err.message);
