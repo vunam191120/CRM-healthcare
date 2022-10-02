@@ -77,6 +77,19 @@ export const deleteArticle = createAsyncThunk(
     }
   }
 );
+
+export const uploadDocument = createAsyncThunk(
+  'articlesSlice/uploadDocuments',
+  async (documents) => {
+    try {
+      const result = await articleAPI.uploadDocument(documents);
+      console.log('Result at slice: ', result);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+);
+
 // Reducer
 
 const articlesSlice = createSlice({
@@ -85,6 +98,7 @@ const articlesSlice = createSlice({
     articles: [],
     articleNeedUpdate: {},
     selectAuthor: {},
+    documentsUploaded: [],
     isLoading: false,
     hasError: false,
   },
@@ -198,6 +212,24 @@ const articlesSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Upload document
+    [uploadDocument.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [uploadDocument.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 0.5)
+        .then(() => message.success('Uploaded documents successfully!', 3));
+      state.documentsUploaded = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [uploadDocument.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
   },
 });
 
@@ -210,5 +242,8 @@ export const selectArticlesLoading = (state) => state.articles.isLoading;
 export const selectArticlesError = (state) => state.articles.hasError;
 
 export const selectArticleNeedUpdate = (state) => state.articles.bedNeedUpdate;
+
+export const selectDocumentsUploaded = (state) =>
+  state.articles.documentsUploaded;
 
 export default articlesSlice.reducer;

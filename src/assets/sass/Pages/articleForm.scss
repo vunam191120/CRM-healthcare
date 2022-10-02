@@ -68,6 +68,15 @@
     }
     .left {
       padding-right: $pd-3;
+      .button-upload {
+        margin-left: 0;
+        .spinner {
+          margin: 0 auto;
+          width: 24px;
+          height: 24px;
+          border-width: 3px;
+        }
+      }
     }
     .right {
       .create-tag-btn {

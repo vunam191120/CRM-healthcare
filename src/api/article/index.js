@@ -25,6 +25,10 @@ const articleAPI = {
     const url = `/article/${article_id}`;
     return axiosClient.delete(url);
   },
+  uploadDocument(documents) {
+    const url = `/article/upload`;
+    return axiosClient.post(url, documents);
+  },
 };
 
 export default articleAPI;

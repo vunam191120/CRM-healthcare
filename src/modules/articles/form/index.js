@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { SiStatuspal } from 'react-icons/si';
 import { FaRegEye } from 'react-icons/fa';
 import { AiFillTag } from 'react-icons/ai';
+import { IoClose } from 'react-icons/io5';
 
 import QuillEditor from '../../../components/QuillEditor/QuillEditor';
 import {
@@ -26,11 +27,14 @@ import {
 } from '../../../store/slices/tagsSlice';
 import { fetchTypes, selectTypes } from '../../../store/slices/typesSlice';
 import {
-  selectArticleNeedUpdate,
+  // selectArticleNeedUpdate,
+  // selectDocumentsUploaded,
   selectArticlesLoading,
+  uploadDocument,
 } from '../../../store/slices/articlesSlice';
 import Button from '../../../components/Button';
 import Spinner from '../../../components/Spinner';
+import Modal from '../../../components/Modal';
 
 const { Option } = Select;
 
@@ -59,7 +63,6 @@ export default function ArticleForm({ mode }) {
   const [content, setContent] = useState('');
   const tags = useSelector(selectTags);
   const types = useSelector(selectTypes);
-  const [oldImage, setOldImage] = useState(false);
   const [preview, setPreview] = useState({
     isOpen: false,
     title: '',
@@ -68,7 +71,8 @@ export default function ArticleForm({ mode }) {
   const [documents, setDocuments] = useState([]);
   const articleLoading = useSelector(selectArticlesLoading);
   const tagsLoading = useSelector(selectTagsLoading);
-  const articleNeedUpdate = useSelector(selectArticleNeedUpdate);
+  // const articleNeedUpdate = useSelector(selectArticleNeedUpdate);
+  // const documentsUploaded = useSelector(selectDocumentsUploaded);
 
   useEffect(() => {
     dispatch(fetchTags());
@@ -82,8 +86,6 @@ export default function ArticleForm({ mode }) {
     return setContent;
   }, []);
 
-  const handleSubmit = () => {};
-
   const handleCreateTag = () => {
     const { tag_name } = form.getFieldsValue();
     const newTag = {
@@ -96,6 +98,29 @@ export default function ArticleForm({ mode }) {
     });
     dispatch(createTag(newTag));
   };
+
+  const handleUploadDocuments = () => {
+    const formData = new FormData();
+    for (let file of documents) {
+      formData.append('images', file);
+    }
+    dispatch(uploadDocument(formData));
+  };
+
+  const handlePreview = (file) => {
+    setPreview({
+      ...preview,
+      src: file.url,
+      title: file.title,
+      isOpen: true,
+    });
+  };
+
+  const handleClose = () => {
+    setPreview({ ...preview, isOpen: false });
+  };
+
+  const handleSubmit = () => {};
 
   return (
     <>
@@ -173,40 +198,26 @@ export default function ArticleForm({ mode }) {
                       <Upload
                         multiple
                         onRemove={(file) => {
-                          if (mode === 'create') {
-                            const index = documents.indexOf(file);
-                            const newDocuments = documents.slice();
-                            newDocuments.splice(index, 1);
-                            setDocuments(newDocuments);
-                          } else {
-                            // dispatch(deleteImage(file));
-                          }
+                          const index = documents.indexOf(file);
+                          const newDocuments = documents.slice();
+                          newDocuments.splice(index, 1);
+                          setDocuments(newDocuments);
                         }}
                         beforeUpload={(file) => {
                           // Fake sending document to action props succesfully
-                          if (mode === 'update') {
-                            setOldImage(true);
-                          }
                           file.status = 'done';
                           const reader = new FileReader();
                           reader.readAsDataURL(file);
                           reader.onload = (event) => {
+                            file.title = file.name;
                             file.url = event.target.result;
-                            // if (mode === 'update') {
-                            //   setAvatar([file]);
-                            //   dispatch(changeUserNeedUpdateAvatar(file));
-                            // }
                             setDocuments((oldFile) => [...oldFile, file]);
                           };
                           return false;
                         }}
                         listType="picture-card"
-                        fileList={
-                          mode === 'update'
-                            ? articleNeedUpdate.documents
-                            : documents
-                        }
-                        // onPreview={handlePreview}
+                        fileList={documents}
+                        onPreview={handlePreview}
                       >
                         <div>
                           <PlusOutlined />
@@ -221,6 +232,19 @@ export default function ArticleForm({ mode }) {
                       </Upload>
                     </Form.Item>
                   </Form.Item>
+
+                  {/* Upload documents button */}
+                  {documents.length > 0 && (
+                    <Form.Item>
+                      <Button
+                        className="button button--main button-upload"
+                        type="button"
+                        onClick={handleUploadDocuments}
+                      >
+                        {articleLoading ? <Spinner /> : 'Upload documents'}
+                      </Button>
+                    </Form.Item>
+                  )}
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                   {/* Previews */}
@@ -403,6 +427,20 @@ export default function ArticleForm({ mode }) {
           </Row>
         </Form>
       </div>
+      <Modal
+        className={preview.isOpen && 'active'}
+        isOpen={preview.isOpen}
+        renderBody={() => (
+          <div className="content content-preview">
+            <div className="close-btn" onClick={handleClose}>
+              <IoClose className="close-icon" />
+            </div>
+            <h3 className="title">{preview.title}</h3>
+            <img className="modal-image" src={preview.src} alt="Preivew img" />
+          </div>
+        )}
+        onClose={handleClose}
+      ></Modal>
     </>
   );
 }
