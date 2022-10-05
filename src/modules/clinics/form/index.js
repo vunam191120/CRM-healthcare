@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
+import { IoClose } from 'react-icons/io5';
 import { Form, Input, PageHeader, Select, Upload } from 'antd';
 
 import Spinner from '../../../components/Spinner';
 import Button from '../../../components/Button';
+import Modal from '../../../components/Modal';
 import {
   createClinic,
   fetchClinic,
@@ -75,6 +77,24 @@ export default function ClinicsForm({ mode, customPageHeader }) {
   const isLoading = useSelector(selectClinicsLoading);
   const clinicNeedUpdate = useSelector(selectClinicNeedUpdate);
   const usersAdmin = useSelector(selectUsersAdmin);
+  const [preview, setPreview] = useState({
+    isOpen: false,
+    title: '',
+    src: '',
+  });
+
+  const handleClose = () => {
+    setPreview({ ...preview, isOpen: false });
+  };
+
+  const handlePreview = (file) => {
+    setPreview({
+      ...preview,
+      src: file.url,
+      title: file.title,
+      isOpen: true,
+    });
+  };
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -323,7 +343,7 @@ export default function ClinicsForm({ mode, customPageHeader }) {
             multiple
             listType="picture-card"
             fileList={mode === 'update' ? clinicNeedUpdate.images : fileList}
-            // onPreview={handlePreview}
+            onPreview={handlePreview}
           >
             <div>
               <PlusOutlined />
@@ -349,6 +369,20 @@ export default function ClinicsForm({ mode, customPageHeader }) {
           </Button>
         </Form.Item>
       </Form>
+      <Modal
+        className={preview.isOpen && 'active'}
+        isOpen={preview.isOpen}
+        renderBody={() => (
+          <div className="content content-preview">
+            <div className="close-btn" onClick={handleClose}>
+              <IoClose className="close-icon" />
+            </div>
+            <h3 className="title">{preview.title}</h3>
+            <img className="modal-image" src={preview.src} alt="Preivew img" />
+          </div>
+        )}
+        onClose={handleClose}
+      />
     </>
   );
 }

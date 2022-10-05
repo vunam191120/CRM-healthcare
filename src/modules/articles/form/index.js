@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PlusOutlined } from '@ant-design/icons';
-import { json, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { SiStatuspal } from 'react-icons/si';
 import { FaRegEye } from 'react-icons/fa';
 import { AiFillTag } from 'react-icons/ai';
@@ -172,6 +172,12 @@ export default function ArticleForm({ mode }) {
     formData.append('mega_title', values.title);
     formData.append('content', writingArticle.content);
     formData.append('summary', values.summary);
+    // for (let tag of values.tags) {
+    //   formData.append('tags', tag);
+    // }
+    // for (let type of values.types) {
+    //   formData.append('types', type);
+    // }
     formData.append('tags', values.tags);
     formData.append('types', values.types);
     formData.append('article', writingArticle.thumbnail[0]);
@@ -179,7 +185,7 @@ export default function ArticleForm({ mode }) {
       'author_id',
       JSON.parse(localStorage.getItem('currentUser')).user_id
     );
-    dispatch(createArticle(formData));
+    // dispatch(createArticle(formData));
     // dispatch(clearWritingArticle());
   };
 
@@ -369,7 +375,7 @@ export default function ArticleForm({ mode }) {
                       {tags.map((tag, index) => (
                         <Option
                           key={index}
-                          value={tag.tag_name}
+                          value={tag.tag_id}
                           label={tag.tag_name}
                         >
                           <div className="demo-option-label-item">
@@ -455,7 +461,7 @@ export default function ArticleForm({ mode }) {
                       {types.map((type, index) => (
                         <Option
                           key={index}
-                          value={type.type_name}
+                          value={type.type_id}
                           label={type.type_name}
                         >
                           <div className="demo-option-label-item">
