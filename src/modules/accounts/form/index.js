@@ -164,7 +164,6 @@ export default function AccountForm({ mode }) {
     formData.append('date_of_birth', values.date_of_birth.format('DD-MM-YYYY'));
     formData.append('profile_status', values.profile_status);
     formData.append('old_image', oldImage);
-    // formData.append('experience', values.prefix + values.experience);
     if (mode === 'create') {
       formData.append('avatar', avatar[0]);
       formData.append('role_id', values.role);

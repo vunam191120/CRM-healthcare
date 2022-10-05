@@ -96,7 +96,6 @@ const articlesSlice = createSlice({
   name: 'articlesSlice',
   initialState: {
     articles: [],
-    articleNeedUpdate: {},
     selectAuthor: {},
     writingArticle: {
       title: '',
@@ -183,7 +182,15 @@ const articlesSlice = createSlice({
       state.hasError = false;
     },
     [fetchArticle.fulfilled]: (state, action) => {
-      state.articleNeedUpdate = action.payload;
+      action.payload.image = [
+        {
+          uid: `${action.payload.image} ${action.payload.article_id}`,
+          status: 'done',
+          url: action.payload.image,
+          title: action.payload.image,
+        },
+      ];
+      state.writingArticle = { ...state.writingArticle, ...action.payload };
       state.isLoading = false;
       state.hasError = false;
     },
@@ -240,10 +247,6 @@ const articlesSlice = createSlice({
         }
         return article;
       });
-      state.articleNeedUpdate = {
-        ...state.articleNeedUpdate,
-        ...action.payload,
-      };
       state.isLoading = false;
       state.hasError = false;
     },
@@ -261,7 +264,9 @@ const articlesSlice = createSlice({
       message
         .loading('Action in progress..', 0.5)
         .then(() => message.success('Deleted article successfully!', 3));
-      state.beds = state.beds.filter((bed) => bed.bed_id !== action.payload);
+      state.articles = state.articles.filter(
+        (article) => article.article_id !== action.payload
+      );
       state.isLoading = false;
       state.hasError = false;
     },
@@ -311,8 +316,6 @@ export const selectArticles = (state) => state.articles.articles;
 export const selectArticlesLoading = (state) => state.articles.isLoading;
 
 export const selectArticlesError = (state) => state.articles.hasError;
-
-export const selectArticleNeedUpdate = (state) => state.articles.bedNeedUpdate;
 
 export const selectWritingArticle = (state) => state.articles.writingArticle;
 

@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PlusOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SiStatuspal } from 'react-icons/si';
 import { FaRegEye } from 'react-icons/fa';
 import { AiFillTag } from 'react-icons/ai';
@@ -45,6 +45,7 @@ import {
   selectWritingArticle,
   resetUploadingFileWritingAritcle,
   createArticle,
+  fetchArticle,
 } from '../../../store/slices/articlesSlice';
 import Button from '../../../components/Button';
 import Spinner from '../../../components/Spinner';
@@ -73,6 +74,7 @@ export default function ArticleForm({ mode }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const { article_id } = useParams();
   const [isCreateTag, setIsCreateTag] = useState(false);
   const tags = useSelector(selectTags);
   const types = useSelector(selectTypes);
@@ -84,8 +86,7 @@ export default function ArticleForm({ mode }) {
     title: '',
     src: '',
   });
-  const [isPreviewArticle, setIsPreviewArticle] = useState(false);
-  // const articleNeedUpdate = useSelector(selectArticleNeedUpdate);
+  // const [isPreviewArticle, setIsPreviewArticle] = useState(false);
 
   const quillEditor = useMemo(
     () => (
@@ -104,6 +105,12 @@ export default function ArticleForm({ mode }) {
   );
 
   useEffect(() => {
+    if (mode === 'update') {
+      dispatch(fetchArticle(article_id));
+    }
+  }, [mode, dispatch, article_id]);
+
+  useEffect(() => {
     dispatch(fetchTags());
   }, [dispatch]);
 
@@ -112,21 +119,31 @@ export default function ArticleForm({ mode }) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (mode === 'create') {
-      form.setFieldsValue({
-        title: writingArticle.title,
-        content: writingArticle.content,
-        summary: writingArticle.summary,
-        tags: writingArticle.tags,
-        types: writingArticle.types,
-      });
+    // Clean writing article whenever the mode update end
+    if (mode === 'update') {
+      return () => {
+        dispatch(clearWritingArticle());
+      };
     }
+  }, [dispatch, mode]);
+
+  // Fill in the data in the corresponding form according to the mode
+  useEffect(() => {
+    form.setFieldsValue({
+      title: writingArticle.title,
+      summary: writingArticle.summary,
+      tags: writingArticle.tags,
+      types: writingArticle.types,
+      thumbnail: writingArticle.image
+        ? writingArticle.image
+        : writingArticle.thumbnail,
+    });
   }, [
     form,
-    mode,
-    writingArticle.content,
+    writingArticle.image,
     writingArticle.summary,
     writingArticle.tags,
+    writingArticle.thumbnail,
     writingArticle.title,
     writingArticle.types,
   ]);
@@ -169,24 +186,22 @@ export default function ArticleForm({ mode }) {
   const handleSubmit = (values) => {
     const formData = new FormData();
     formData.append('title', values.title);
-    formData.append('mega_title', values.title);
+    formData.append('meta_title', values.title);
     formData.append('content', writingArticle.content);
     formData.append('summary', values.summary);
-    // for (let tag of values.tags) {
-    //   formData.append('tags', tag);
-    // }
-    // for (let type of values.types) {
-    //   formData.append('types', type);
-    // }
-    formData.append('tags', values.tags);
-    formData.append('types', values.types);
+    for (let tag of values.tags) {
+      formData.append('tags', tag);
+    }
+    for (let type of values.types) {
+      formData.append('types', type);
+    }
     formData.append('article', writingArticle.thumbnail[0]);
     formData.append(
       'author_id',
       JSON.parse(localStorage.getItem('currentUser')).user_id
     );
-    // dispatch(createArticle(formData));
-    // dispatch(clearWritingArticle());
+    dispatch(createArticle(formData));
+    dispatch(clearWritingArticle());
   };
 
   return (
@@ -482,41 +497,47 @@ export default function ArticleForm({ mode }) {
                   valuePropName="fileList"
                 >
                   <h3 className="title">Thumbnail</h3>
-                  <Upload
-                    className="upload-thumbnail-container"
-                    onRemove={() => {
-                      dispatch(deleteThumbnailWritingArticle());
-                    }}
-                    beforeUpload={(file) => {
-                      // Fake sending document to action props succesfully
-                      // if (mode === 'update') {
-                      //   setOldImage(true);
-                      // }
-                      file.status = 'done';
-                      const reader = new FileReader();
-                      reader.readAsDataURL(file);
-                      reader.onload = (event) => {
-                        file.url = event.target.result;
-                        file.title = file.name;
-                        dispatch(updateThumbnailWritingArticle(file));
-                      };
-                      return false;
-                    }}
-                    listType="picture-card"
-                    fileList={writingArticle.thumbnail}
-                    onPreview={handlePreview}
-                  >
-                    <div>
-                      <PlusOutlined />
-                      <div
-                        style={{
-                          marginTop: 8,
-                        }}
-                      >
-                        Upload
+                  <Form.Item name="thumbnail">
+                    <Upload
+                      className="upload-thumbnail-container"
+                      onRemove={() => {
+                        dispatch(deleteThumbnailWritingArticle());
+                      }}
+                      beforeUpload={(file) => {
+                        // Fake sending document to action props succesfully
+                        // if (mode === 'update') {
+                        //   setOldImage(true);
+                        // }
+                        file.status = 'done';
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = (event) => {
+                          file.url = event.target.result;
+                          file.title = file.name;
+                          dispatch(updateThumbnailWritingArticle(file));
+                        };
+                        return false;
+                      }}
+                      listType="picture-card"
+                      fileList={
+                        mode === 'create'
+                          ? writingArticle.thumbnail
+                          : writingArticle.image
+                      }
+                      onPreview={handlePreview}
+                    >
+                      <div>
+                        <PlusOutlined />
+                        <div
+                          style={{
+                            marginTop: 8,
+                          }}
+                        >
+                          Upload
+                        </div>
                       </div>
-                    </div>
-                  </Upload>
+                    </Upload>
+                  </Form.Item>
                 </Form.Item>
 
                 {/* Preview and button */}

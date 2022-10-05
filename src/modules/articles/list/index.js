@@ -14,6 +14,7 @@ import { ImEye } from 'react-icons/im';
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 import {
+  deleteArticle,
   fetchArticles,
   selectArticles,
   selectArticlesLoading,
@@ -23,7 +24,7 @@ export default function ArticlesList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isShowDelete, setIsShowDelete] = useState(false);
-  const [articleId, setArticleId] = useState();
+  const [article, setArticle] = useState();
   const articles = useSelector(selectArticles);
   const aritclesLoading = useSelector(selectArticlesLoading);
 
@@ -64,15 +65,15 @@ export default function ArticlesList() {
       width: 200,
     },
     {
-      title: 'Image',
+      title: 'Thumbnail',
       key: 'image',
-      dataIndex: 'image',
-    },
-    {
-      title: 'Content',
-      key: 'content',
-      dataIndex: 'content',
-      width: 300,
+      render: (text, record, index) => (
+        <img
+          src={`${record.image}`}
+          alt="article thumbnail"
+          className="article-thumbnail"
+        />
+      ),
     },
     {
       title: 'Actions',
@@ -99,7 +100,7 @@ export default function ArticlesList() {
             className="button button--delete"
             onClick={() => {
               setIsShowDelete(true);
-              setArticleId(record.article_id);
+              setArticle(record);
             }}
           >
             <FiTrash2 />
@@ -110,7 +111,10 @@ export default function ArticlesList() {
     },
   ];
 
-  const handleDeleteArticle = () => {};
+  const handleDeleteArticle = () => {
+    dispatch(deleteArticle(article.article_id));
+    setIsShowDelete(false);
+  };
 
   const renderBody = () => (
     <div className="content content--confirm">
@@ -119,6 +123,7 @@ export default function ArticlesList() {
       </div>
       <IoIosCloseCircleOutline className="icon-title icon-title--delete" />
       <h3 className="message">Are you sure to delete this article?</h3>
+      <h4 className="object">{article.title}</h4>
       <div className="btn-container">
         <Button
           className="button button--light"
