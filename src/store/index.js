@@ -23,24 +23,26 @@ export default configureStore({
   },
   middleware: () =>
     getDefaultMiddleware({
-      serializableCheck: {
-        // Ignore these action types
-        ignoredActions: [
-          'usersSlice/changeUserNeedUpdateAvatar',
-          'usersSlice/createUser/fulfilled',
-          'usersSlice/getAllUsers/pending',
-          'categoriesSlice/getCategories/pending',
-          'categoriesSlice/createCategory/fulfilled',
-          'servicesSlice/createService/fulfilled',
-          'servicesSlice/updateService/fulfilled',
-          'clinicsSlice/updateClinic/fulfilled',
-          'clinicSlice/addClinicNeedUpdateImage',
-          'clinicSlice/deleteClinicNeedUpdateImage',
-        ],
-        // Ignore these field paths in all actions
-        ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
-        // Ignore these paths in the state
-        ignoredPaths: ['items.dates'],
-      },
+      // serializableCheck: {
+      //   // Ignore these action types
+      //   ignoredActions: [
+      //     'usersSlice/changeUserNeedUpdateAvatar',
+      //     'usersSlice/createUser/fulfilled',
+      //     'usersSlice/getAllUsers/pending',
+      //     'categoriesSlice/getCategories/pending',
+      //     'categoriesSlice/createCategory/fulfilled',
+      //     'servicesSlice/createService/fulfilled',
+      //     'servicesSlice/updateService/fulfilled',
+      //     'clinicsSlice/updateClinic/fulfilled',
+      //     'clinicSlice/addClinicNeedUpdateImage',
+      //     'clinicSlice/deleteClinicNeedUpdateImage',
+      //     'articlesSlice/updateUploadingFilesWritingArticle',
+      //   ],
+      //   // Ignore these field paths in all actions
+      //   ignoredActionPaths: ['articles.writingArticle.uploadingFiles.0'],
+      //   // Ignore these paths in the state
+      //   ignoredPaths: ['items.dates'],
+      // },
+      serializableCheck: false,
     }),
 });

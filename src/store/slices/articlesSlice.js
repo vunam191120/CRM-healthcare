@@ -83,7 +83,7 @@ export const uploadDocument = createAsyncThunk(
   async (documents) => {
     try {
       const result = await articleAPI.uploadDocument(documents);
-      console.log('Result at slice: ', result);
+      return result.data.data;
     } catch (err) {
       return Promise.reject(err);
     }
@@ -98,11 +98,69 @@ const articlesSlice = createSlice({
     articles: [],
     articleNeedUpdate: {},
     selectAuthor: {},
-    documentsUploaded: [],
+    writingArticle: {
+      title: '',
+      content: '',
+      summary: '',
+      uploadingFiles: [],
+      uploadedFiles: [],
+      tags: [],
+      types: [],
+      thumbnail: [],
+    },
     isLoading: false,
     hasError: false,
   },
-  reducers: {},
+  reducers: {
+    updateTitleWritingArticle: (state, action) => {
+      state.writingArticle.title = action.payload;
+    },
+    updateContentWritingArticle: (state, action) => {
+      state.writingArticle.content = action.payload.content;
+    },
+    updateSummaryWritingArticle: (state, action) => {
+      state.writingArticle.summary = action.payload;
+    },
+    updateUploadingFilesWritingArticle: (state, action) => {
+      state.writingArticle.uploadingFiles = [
+        ...state.writingArticle.uploadingFiles,
+        action.payload,
+      ];
+    },
+    deleteUploadingFileWritingArticle: (state, action) => {
+      const newUploadingFiles = state.writingArticle.uploadingFiles.filter(
+        (uploadingFile) => uploadingFile.uid !== action.payload.uid
+      );
+      state.writingArticle.uploadingFiles = newUploadingFiles;
+    },
+    resetUploadingFileWritingAritcle: (state, action) => {
+      state.writingArticle.uploadingFiles = [];
+    },
+    updateTagsWritingArticle: (state, action) => {
+      state.writingArticle.tags = action.payload;
+    },
+    updateTypesWritingArticle: (state, action) => {
+      state.writingArticle.types = action.payload;
+    },
+    updateThumbnailWritingArticle: (state, action) => {
+      state.writingArticle.thumbnail[0] = action.payload;
+    },
+    deleteThumbnailWritingArticle: (state, action) => {
+      state.writingArticle.thumbnail = [];
+    },
+    clearWritingArticle: (state, action) => {
+      state.writingArticle = {
+        title: '',
+        content: '',
+        summary: '',
+        uploadingFiles: [],
+        uploadedFiles: [],
+        tags: [],
+        types: [],
+        thumbnail: [],
+      };
+    },
+  },
   extraReducers: {
     // Fetch Articles
     [fetchArticles.pending]: (state) => {
@@ -221,7 +279,7 @@ const articlesSlice = createSlice({
       message
         .loading('Action in progress..', 0.5)
         .then(() => message.success('Uploaded documents successfully!', 3));
-      state.documentsUploaded = action.payload;
+      state.writingArticle.uploadedFiles = action.payload;
       state.isLoading = false;
       state.hasError = false;
     },
@@ -234,6 +292,19 @@ const articlesSlice = createSlice({
 });
 
 // Selectors
+export const {
+  updateTitleWritingArticle,
+  updateContentWritingArticle,
+  updateSummaryWritingArticle,
+  updateUploadingFilesWritingArticle,
+  deleteUploadingFileWritingArticle,
+  resetUploadingFileWritingAritcle,
+  updateTagsWritingArticle,
+  updateTypesWritingArticle,
+  updateThumbnailWritingArticle,
+  deleteThumbnailWritingArticle,
+  clearWritingArticle,
+} = articlesSlice.actions;
 
 export const selectArticles = (state) => state.articles.articles;
 
@@ -243,7 +314,6 @@ export const selectArticlesError = (state) => state.articles.hasError;
 
 export const selectArticleNeedUpdate = (state) => state.articles.bedNeedUpdate;
 
-export const selectDocumentsUploaded = (state) =>
-  state.articles.documentsUploaded;
+export const selectWritingArticle = (state) => state.articles.writingArticle;
 
 export default articlesSlice.reducer;

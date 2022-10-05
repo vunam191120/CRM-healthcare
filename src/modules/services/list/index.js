@@ -2,12 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Table, PageHeader, Input, Space, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { BiCategoryAlt, BiPencil } from 'react-icons/bi';
-import {
-  SearchOutlined,
-  FilterOutlined,
-  CaretUpOutlined,
-  CaretDownOutlined,
-} from '@ant-design/icons';
+import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
 import { FiTrash2 } from 'react-icons/fi';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';

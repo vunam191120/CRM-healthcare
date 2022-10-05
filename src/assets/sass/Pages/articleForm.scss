@@ -1,8 +1,19 @@
 .article-input-container {
+  .spinner {
+    margin: 0 auto;
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
+  }
   .articleForm {
     .article-input-group {
       border: 1px solid $color-line-0;
       border-radius: $border-radius-2;
+      .upload-thumbnail-container {
+        padding: 8px 0 0 8px;
+        display: flex;
+        justify-content: center;
+      }
       .title {
         padding: $pd-0;
         margin-bottom: 0;
@@ -67,15 +78,18 @@
       }
     }
     .left {
-      padding-right: $pd-3;
+      padding-right: $pd-4 - 5;
       .button-upload {
         margin-left: 0;
-        .spinner {
-          margin: 0 auto;
-          width: 24px;
-          height: 24px;
-          border-width: 3px;
-        }
+      }
+      .uploaded-item {
+        width: 104px;
+        height: 104px;
+        border: 1px solid #d9d9d9;
+        display: flex;
+        align-items: center;
+        border-radius: $border-radius;
+        padding: $pd-0 -2;
       }
     }
     .right {
@@ -172,6 +186,14 @@
     .title-preview {
       padding-left: $pd-0;
       @include styleText($color-brown-1, $fs-3, $fw-1);
+    }
+  }
+  .preview-container {
+    width: 100%;
+    margin-left: 35px;
+    .preview-content {
+      width: 100%;
+      height: auto;
     }
   }
 }

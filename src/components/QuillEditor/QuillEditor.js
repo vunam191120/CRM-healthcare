@@ -2,12 +2,14 @@ import React, { useRef, useMemo } from 'react';
 import ReactQuill from 'react-quill';
 import 'quill/dist/quill.snow.css'; // Add css for snow theme
 import ImageResize from 'quill-image-resize-module-react';
+import { useDispatch } from 'react-redux';
 
 const { Quill } = ReactQuill;
 Quill.register('modules/imageResize', ImageResize);
 
-export default function QuillEditor({ content, setContent }) {
+export default function QuillEditor({ content, action, keyContent }) {
   const quillRef = useRef();
+  const dispatch = useDispatch();
 
   const imageHandler = () => {
     const editor = quillRef.current.getEditor(); // get quill eidtor by reference
@@ -35,7 +37,7 @@ export default function QuillEditor({ content, setContent }) {
           [{ font: [] }],
           [{ align: [] }],
           ['clean'], // remove formatting button
-          ['Resize', 'DisplaySize', 'Toolbar'], // resize
+          // ['Resize', 'DisplaySize', 'Toolbar'], // resize
         ],
         handlers: {
           image: imageHandler,
@@ -49,6 +51,12 @@ export default function QuillEditor({ content, setContent }) {
     []
   );
 
+  const handleSetContent = (value) => {
+    const obj = {};
+    obj[keyContent] = value;
+    return action(obj);
+  };
+
   return (
     <>
       <div className="text-editor">
@@ -56,7 +64,7 @@ export default function QuillEditor({ content, setContent }) {
           ref={quillRef}
           theme="snow"
           value={content}
-          onChange={setContent}
+          onChange={(value) => dispatch(handleSetContent(value))}
           modules={modules}
           placeholder="Start to write your article!"
         />
