@@ -293,7 +293,7 @@ const usersSlice = createSlice({
     [login.fulfilled]: (state, action) => {
       message.success(action.payload, 3);
       setTimeout(() => {
-        window.location.href = '/';
+        window.location.href = '/accounts';
       }, 500);
       state.isLoading = false;
       state.hasError = false;

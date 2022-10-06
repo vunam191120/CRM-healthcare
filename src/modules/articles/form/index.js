@@ -94,6 +94,7 @@ export default function ArticleForm({ mode }) {
         <h3 className="title">Content</h3>
         <Form.Item>
           <QuillEditor
+            files={writingArticle.uploadingFiles}
             content={writingArticle.content}
             action={updateContentWritingArticle}
             keyContent="content"
@@ -101,7 +102,7 @@ export default function ArticleForm({ mode }) {
         </Form.Item>
       </Form.Item>
     ),
-    [writingArticle.content]
+    [writingArticle.content, writingArticle.uploadingFiles]
   );
 
   useEffect(() => {
@@ -127,13 +128,12 @@ export default function ArticleForm({ mode }) {
     }
   }, [dispatch, mode]);
 
-  // Fill in the data in the corresponding form according to the mode
   useEffect(() => {
     form.setFieldsValue({
       title: writingArticle.title,
       summary: writingArticle.summary,
-      tags: writingArticle.tags,
-      types: writingArticle.types,
+      tags: writingArticle.tags.map((tag) => tag.tag_id),
+      types: writingArticle.types.map((type) => type.type_id),
       thumbnail: writingArticle.image
         ? writingArticle.image
         : writingArticle.thumbnail,
@@ -274,7 +274,7 @@ export default function ArticleForm({ mode }) {
                 </Form.Item>
 
                 <Row>
-                  <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                  <Col xs={0} sm={0} md={0} lg={0} xl={0}>
                     {/* Documents */}
                     <Form.Item>
                       <h3 className="title-upload">Documents</h3>
@@ -329,13 +329,14 @@ export default function ArticleForm({ mode }) {
                       </Form.Item>
                     )}
                   </Col>
-                  <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                  <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     {/* Previews */}
-                    {writingArticle.uploadedFiles.length > 0 && (
+                    {/* {writingArticle.uploadedFiles.length > 0 && ( */}
+                    {
                       <Form.Item>
                         <h3 className="title-preview">Uploaded and Preview</h3>
                         <Image.PreviewGroup>
-                          {writingArticle.uploadedFiles.map((doc, index) => (
+                          {/* {writingArticle.uploadedFiles.map((doc, index) => (
                             <div key={index} className="uploaded-item">
                               <Tooltip
                                 title={
@@ -355,10 +356,43 @@ export default function ArticleForm({ mode }) {
                                 <Image src={doc.url} />
                               </Tooltip>
                             </div>
-                          ))}
+                          ))} */}
+                          {[0, 1, 3, 4, 5].map((doc, index) => {
+                            const url =
+                              'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2020-07/kitten-510651.jpg?h=f54c7448&itok=ZhplzyJ9';
+                            return (
+                              <div
+                                style={{
+                                  marginRight: 10,
+                                  display: 'inline-block',
+                                }}
+                                key={index}
+                              >
+                                <Tooltip
+                                  key={index}
+                                  className="uploaded-item"
+                                  title={
+                                    <span
+                                      onClick={() => {
+                                        navigator.clipboard.writeText(url);
+                                        message.success(
+                                          'Copied url to clipboard'
+                                        );
+                                      }}
+                                      style={{ cursor: 'pointer' }}
+                                    >
+                                      Click to get URL
+                                    </span>
+                                  }
+                                >
+                                  <Image src={url} />
+                                </Tooltip>
+                              </div>
+                            );
+                          })}
                         </Image.PreviewGroup>
                       </Form.Item>
-                    )}
+                    }
                   </Col>
                 </Row>
               </Col>
@@ -381,7 +415,6 @@ export default function ArticleForm({ mode }) {
                         width: '100%',
                       }}
                       placeholder="Select one or many tags"
-                      // defaultValue={['china']}
                       optionLabelProp="label"
                       onChange={(value) =>
                         dispatch(updateTagsWritingArticle(value))

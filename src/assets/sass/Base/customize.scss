@@ -169,3 +169,21 @@ thead[class*='ant-table-thead'] th {
   border-bottom-left-radius: $border-radius-1;
   border-bottom-right-radius: $border-radius-1;
 }
+
+.ql-tooltip.ql-editing.ql-flip {
+  left: 0 !important;
+  top: 10px !important;
+}
+
+.ql-custom-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  float: left;
+  height: 24px;
+  padding: 3px 5px;
+  width: 28px;
+  .ql-custom-icon {
+    font-size: 15px;
+  }
+}
