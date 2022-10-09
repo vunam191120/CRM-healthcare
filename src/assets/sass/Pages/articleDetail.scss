@@ -1,0 +1,122 @@
+.article-detail-content {
+  border: 1px solid rgb(235, 237, 240);
+  border-radius: $border-radius-3;
+  .left {
+    .article-content {
+      padding: 0 $pd-4;
+      .header {
+        margin: $mg-3 0;
+        display: flex;
+        justify-content: space-between;
+        .author-info {
+          display: flex;
+          align-items: center;
+          .avatar {
+            width: 48px;
+            height: 48px;
+            display: block;
+            margin-right: $mg-4 + 5;
+            border-radius: 50%;
+          }
+          .name {
+            @include styleText($color-brown-1, $fs-0 + 1, $fw-0);
+            margin-bottom: 0;
+          }
+          .time {
+            margin-bottom: 0;
+            @include styleText($color-smoke, $fs-0 - 1, $fw-0);
+            display: flex;
+            align-items: center;
+            span {
+              margin-right: $mg-4;
+            }
+          }
+        }
+        .author-social {
+          .icon {
+            @include styleText($color-white-2, $fs-3, $fw-0);
+            margin-right: $mg-2 - 5;
+            transition: 0.4s ease;
+            cursor: pointer;
+            &:hover {
+              @include styleText($color-blue-0, $fs-3, $fw-0);
+            }
+          }
+        }
+      }
+    }
+    .more-article-author {
+      background-color: rgba($color: $color-gray-1, $alpha: 0.049);
+      padding: $pd-5;
+      .create-date {
+      }
+    }
+  }
+  .right {
+    border-left: 1px solid $color-line-0;
+    padding: $pd-4 $pd-4 - 3;
+    .avatar {
+      width: 88px;
+      height: 88px;
+      display: block;
+      border-radius: 50%;
+      margin-bottom: $mg-4;
+    }
+    .name {
+      @include styleText($color-smoke, $fs-3, $fw-2);
+    }
+    .joined-from {
+      @include styleText($color-gray-0, $fs-0, $fw-0);
+    }
+    .description {
+      @include styleText($color-smoke, $fs-0, $fw-0);
+      .email {
+        text-decoration: underline;
+        @include styleText($color-smoke, $fs-0, $fw-0);
+        transition: 0.4s ease;
+        &:hover {
+          @include styleText($color-blue-0, $fs-0, $fw-0);
+        }
+      }
+    }
+    .button--main {
+      margin: $mg-2 0;
+      border-radius: $border-radius-4;
+    }
+    .title-more {
+      margin: $mg-2 0;
+      @include styleText($color-brown-1, $fs-0, $fw-1);
+    }
+    .more-article-item {
+      display: flex;
+      margin-bottom: $mg-2;
+      .info {
+        .header {
+          display: flex;
+          align-items: center;
+          .avatar {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-bottom: 0;
+            border-radius: 50%;
+            margin-right: $mg-0;
+          }
+          .name {
+            @include styleText($color-smoke, $fs-0, $fw-0);
+            margin-bottom: 0;
+          }
+          margin-bottom: $mg-0;
+        }
+        .title {
+          @include styleText($color-smoke, $fs-3 - 1, $fw-2);
+        }
+      }
+      .thumbnail {
+        width: 56px;
+        height: 56px;
+        display: block;
+      }
+    }
+  }
+}

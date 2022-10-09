@@ -3,3 +3,5 @@ export const ROLES = {
   SALE: 2,
   BACK_OFFICER: 3,
 };
+
+export const APP_NAME = 'Healthcare';

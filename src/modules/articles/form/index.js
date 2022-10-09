@@ -19,6 +19,11 @@ import { SiStatuspal } from 'react-icons/si';
 import { FaRegEye } from 'react-icons/fa';
 import { AiFillTag } from 'react-icons/ai';
 import { IoClose } from 'react-icons/io5';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 import QuillEditor from '../../../components/QuillEditor/QuillEditor';
 import {
@@ -29,7 +34,6 @@ import {
 } from '../../../store/slices/tagsSlice';
 import { fetchTypes, selectTypes } from '../../../store/slices/typesSlice';
 import {
-  // selectArticleNeedUpdate,
   selectArticlesLoading,
   updateTitleWritingArticle,
   updateContentWritingArticle,
@@ -46,6 +50,8 @@ import {
   resetUploadingFileWritingAritcle,
   createArticle,
   fetchArticle,
+  updateArticle,
+  fetchPreviousDocs,
 } from '../../../store/slices/articlesSlice';
 import Button from '../../../components/Button';
 import Spinner from '../../../components/Spinner';
@@ -86,7 +92,8 @@ export default function ArticleForm({ mode }) {
     title: '',
     src: '',
   });
-  // const [isPreviewArticle, setIsPreviewArticle] = useState(false);
+  const [oldImage, setOldImage] = useState(false);
+  const [isPreviewArticle, setIsPreviewArticle] = useState(false);
 
   const quillEditor = useMemo(
     () => (
@@ -120,25 +127,31 @@ export default function ArticleForm({ mode }) {
   }, [dispatch]);
 
   useEffect(() => {
+    dispatch(fetchPreviousDocs());
+  }, [dispatch]);
+
+  useEffect(() => {
     // Clean writing article whenever the mode update end
     if (mode === 'update') {
       return () => {
         dispatch(clearWritingArticle());
       };
     }
-  }, [dispatch, mode]);
+  }, [dispatch, form, mode]);
 
+  // Fill input corresponding to approiate mode for draft saving
   useEffect(() => {
     form.setFieldsValue({
       title: writingArticle.title,
       summary: writingArticle.summary,
-      tags: writingArticle.tags.map((tag) => tag.tag_id),
-      types: writingArticle.types.map((type) => type.type_id),
+      tags: writingArticle.tags,
+      types: writingArticle.types,
       thumbnail: writingArticle.image
         ? writingArticle.image
         : writingArticle.thumbnail,
     });
   }, [
+    dispatch,
     form,
     writingArticle.image,
     writingArticle.summary,
@@ -150,6 +163,7 @@ export default function ArticleForm({ mode }) {
 
   const handleClose = () => {
     setPreview({ ...preview, isOpen: false });
+    setIsPreviewArticle(false);
   };
 
   const handlePreview = (file) => {
@@ -195,13 +209,21 @@ export default function ArticleForm({ mode }) {
     for (let type of values.types) {
       formData.append('types', type);
     }
-    formData.append('article', writingArticle.thumbnail[0]);
     formData.append(
       'author_id',
       JSON.parse(localStorage.getItem('currentUser')).user_id
     );
-    dispatch(createArticle(formData));
-    dispatch(clearWritingArticle());
+    if (mode === 'create') {
+      formData.append('article', writingArticle.image[0]);
+      dispatch(createArticle(formData));
+      dispatch(clearWritingArticle());
+    } else if (mode === 'update') {
+      if (oldImage) {
+        formData.append('article', writingArticle.image[0]);
+      }
+      formData.append('article_id', article_id);
+      dispatch(updateArticle(formData));
+    }
   };
 
   return (
@@ -209,7 +231,7 @@ export default function ArticleForm({ mode }) {
       <PageHeader
         className="site-page-header"
         onBack={() => navigate('/articles')}
-        title={'Add new article'}
+        title={`${mode === 'create' ? 'Add new' : 'Update'} article`}
       />
       <Row className={`article-input-container`}>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -222,7 +244,7 @@ export default function ArticleForm({ mode }) {
             scrollToFirstError
           >
             <Row>
-              <Col xs={24} sm={24} md={18} lg={18} xl={18} className="left">
+              <Col xs={24} sm={24} md={19} lg={19} xl={19} className="left">
                 {/* Title */}
                 <Form.Item className="article-input-group">
                   <h3 className="title">Title</h3>
@@ -330,38 +352,26 @@ export default function ArticleForm({ mode }) {
                     )}
                   </Col>
                   <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                    {/* Previews */}
-                    {/* {writingArticle.uploadedFiles.length > 0 && ( */}
-                    {
-                      <Form.Item>
-                        <h3 className="title-preview">Uploaded and Preview</h3>
-                        <Image.PreviewGroup>
-                          {/* {writingArticle.uploadedFiles.map((doc, index) => (
-                            <div key={index} className="uploaded-item">
-                              <Tooltip
-                                title={
-                                  <span
-                                    onClick={() => {
-                                      navigator.clipboard.writeText(doc.url);
-                                      message.success(
-                                        'Copied url to clipboard'
-                                      );
-                                    }}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    Click to get URL
-                                  </span>
-                                }
-                              >
-                                <Image src={doc.url} />
-                              </Tooltip>
-                            </div>
-                          ))} */}
-                          {[0, 1, 3, 4, 5].map((doc, index) => {
-                            const url =
-                              'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2020-07/kitten-510651.jpg?h=f54c7448&itok=ZhplzyJ9';
+                    {/* Previous images */}
+                    {writingArticle.uploadedFiles.length > 0 && (
+                      <Form.Item className="article-input-group">
+                        <h3 className="title">Previous uploaded images</h3>
+                        <Swiper
+                          slidesPerView={
+                            writingArticle.uploadedFiles.length > 2 ? 3 : 1
+                          }
+                          spaceBetween={30}
+                          pagination={{
+                            clickable: true,
+                          }}
+                          modules={[Pagination, Navigation]}
+                          className="mySwiper"
+                          navigation={true}
+                        >
+                          {writingArticle.uploadedFiles.map((doc, index) => {
+                            const url = !doc.url ? doc : doc.url;
                             return (
-                              <div
+                              <SwiperSlide
                                 style={{
                                   marginRight: 10,
                                   display: 'inline-block',
@@ -387,16 +397,16 @@ export default function ArticleForm({ mode }) {
                                 >
                                   <Image src={url} />
                                 </Tooltip>
-                              </div>
+                              </SwiperSlide>
                             );
                           })}
-                        </Image.PreviewGroup>
+                        </Swiper>
                       </Form.Item>
-                    }
+                    )}
                   </Col>
                 </Row>
               </Col>
-              <Col xs={24} sm={24} md={6} lg={6} xl={6} className="right">
+              <Col xs={24} sm={24} md={5} lg={5} xl={5} className="right">
                 {/* Tags */}
                 <Form.Item className="article-input-group">
                   <h3 className="title">Tags</h3>
@@ -529,7 +539,9 @@ export default function ArticleForm({ mode }) {
                   className="article-input-group"
                   valuePropName="fileList"
                 >
-                  <h3 className="title">Thumbnail</h3>
+                  <h3 className="title">
+                    Thumbnail - {JSON.stringify(oldImage, null, 2)}
+                  </h3>
                   <Form.Item name="thumbnail">
                     <Upload
                       className="upload-thumbnail-container"
@@ -538,9 +550,9 @@ export default function ArticleForm({ mode }) {
                       }}
                       beforeUpload={(file) => {
                         // Fake sending document to action props succesfully
-                        // if (mode === 'update') {
-                        //   setOldImage(true);
-                        // }
+                        if (mode === 'update') {
+                          setOldImage(true);
+                        }
                         file.status = 'done';
                         const reader = new FileReader();
                         reader.readAsDataURL(file);
@@ -552,11 +564,7 @@ export default function ArticleForm({ mode }) {
                         return false;
                       }}
                       listType="picture-card"
-                      fileList={
-                        mode === 'create'
-                          ? writingArticle.thumbnail
-                          : writingArticle.image
-                      }
+                      fileList={writingArticle.image}
                       onPreview={handlePreview}
                     >
                       <div>
@@ -602,13 +610,11 @@ export default function ArticleForm({ mode }) {
                         {articleLoading ? (
                           <Spinner />
                         ) : (
-                          `${
-                            mode === 'create' ? 'Add article' : 'Update article'
-                          }`
+                          `${mode === 'create' ? 'Add' : 'Update'}`
                         )}
                       </Button>
                       <Button
-                        onClick={() => {}}
+                        onClick={() => setIsPreviewArticle(true)}
                         className="button button--main"
                         type="button"
                       >
@@ -622,6 +628,7 @@ export default function ArticleForm({ mode }) {
           </Form>
         </Col>
       </Row>
+      {/* Modal for preview thumbnail image */}
       <Modal
         className={preview.isOpen && 'active'}
         isOpen={preview.isOpen}
@@ -632,6 +639,27 @@ export default function ArticleForm({ mode }) {
             </div>
             <h3 className="title">{preview.title}</h3>
             <img className="modal-image" src={preview.src} alt="Preivew img" />
+          </div>
+        )}
+        onClose={handleClose}
+      />
+
+      {/* Modal for preview article */}
+      <Modal
+        className={isPreviewArticle && 'active'}
+        isOpen={isPreviewArticle}
+        renderBody={() => (
+          <div className="content article-preview">
+            <div className="close-btn" onClick={handleClose}>
+              <IoClose className="close-icon" />
+            </div>
+            <h3 className="title">Article preview</h3>
+            <div className="article-container">
+              <div
+                className="article-content view ql-editor"
+                dangerouslySetInnerHTML={{ __html: writingArticle.content }}
+              ></div>
+            </div>
           </div>
         )}
         onClose={handleClose}

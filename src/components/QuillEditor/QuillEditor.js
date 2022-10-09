@@ -1,12 +1,15 @@
 import React, { useRef, useMemo } from 'react';
 import { BsCardImage } from 'react-icons/bs';
-import { IoImagesSharp } from 'react-icons/io5';
+// import { IoImagesSharp } from 'react-icons/io5';
 import ReactQuill from 'react-quill';
 import 'quill/dist/quill.snow.css'; // Add css for snow theme
+import 'react-quill/dist/quill.core.css';
 import ImageResize from 'quill-image-resize-module-react';
 import { useDispatch } from 'react-redux';
-import articleAPI from '../../api/article';
 import { message } from 'antd';
+
+import articleAPI from '../../api/article';
+import { appendDoc } from '../../store/slices/articlesSlice';
 
 const { Quill } = ReactQuill;
 Quill.register('modules/imageResize', ImageResize);
@@ -53,7 +56,7 @@ const CustomRedo = () => (
 );
 
 const CustomImage2 = () => <BsCardImage className="ql-custom-icon" />;
-const CustomImage3 = () => <IoImagesSharp className="ql-custom-icon" />;
+// const CustomImage3 = () => <IoImagesSharp className="ql-custom-icon" />;
 
 export default function QuillEditor({ content, action, keyContent }) {
   const quillRef = useRef();
@@ -71,33 +74,33 @@ export default function QuillEditor({ content, action, keyContent }) {
     quillRef.current.getEditor().history.redo();
   }
 
-  const imageHandler = async () => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
-    input.onchange = async () => {
-      var file = input && input.files ? input.files[0] : null;
-      const formData = new FormData();
-      formData.append('article', file);
-      let quillObj = quillRef.current.getEditor();
-      await articleAPI
-        .uploadDocument(formData)
-        .then((res) => {
-          let data = res.data.data[0].url;
-          const range = quillObj.getSelection();
-          quillObj.insertEmbed(range.index, 'image', data);
-        })
-        .catch((err) => {
-          message.error('Cannot upload file');
-          return false;
-        });
-    };
-  };
-
   // Modules object for setting up the Quill editor
-  const modules = useMemo(
-    () => ({
+  const modules = useMemo(() => {
+    const imageHandler = async () => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+      input.onchange = async () => {
+        var file = input && input.files ? input.files[0] : null;
+        const formData = new FormData();
+        formData.append('article', file);
+        let quillObj = quillRef.current.getEditor();
+        await articleAPI
+          .uploadDocument(formData)
+          .then((res) => {
+            let data = res.data.data[0].url;
+            const range = quillObj.getSelection();
+            quillObj.insertEmbed(range.index, 'image', data);
+            dispatch(appendDoc(data));
+          })
+          .catch((err) => {
+            message.error('Cannot upload file');
+            return false;
+          });
+      };
+    };
+    return {
       toolbar: {
         container: '#toolbar',
         handlers: {
@@ -112,9 +115,9 @@ export default function QuillEditor({ content, action, keyContent }) {
               editor.insertEmbed(range, 'image', value);
             }
           },
-          image3: () => {
-            console.log('3');
-          },
+          // image3: () => {
+          //   console.log('3');
+          // },
         },
       },
       imageResize: {
@@ -126,9 +129,8 @@ export default function QuillEditor({ content, action, keyContent }) {
         maxStack: 100,
         userOnly: true,
       },
-    }),
-    []
-  );
+    };
+  }, [dispatch]);
 
   // Formats objects for setting up the Quill editor
   const formats = [
@@ -254,9 +256,9 @@ export default function QuillEditor({ content, action, keyContent }) {
         <button className="ql-image2 ql-custom-button">
           <CustomImage2 />
         </button>
-        <button className="ql-image3 ql-custom-button">
+        {/* <button className="ql-image3 ql-custom-button">
           <CustomImage3 />
-        </button>
+        </button> */}
       </span>
     </div>
   );
@@ -269,16 +271,6 @@ export default function QuillEditor({ content, action, keyContent }) {
 
   return (
     <>
-      {/* <div className="text-editor">
-        <ReactQuill
-          ref={quillRef}
-          theme="snow"
-          value={content}
-          onChange={(value) => dispatch(handleSetContent(value))}
-          modules={modules}
-          placeholder="Start to write your article!"
-        />
-      </div> */}
       <div className="text-editor">
         {QuillToolbar()}
         <ReactQuill

@@ -79,12 +79,47 @@
     }
     .left {
       padding-right: $pd-4 - 5;
+      // -------------- React SwiperJS ------------
+      .swiper {
+        padding-bottom: $pd-3;
+      }
+      .swiper-button-next,
+      .swiper-button-prev {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        transition: 0.4s ease;
+        &:after {
+          // .swiper-rtl .swiper-button-prev:after {
+          content: 'next';
+          height: 100%;
+          width: 100%;
+          background: white;
+          @include styleText($color-black-0, $fs-0, $fw-1);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        &:hover::after {
+          background-color: rgba($color: $color-black-0, $alpha: 0.4);
+          @include styleText($color-white-0, $fs-0, $fw-1);
+        }
+      }
+      .swiper-button-prev {
+        &:after {
+          content: 'prev';
+        }
+      }
+      .swiper-pagination-bullets.swiper-pagination-horizontal {
+        bottom: 0;
+      }
       .button-upload {
         margin-left: 0;
       }
       .uploaded-item {
-        width: 104px;
-        height: 104px;
+        // width: 104px;
+        // height: 104px;
         border: 1px solid #d9d9d9;
         display: flex;
         align-items: center;

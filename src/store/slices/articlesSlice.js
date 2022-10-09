@@ -26,6 +26,18 @@ export const fetchArticle = createAsyncThunk(
   }
 );
 
+export const fetchPreviousDocs = createAsyncThunk(
+  'articlesSlice/fetchPreviousDocs',
+  async () => {
+    try {
+      const result = await articleAPI.getPreviousDocs();
+      return result.data.data;
+    } catch (err) {
+      return Promise.reject(err.message);
+    }
+  }
+);
+
 export const fetchAuthor = createAsyncThunk(
   'articlesSlice/fetchAuthor',
   async (author_id) => {
@@ -105,7 +117,7 @@ const articlesSlice = createSlice({
       uploadedFiles: [],
       tags: [],
       types: [],
-      thumbnail: [],
+      image: [],
     },
     isLoading: false,
     hasError: false,
@@ -142,10 +154,10 @@ const articlesSlice = createSlice({
       state.writingArticle.types = action.payload;
     },
     updateThumbnailWritingArticle: (state, action) => {
-      state.writingArticle.thumbnail[0] = action.payload;
+      state.writingArticle.image[0] = action.payload;
     },
     deleteThumbnailWritingArticle: (state, action) => {
-      state.writingArticle.thumbnail = [];
+      state.writingArticle.image = [];
     },
     clearWritingArticle: (state, action) => {
       state.writingArticle = {
@@ -156,8 +168,14 @@ const articlesSlice = createSlice({
         uploadedFiles: [],
         tags: [],
         types: [],
-        thumbnail: [],
+        image: [],
       };
+    },
+    appendDoc: (state, action) => {
+      state.writingArticle.uploadedFiles = [
+        ...state.writingArticle.uploadedFiles,
+        action.payload,
+      ];
     },
   },
   extraReducers: {
@@ -190,11 +208,28 @@ const articlesSlice = createSlice({
           title: action.payload.image,
         },
       ];
+      action.payload.tags = action.payload.tags.map((tag) => tag.tag_id);
+      action.payload.types = action.payload.types.map((type) => type.type_id);
       state.writingArticle = { ...state.writingArticle, ...action.payload };
       state.isLoading = false;
       state.hasError = false;
     },
     [fetchArticle.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Fetch previous documents
+    [fetchPreviousDocs.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchPreviousDocs.fulfilled]: (state, action) => {
+      state.writingArticle.uploadedFiles = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchPreviousDocs.rejected]: (state, action) => {
       message.err(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;
@@ -284,7 +319,10 @@ const articlesSlice = createSlice({
       message
         .loading('Action in progress..', 0.5)
         .then(() => message.success('Uploaded documents successfully!', 3));
-      state.writingArticle.uploadedFiles = action.payload;
+      state.writingArticle.uploadedFiles = [
+        ...state.writingArticle.uploadedFiles,
+        action.payload,
+      ];
       state.isLoading = false;
       state.hasError = false;
     },
@@ -309,6 +347,7 @@ export const {
   updateThumbnailWritingArticle,
   deleteThumbnailWritingArticle,
   clearWritingArticle,
+  appendDoc,
 } = articlesSlice.actions;
 
 export const selectArticles = (state) => state.articles.articles;
@@ -318,5 +357,9 @@ export const selectArticlesLoading = (state) => state.articles.isLoading;
 export const selectArticlesError = (state) => state.articles.hasError;
 
 export const selectWritingArticle = (state) => state.articles.writingArticle;
+
+export const selectUpdatedFiles = (state) => state.writingArticle.uploadedFiles;
+
+export const selectAuthor = (state) => state.selectAuthor;
 
 export default articlesSlice.reducer;

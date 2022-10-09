@@ -17,6 +17,7 @@ import {
   PATH_ARTICLES,
   PATH_ARTICLES_CREATE,
   PATH_ARTICLES_UPDATE,
+  PATH_ARTICLES_DETAIL,
   PATH_TYPES,
   PATH_TAGS,
   PATH_CLINICS_DETAIL_APPOINTMENTS,
@@ -62,6 +63,7 @@ import UpdateRoom from '../pages/rooms/update';
 import ClinicServices from '../modules/clinics/detail/services';
 import ClinicStaffs from '../modules/clinics/detail/staffs';
 import ClinicClinic from '../modules/clinics/detail/clinic';
+import ArticleDetail from '../modules/articles/detail';
 
 // import NoMatch from '../components/NoMatch';
 
@@ -137,6 +139,11 @@ const appRoutes = [
   {
     path: PATH_ARTICLES_UPDATE,
     element: <UpdateArticle />,
+    roles: ['Admin'],
+  },
+  {
+    path: PATH_ARTICLES_DETAIL,
+    element: <ArticleDetail />,
     roles: ['Admin'],
   },
   // Types

@@ -13,6 +13,10 @@ const articleAPI = {
     const url = `/article/author/${author_id}`;
     return axiosClient.get(url);
   },
+  getPreviousDocs() {
+    const url = `/article/upload`;
+    return axiosClient.get(url);
+  },
   create(article) {
     const url = `/article/`;
     return axiosClient.post(url, article);
