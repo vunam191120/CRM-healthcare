@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PlusOutlined } from '@ant-design/icons';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { SiStatuspal } from 'react-icons/si';
 import { FaRegEye } from 'react-icons/fa';
 import { AiFillTag } from 'react-icons/ai';
@@ -409,7 +409,12 @@ export default function ArticleForm({ mode }) {
               <Col xs={24} sm={24} md={5} lg={5} xl={5} className="right">
                 {/* Tags */}
                 <Form.Item className="article-input-group">
-                  <h3 className="title">Tags</h3>
+                  <div className="title-container">
+                    <h3 className="title">Tags</h3>
+                    <Link className="btn-view" to="/articles/tags">
+                      View all tags
+                    </Link>
+                  </div>
                   <Form.Item
                     name="tags"
                     rules={[
@@ -493,7 +498,12 @@ export default function ArticleForm({ mode }) {
 
                 {/* Types */}
                 <Form.Item className="article-input-group">
-                  <h3 className="title">Types</h3>
+                  <div className="title-container">
+                    <h3 className="title">Types</h3>
+                    <Link className="btn-view" to="/articles/types`">
+                      View all types
+                    </Link>
+                  </div>
                   <Form.Item
                     className="article-input-group--select"
                     name="types"

@@ -128,6 +128,19 @@
       }
     }
     .right {
+      .title-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: $pd-0;
+        .btn-view {
+          text-decoration: none;
+          transition: 0.4s ease;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
       .create-tag-btn {
         margin: $mg-4 0;
         display: flex;
