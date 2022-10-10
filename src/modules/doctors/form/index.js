@@ -120,6 +120,15 @@ export default function DoctorForm({ mode }) {
           phone: doctorNeedUpdate.phone,
           gender: doctorNeedUpdate.gender,
           date_of_birth: moment(doctorNeedUpdate.date_of_birth, 'DD-MM-YYYY'),
+          work_progress: doctorNeedUpdate.work_progress,
+          citizen_identification_date: moment(
+            doctorNeedUpdate.citizen_identification_date,
+            'DD-MM-YYYY'
+          ),
+          citizen_identification_number:
+            doctorNeedUpdate.citizen_identification_number,
+          description: doctorNeedUpdate.description,
+          other_document: doctorNeedUpdate.other_document,
           profile_status: doctorNeedUpdate.profile_status,
           agreement: true,
         });
@@ -182,14 +191,14 @@ export default function DoctorForm({ mode }) {
     formData.append('email', values.email);
     formData.append('phone', `${values.prefix}${values.phone}`);
     formData.append('gender', values.gender);
-    formData.append('date_of_birth', values.date_of_birth.format('DD-MM-YYYY'));
+    formData.append('date_of_birth', values.date_of_birth.toDate());
     formData.append(
       'citizen_identification_number',
       values.citizen_identification_number
     );
     formData.append(
       'citizen_identification_date',
-      values.citizen_identification_date.format('DD-MM-YYYY')
+      values.citizen_identification_date.toDate()
     );
     formData.append('profile_status', values.profile_status);
     formData.append('work_progress', values.work_progress);
@@ -372,7 +381,16 @@ export default function DoctorForm({ mode }) {
         </Form.Item>
 
         {/* Work progress */}
-        <Form.Item label="Work progress" name="work_progress">
+        <Form.Item
+          label="Work progress"
+          name="work_progress"
+          rules={[
+            {
+              required: true,
+              message: 'Please enter your work progress!',
+            },
+          ]}
+        >
           <Input.TextArea
             autosize={{ minRows: 3, maxRows: 6 }}
             style={{

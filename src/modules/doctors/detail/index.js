@@ -5,7 +5,6 @@ import { AiTwotoneStar } from 'react-icons/ai';
 import { IoClose } from 'react-icons/io5';
 import moment from 'moment';
 
-import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 
 export default function DoctorDetail({
@@ -88,15 +87,6 @@ export default function DoctorDetail({
         <Link to={`update/${doctor.email}`} className="button button--main">
           Update
         </Link>
-        <Button
-          className="button button--light"
-          onClick={() => {
-            onClickClose();
-            onClickDelete();
-          }}
-        >
-          Delete
-        </Button>
       </div>
     </div>
   );

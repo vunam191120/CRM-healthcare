@@ -52,22 +52,6 @@ export const updateDoctor = createAsyncThunk(
   }
 );
 
-export const deleteDoctor = createAsyncThunk(
-  'doctorsSlice/deleteDoctor',
-  async (doctor_id) => {
-    try {
-      const result = await doctorAPI.delete(doctor_id);
-      if (result.data.data === 1) {
-        return doctor_id;
-      } else {
-        return Promise.reject('Delete failed!');
-      }
-    } catch (err) {
-      return Promise.reject(err.message);
-    }
-  }
-);
-
 // Reducer
 const doctorsSlice = createSlice({
   name: 'doctorsSlice',
@@ -110,7 +94,7 @@ const doctorsSlice = createSlice({
       state.hasError = false;
     },
     [fetchDoctor.fulfilled]: (state, action) => {
-      state.userNeedUpdate = action.payload;
+      state.doctorNeedUpdate = action.payload;
       // Modify avatar property to be more apporiate with fileList at upload component antd
       state.doctorNeedUpdate = {
         ...state.doctorNeedUpdate,
@@ -163,26 +147,6 @@ const doctorsSlice = createSlice({
       state.hasError = false;
     },
     [updateDoctor.rejected]: (state, action) => {
-      message.error(action.error.message, 3);
-      state.isLoading = false;
-      state.hasError = true;
-    },
-    // Delete doctor
-    [deleteDoctor.pending]: (state) => {
-      state.isLoading = true;
-      state.hasError = false;
-    },
-    [deleteDoctor.fulfilled]: (state, action) => {
-      message
-        .loading('Action in progress..', 1)
-        .then(() => message.success('Deleted doctor successfully!', 3));
-      state.doctors = state.doctors.filter(
-        (doctor) => doctor.doctor_id !== action.payload
-      );
-      state.isLoading = false;
-      state.hasError = false;
-    },
-    [deleteDoctor.rejected]: (state, action) => {
       message.error(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;

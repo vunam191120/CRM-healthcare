@@ -17,10 +17,6 @@ const doctorAPI = {
     const url = `/account/doctor/${doctor_id}`;
     return axiosClient.put(url, doctor);
   },
-  delete(doctor_id) {
-    const url = `/account/doctor/${doctor_id}`;
-    return axiosClient.delete(url);
-  },
 };
 
 export default doctorAPI;
