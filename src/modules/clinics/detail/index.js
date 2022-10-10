@@ -73,15 +73,6 @@ export default function ClinicDetailLayout() {
             <span className="text">Rooms</span>
           </NavLink>
         </li>
-        {/* <li className="navbar__item">
-          <NavLink
-            className="navbar__link"
-            to={`/clinics/detail/${clinic_id}/beds`}
-          >
-            <TbBed />
-            <span className="text">Beds</span>
-          </NavLink>
-        </li> */}
         <li className="navbar__item">
           <NavLink
             className="navbar__link"

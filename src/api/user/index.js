@@ -21,8 +21,8 @@ const accountAPI = {
     const url = `/account/user/${user_id}`;
     return axiosClient.put(url, user);
   },
-  delete(id) {
-    const url = `/account/user/${id}`;
+  delete(user_id) {
+    const url = `/account/user/${user_id}`;
     return axiosClient.delete(url);
   },
   forgotPassword(email) {

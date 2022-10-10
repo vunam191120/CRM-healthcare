@@ -142,7 +142,7 @@ export default function ArticlesList() {
     <>
       <PageHeader
         className="site-page-header"
-        onBack={() => navigate('/')}
+        // onBack={() => navigate('/')}
         title={'List Articles'}
         extra={
           <Link className="add-link button button--main" to="create">

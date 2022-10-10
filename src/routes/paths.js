@@ -3,6 +3,11 @@ export const PATH_ACCOUNTS = '/accounts';
 export const PATH_ACCOUNTS_CREATE = '/accounts/create';
 export const PATH_ACCOUNTS_UPDATE = '/accounts/update/:email';
 
+// Doctors
+export const PATH_DOCTORS = '/doctors';
+export const PATH_DOCTORS_CREATE = '/doctors/create';
+export const PATH_DOCTORS_UPDATE = '/doctors/update/:email';
+
 // Categories
 export const PATH_CATEGORIES = '/categories';
 export const PATH_CATEGORIES_CREATE = '/categories/create';

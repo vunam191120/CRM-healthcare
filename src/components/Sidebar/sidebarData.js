@@ -2,6 +2,7 @@
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiUser, BiClinic } from 'react-icons/bi';
 import { RiArticleLine } from 'react-icons/ri';
+import { FaUserNurse } from 'react-icons/fa';
 import {
   MdOutlineCategory,
   MdOutlineDashboard,
@@ -15,9 +16,9 @@ export const SidebarData = [
     icon: <MdOutlineDashboard />,
   },
   {
-    title: 'Services',
-    path: '/services',
-    icon: <MdOutlineMedicalServices />,
+    title: 'Clinics',
+    path: '/clinics',
+    icon: <BiClinic />,
   },
   {
     title: 'Accounts',
@@ -25,14 +26,19 @@ export const SidebarData = [
     icon: <BiUser />,
   },
   {
+    title: 'Doctors',
+    path: '/doctors',
+    icon: <FaUserNurse />,
+  },
+  {
     title: 'Categories',
     path: '/categories',
     icon: <MdOutlineCategory />,
   },
   {
-    title: 'Clinics',
-    path: '/clinics',
-    icon: <BiClinic />,
+    title: 'Services',
+    path: '/services',
+    icon: <MdOutlineMedicalServices />,
   },
   // {
   //   title: 'Reports',

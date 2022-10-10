@@ -15,30 +15,27 @@ import {
 } from 'antd';
 import moment from 'moment';
 
-import Modal from '../../../components/Modal';
 import Button from '../../../components/Button';
+import Modal from '../../../components/Modal';
 import Spinner from '../../../components/Spinner';
 import {
-  createUser,
-  updateUser,
-  fetchUser,
-  selectUserNeedUpdate,
-  selectUsersLoading,
-  changeUserNeedUpdateAvatar,
-  deleteUserNeedUpdateAvatar,
-  setUserNeedUpdate,
-} from '../../../store/slices/usersSlice';
-import { ROLES } from '../../../constants';
-import checkRole from '../../../helpers/checkRole';
+  changeDoctorNeedUpdateAvatar,
+  createDoctor,
+  deleteDoctorNeedUpdateAvatar,
+  fetchDoctor,
+  selectDoctorNeedUpdate,
+  selectDoctorsLoading,
+  updateDoctor,
+} from '../../../store/slices/doctorsSlice';
 
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
     xl: {
-      span: 4,
+      span: 5,
     },
     lg: {
-      span: 4,
+      span: 5,
     },
     xs: {
       span: 24,
@@ -49,10 +46,10 @@ const formItemLayout = {
   },
   wrapperCol: {
     xl: {
-      span: 16,
+      span: 17,
     },
     lg: {
-      span: 14,
+      span: 17,
     },
     xs: {
       span: 24,
@@ -79,12 +76,12 @@ const tailFormItemLayout = {
   },
 };
 
-export default function AccountForm({ mode }) {
+export default function DoctorForm({ mode }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [oldImage, setOldImage] = useState(false);
-  const isLoading = useSelector(selectUsersLoading);
-  const userNeedUpdate = useSelector(selectUserNeedUpdate);
+  const isLoading = useSelector(selectDoctorsLoading);
+  const doctorNeedUpdate = useSelector(selectDoctorNeedUpdate);
   const { email } = useParams();
   const [form] = Form.useForm();
   const prefixSelector = (
@@ -108,36 +105,34 @@ export default function AccountForm({ mode }) {
   // Get user need to update
   useEffect(() => {
     if (mode === 'update') {
-      dispatch(fetchUser(email));
+      dispatch(fetchDoctor(email));
     }
   }, [mode, dispatch, email]);
 
   // Fill values after getting needed user
   useEffect(() => {
     if (mode === 'update') {
-      if (Object.keys(userNeedUpdate).length > 0) {
+      if (Object.keys(doctorNeedUpdate).length > 0) {
         form.setFieldsValue({
-          first_name: userNeedUpdate.first_name,
-          last_name: userNeedUpdate.last_name,
-          email: userNeedUpdate.email,
-          phone: userNeedUpdate.phone,
-          gender: userNeedUpdate.gender,
-          role: checkRole(userNeedUpdate.role_id),
-          // date_of_birth: moment('19-11-2000', 'DD-MM-YYYY'),
-          date_of_birth: moment(userNeedUpdate.date_of_birth, 'DD-MM-YYYY'),
-          profile_status: userNeedUpdate.profile_status,
+          first_name: doctorNeedUpdate.first_name,
+          last_name: doctorNeedUpdate.last_name,
+          email: doctorNeedUpdate.email,
+          phone: doctorNeedUpdate.phone,
+          gender: doctorNeedUpdate.gender,
+          date_of_birth: moment(doctorNeedUpdate.date_of_birth, 'DD-MM-YYYY'),
+          profile_status: doctorNeedUpdate.profile_status,
           agreement: true,
         });
       }
     }
-  }, [form, mode, userNeedUpdate]);
+  }, [form, mode, doctorNeedUpdate]);
 
   const handlePreview = (file) => {
     if (mode === 'update') {
       setPreview({
         ...preview,
-        src: userNeedUpdate.avatar[0].url,
-        name: userNeedUpdate.avatar[0].name,
+        src: doctorNeedUpdate.avatar[0].url,
+        name: doctorNeedUpdate.avatar[0].name,
         isOpen: true,
       });
     } else {
@@ -154,42 +149,23 @@ export default function AccountForm({ mode }) {
     setPreview({ ...preview, isOpen: false });
   };
 
-  const handleSubmit = (values) => {
-    const formData = new FormData();
-    formData.append('first_name', values.first_name);
-    formData.append('last_name', values.last_name);
-    formData.append('email', values.email);
-    formData.append('phone', `${values.prefix}${values.phone}`);
-    formData.append('gender', values.gender);
-    formData.append('date_of_birth', values.date_of_birth.format('DD-MM-YYYY'));
-    formData.append('profile_status', values.profile_status);
-    formData.append('old_image', oldImage);
-    if (mode === 'create') {
-      formData.append('avatar', avatar[0]);
-      formData.append('role_id', values.role);
-      formData.append('password', values.password);
-      dispatch(createUser(formData));
-    } else if (mode === 'update') {
-      oldImage && formData.append('avatar', avatar[0]);
-      formData.append('role_id', ROLES[values.role.toUpperCase()]);
-      formData.append('user_id', userNeedUpdate.user_id);
-      dispatch(updateUser(formData));
-    }
-  };
-
   // Fill method for testing
   const onFill = () => {
+    const randomNum = Math.floor(Math.random() * 100);
     form.setFieldsValue({
-      first_name: 'Vu',
-      last_name: 'Nam',
-      email: 'admin@gmail.com',
-      password: 'admin',
-      confirm: 'admin',
-      phone: '971940618',
-      experiences: '22 years of being a couch potato :D',
+      first_name: `Vu ${randomNum}`,
+      last_name: `Nam ${randomNum}`,
+      email: `doctor${randomNum}@gmail.com`,
+      password: 'doctor',
+      confirm: 'doctor',
+      phone: `97194${randomNum}${randomNum}`,
+      work_progress: `${randomNum} years of being a couch potato :D`,
+      other_document: `${randomNum} certificates of healthy baby`,
       gender: 'Male',
-      role: '1',
       date_of_birth: moment('19112000', 'DD-MM-YYYY'),
+      description: 'The best doctor all over the world!',
+      citizen_identification_number: `01353099${randomNum}`,
+      citizen_identification_date: moment('19112017', 'DD-MM-YYYY'),
       profile_status: true,
       agreement: true,
     });
@@ -199,16 +175,47 @@ export default function AccountForm({ mode }) {
     form.resetFields();
   };
 
+  const handleSubmit = (values) => {
+    const formData = new FormData();
+    formData.append('first_name', values.first_name);
+    formData.append('last_name', values.last_name);
+    formData.append('email', values.email);
+    formData.append('phone', `${values.prefix}${values.phone}`);
+    formData.append('gender', values.gender);
+    formData.append('date_of_birth', values.date_of_birth.format('DD-MM-YYYY'));
+    formData.append(
+      'citizen_identification_number',
+      values.citizen_identification_number
+    );
+    formData.append(
+      'citizen_identification_date',
+      values.citizen_identification_date.format('DD-MM-YYYY')
+    );
+    formData.append('profile_status', values.profile_status);
+    formData.append('work_progress', values.work_progress);
+    formData.append('other_document', values.other_document);
+    formData.append('description', values.description);
+    if (mode === 'create') {
+      formData.append('avatar', avatar[0]);
+      formData.append('password', values.password);
+      dispatch(createDoctor(formData));
+    } else if (mode === 'update') {
+      oldImage && formData.append('avatar', avatar[0]);
+      formData.append('doctor_id', doctorNeedUpdate.doctor_id);
+      dispatch(updateDoctor(formData));
+    }
+  };
+
   return (
     <>
       <PageHeader
         className="site-page-header"
         onBack={() => navigate('/accounts')}
-        title={mode === 'create' ? 'Add User' : 'Update User'}
-        subTitle="This is a subtitle"
+        title={mode === 'create' ? 'Add doctor' : 'Update doctor'}
+        // subTitle="This is a subtitle"
       />
       <Form
-        className="userForm"
+        className="doctorForm"
         {...formItemLayout}
         form={form}
         name="register"
@@ -229,16 +236,7 @@ export default function AccountForm({ mode }) {
             },
           ]}
         >
-          <Input
-            onBlur={(e) =>
-              dispatch(
-                setUserNeedUpdate({
-                  first_name: e.target.value,
-                })
-              )
-            }
-            placeholder="Enter your first name!"
-          />
+          <Input placeholder="Enter your first name!" />
         </Form.Item>
 
         {/* Last Name */}
@@ -252,16 +250,7 @@ export default function AccountForm({ mode }) {
             },
           ]}
         >
-          <Input
-            onBlur={(e) =>
-              dispatch(
-                setUserNeedUpdate({
-                  last_name: e.target.value,
-                })
-              )
-            }
-            placeholder="Enter your last name!"
-          />
+          <Input placeholder="Enter your last name!" />
         </Form.Item>
 
         {/* Email */}
@@ -342,13 +331,6 @@ export default function AccountForm({ mode }) {
           ]}
         >
           <Input
-            onBlur={(e) =>
-              dispatch(
-                setUserNeedUpdate({
-                  phone: e.target.value,
-                })
-              )
-            }
             placeholder="Enter your phone!"
             addonBefore={prefixSelector}
             style={{
@@ -368,46 +350,10 @@ export default function AccountForm({ mode }) {
             },
           ]}
         >
-          <Select
-            onChange={(value) => {
-              dispatch(
-                setUserNeedUpdate({
-                  gender: value,
-                })
-              );
-            }}
-            placeholder="Select your gender"
-          >
+          <Select placeholder="Select your gender">
             <Option value="Male">Male</Option>
             <Option value="Female">Female</Option>
             <Option value="Other">Other</Option>
-          </Select>
-        </Form.Item>
-
-        {/* Role */}
-        <Form.Item
-          name="role"
-          label="Role"
-          rules={[
-            {
-              required: true,
-              message: 'Please select role!',
-            },
-          ]}
-        >
-          <Select
-            onChange={(value) => {
-              dispatch(
-                setUserNeedUpdate({
-                  role_id: value,
-                })
-              );
-            }}
-            placeholder="Select your role!"
-          >
-            <Option value={ROLES.ADMIN}>Admin</Option>
-            <Option value={ROLES.SALE}>Sale</Option>
-            <Option value={ROLES.BACK_OFFICER}>Back Officer</Option>
           </Select>
         </Form.Item>
 
@@ -425,12 +371,22 @@ export default function AccountForm({ mode }) {
           <DatePicker allowClear={false} format="DD-MM-YYYY" />
         </Form.Item>
 
+        {/* Work progress */}
+        <Form.Item label="Work progress" name="work_progress">
+          <Input.TextArea
+            autosize={{ minRows: 3, maxRows: 6 }}
+            style={{
+              minHeight: 100,
+            }}
+          />
+        </Form.Item>
+
         {/* Avatar */}
         <Form.Item label="Avatar" valuePropName="fileList">
           <Upload
             onRemove={(file) => {
               if (mode === 'update') {
-                dispatch(deleteUserNeedUpdateAvatar());
+                dispatch(deleteDoctorNeedUpdateAvatar());
               }
               setAvatar([]);
             }}
@@ -446,14 +402,14 @@ export default function AccountForm({ mode }) {
                 file.url = event.target.result;
                 if (mode === 'update') {
                   setAvatar([file]);
-                  dispatch(changeUserNeedUpdateAvatar(file));
+                  dispatch(changeDoctorNeedUpdateAvatar(file));
                 }
                 setAvatar([file]);
               };
               return false;
             }}
             listType="picture-card"
-            fileList={mode === 'update' ? userNeedUpdate.avatar : avatar}
+            fileList={mode === 'update' ? doctorNeedUpdate.avatar : avatar}
             onPreview={handlePreview}
           >
             <div>
@@ -469,6 +425,58 @@ export default function AccountForm({ mode }) {
           </Upload>
         </Form.Item>
 
+        {/* Citizen Identification Number */}
+        <Form.Item
+          name="citizen_identification_number"
+          label="Citizen Identification Number"
+          rules={[
+            {
+              required: true,
+              message: 'Please select citizen identification number!',
+            },
+          ]}
+        >
+          <Input placeholder="Enter your citizen identification number!" />
+        </Form.Item>
+
+        {/* Citizen Identification Date */}
+        <Form.Item
+          name="citizen_identification_date"
+          label="Citizen Identification Date"
+          rules={[
+            {
+              required: true,
+              message: 'Please select citizen identification date!',
+            },
+          ]}
+        >
+          <DatePicker allowClear={false} format="DD-MM-YYYY" />
+        </Form.Item>
+
+        {/* Description */}
+        <Form.Item
+          label="Description"
+          name="description"
+          rules={[
+            {
+              required: true,
+              message: 'Please enter your description!',
+            },
+          ]}
+        >
+          <Input.TextArea autosize={{ minRows: 3, maxRows: 6 }} />
+        </Form.Item>
+
+        {/* Other document */}
+        <Form.Item label="Other document" name="other_document">
+          <Input.TextArea
+            autosize={{ minRows: 3, maxRows: 6 }}
+            style={{
+              minHeight: 100,
+            }}
+          />
+        </Form.Item>
+
         {/* Profile status */}
         <Form.Item
           name="profile_status"
@@ -476,15 +484,8 @@ export default function AccountForm({ mode }) {
           label="Profile status"
         >
           <Switch
-            onChange={(value) =>
-              dispatch(
-                setUserNeedUpdate({
-                  profile_status: value,
-                })
-              )
-            }
             defaultChecked={
-              mode === 'update' ? userNeedUpdate.profile_status : false
+              mode === 'update' ? doctorNeedUpdate.profile_status : false
             }
             className="switch"
           />
@@ -516,7 +517,7 @@ export default function AccountForm({ mode }) {
             {isLoading ? (
               <Spinner />
             ) : (
-              `${mode === 'create' ? 'Add User' : 'Update User'}`
+              `${mode === 'create' ? 'Add doctor' : 'Update doctor'}`
             )}
           </Button>
           {mode === 'create' && (

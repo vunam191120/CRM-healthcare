@@ -3,6 +3,7 @@ import articlesSlice from './slices/articlesSlice';
 import bedsSlice from './slices/bedsSlice';
 import categoriesSlice from './slices/categoriesSlice';
 import clinicsSlice from './slices/clinicsSlice';
+import doctorsSlice from './slices/doctorsSlice';
 import roomsSlice from './slices/roomsSlice';
 import servicesSlice from './slices/servicesSlice';
 import tagsSlice from './slices/tagsSlice';
@@ -12,6 +13,7 @@ import usersReducer from './slices/usersSlice';
 export default configureStore({
   reducer: {
     users: usersReducer,
+    doctors: doctorsSlice,
     categories: categoriesSlice,
     services: servicesSlice,
     clinics: clinicsSlice,

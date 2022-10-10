@@ -135,7 +135,6 @@ const usersSlice = createSlice({
       state.userNeedUpdate.avatar[0] = {
         ...state.userNeedUpdate.avatar[0],
         ...action.payload,
-        title: action.payload.name,
       };
     },
     deleteUserNeedUpdateAvatar: (state, action) => {
@@ -201,7 +200,6 @@ const usersSlice = createSlice({
       message
         .loading('Action in progress..', 0.5)
         .then(() => message.success('Added new user successfully!', 3));
-      state.users = [...state.users, action.payload];
       state.isLoading = false;
       state.hasError = false;
     },

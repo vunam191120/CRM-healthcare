@@ -2,6 +2,9 @@ import {
   PATH_ACCOUNTS,
   PATH_ACCOUNTS_CREATE,
   PATH_ACCOUNTS_UPDATE,
+  PATH_DOCTORS,
+  PATH_DOCTORS_CREATE,
+  PATH_DOCTORS_UPDATE,
   PATH_CATEGORIES,
   PATH_CATEGORIES_CREATE,
   PATH_CATEGORIES_UPDATE,
@@ -35,6 +38,9 @@ import {
 import Accounts from '../pages/accounts';
 import CreateAccount from '../pages/accounts/create';
 import UpdateAccount from '../pages/accounts/update';
+import Doctors from '../pages/doctors';
+import CreateDoctor from '../pages/doctors/create';
+import UpdateDoctor from '../pages/doctors/update';
 import Categories from '../pages/categories';
 import CreateCategory from '../pages/categories/create';
 import UpdateCategory from '../pages/categories/update';
@@ -82,6 +88,22 @@ const appRoutes = [
   {
     path: PATH_ACCOUNTS_UPDATE,
     element: <UpdateAccount />,
+    roles: ['Admin'],
+  },
+  // Doctors
+  {
+    path: PATH_DOCTORS,
+    element: <Doctors />,
+    roles: ['Admin'],
+  },
+  {
+    path: PATH_DOCTORS_CREATE,
+    element: <CreateDoctor />,
+    roles: ['Admin'],
+  },
+  {
+    path: PATH_DOCTORS_UPDATE,
+    element: <UpdateDoctor />,
     roles: ['Admin'],
   },
   // Categories

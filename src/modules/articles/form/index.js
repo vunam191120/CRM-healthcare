@@ -539,9 +539,7 @@ export default function ArticleForm({ mode }) {
                   className="article-input-group"
                   valuePropName="fileList"
                 >
-                  <h3 className="title">
-                    Thumbnail - {JSON.stringify(oldImage, null, 2)}
-                  </h3>
+                  <h3 className="title">Thumbnail</h3>
                   <Form.Item name="thumbnail">
                     <Upload
                       className="upload-thumbnail-container"

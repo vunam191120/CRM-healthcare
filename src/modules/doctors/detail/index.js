@@ -3,12 +3,13 @@ import { Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import { AiTwotoneStar } from 'react-icons/ai';
 import { IoClose } from 'react-icons/io5';
+import moment from 'moment';
 
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 
-export default function UserDetail({
-  user,
+export default function DoctorDetail({
+  doctor,
   isShowDetail,
   onClickClose,
   onClickDelete,
@@ -18,13 +19,18 @@ export default function UserDetail({
       <div className="close-btn" onClick={onClickClose}>
         <IoClose className="close-icon" />
       </div>
-      <h3 className="title">User Detail</h3>
+      <h3 className="title">Doctor Detail</h3>
       <div className="head">
-        <img className="avatar" src={user.avatar} alt="Doctor Detail Avatar" />
+        <img
+          className="avatar"
+          //   src={doctor.avatar}
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv5yszj7JL_R5Et7UHQllwsrlBqJHdBQMtaXsSBhmp&s"
+          alt="Doctor Detail Avatar"
+        />
         <div className="description">
-          <p className="id">#{user.user_id}</p>
+          <p className="id">#{doctor.doctor_id}</p>
           <h3 className="name">
-            Dr.{user.first_name} {user.last_name}
+            Dr.{doctor.first_name} {doctor.last_name}
           </h3>
           <p className="category">BDS, MDS - Oral & Maxillofacial Surgery</p>
         </div>
@@ -38,7 +44,9 @@ export default function UserDetail({
         <Row gutter={8} className="details-container">
           <Col xl={8} xxl={8}>
             <p className="details-title">Member Since</p>
-            <p className="details-info">Nov 21, 2022</p>
+            <p className="details-info">
+              {moment(doctor.date_of_birth).format('MMM Do YY')}
+            </p>
           </Col>
           <Col xl={8} xxl={8}>
             <p className="details-title">Speciality</p>
@@ -53,11 +61,11 @@ export default function UserDetail({
         <Row gutter={8} className="details-container">
           <Col xl={8}>
             <p className="details-title">Gender</p>
-            <p className="details-info">{user.gender}</p>
+            <p className="details-info">{doctor.gender}</p>
           </Col>
           <Col xl={8}>
             <p className="details-title">Date of Birth</p>
-            <p className="details-info">{user.dateOfBirth}</p>
+            <p className="details-info">{doctor.date_of_birth}</p>
           </Col>
           <Col xl={8}>
             <p className="details-title">Location</p>
@@ -65,11 +73,11 @@ export default function UserDetail({
           </Col>
           <Col xl={8}>
             <p className="details-title">Phone Number</p>
-            <p className="details-info">(+84) {user.phone}</p>
+            <p className="details-info">(+84) {doctor.phone}</p>
           </Col>
           <Col xl={8}>
             <p className="details-title">Email</p>
-            <p className="details-info">{user.email}</p>
+            <p className="details-info">{doctor.email}</p>
           </Col>
         </Row>
         <p className="total-consulation">
@@ -77,7 +85,7 @@ export default function UserDetail({
         </p>
       </div>
       <div className="footer">
-        <Link to={`update/${user.email}`} className="button button--main">
+        <Link to={`update/${doctor.email}`} className="button button--main">
           Update
         </Link>
         <Button
@@ -92,7 +100,6 @@ export default function UserDetail({
       </div>
     </div>
   );
-
   return (
     <Modal
       className={`${isShowDetail ? 'user-detail active' : 'user-detail'}`}
