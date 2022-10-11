@@ -185,7 +185,7 @@ export default function ServicesList() {
     {
       title: 'Category',
       key: 'category_name',
-      render: (text, record, index) => <p>{record.category.category_name}</p>,
+      render: (text, record, index) => record.category.category_name,
       filters: [
         {
           text: 'Dermatology',

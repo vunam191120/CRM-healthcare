@@ -38,6 +38,22 @@ const clinicAPI = {
     const url = `/clinic/doctor/${clinic_id}`;
     return axiosClient.get(url);
   },
+  getStaffs(clinic_id) {
+    const url = `/clinic/staff/${clinic_id}`;
+    return axiosClient.get(url);
+  },
+  createStaff(staff) {
+    const url = `/clinic/staff`;
+    return axiosClient.post(url, staff);
+  },
+  updateStaff(staff) {
+    const url = `/clinic/staff/`;
+    return axiosClient.put(url, staff);
+  },
+  deleteStaff(staff) {
+    const url = `/clinic/staff`;
+    return axiosClient.delete(url, staff);
+  },
   updateCategories(data) {
     const url = `/clinic/category`;
     return axiosClient.put(url, data);

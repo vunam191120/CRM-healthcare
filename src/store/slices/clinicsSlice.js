@@ -63,6 +63,42 @@ export const fetchDoctorsClinic = createAsyncThunk(
   }
 );
 
+export const fetchStaffsClinic = createAsyncThunk(
+  'clinicsSlice/fetchStaffsClinic',
+  async (clinic_id) => {
+    try {
+      const result = await clinicAPI.getStaffs(clinic_id);
+      return result.data.data;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
+export const createStaffClinic = createAsyncThunk(
+  'clinicsSlice/createStaffClinic',
+  async (staff) => {
+    try {
+      const result = await clinicAPI.createStaff(staff);
+      return result.data.data;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
+export const updateStaffClinic = createAsyncThunk(
+  'clinicsSlice/updateStaffClinic',
+  async (staff) => {
+    try {
+      await clinicAPI.updateStaff(staff);
+      return staff;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
 export const createClinic = createAsyncThunk(
   'clinicsSlice/createClinic',
   async (clinic) => {
@@ -187,9 +223,11 @@ const clinicsSlice = createSlice({
   initialState: {
     clinics: [],
     doctors: [],
+    staffs: [],
     categories: [],
     services: [],
     clinicNeedUpdate: {},
+    searchTerm: '',
     isLoading: false,
     hasError: false,
   },
@@ -205,6 +243,9 @@ const clinicsSlice = createSlice({
         ...state.clinicNeedUpdate.clinic,
         ...action.payload,
       };
+    },
+    changeSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
     },
   },
   extraReducers: {
@@ -294,6 +335,21 @@ const clinicsSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Fetch staffs by clinic
+    [fetchStaffsClinic.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchStaffsClinic.fulfilled]: (state, action) => {
+      state.staffs = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchStaffsClinic.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
     // Create Clinic
     [createClinic.pending]: (state) => {
       state.isLoading = true;
@@ -332,6 +388,26 @@ const clinicsSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Create Staff
+    [createStaffClinic.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [createStaffClinic.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 0.5)
+        .then(() =>
+          message.success('Added new staff into clinic successfully!', 3)
+        );
+      state.staffs = [...state.staffs, action.payload];
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [createStaffClinic.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
     // Update Doctor
     [updateDoctorClinic.pending]: (state) => {
       state.isLoading = true;
@@ -351,6 +427,29 @@ const clinicsSlice = createSlice({
       state.hasError = false;
     },
     [updateDoctorClinic.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Update Staff
+    [updateStaffClinic.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [updateStaffClinic.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 0.5)
+        .then(() => message.success('Updated staff successfully!', 3));
+      state.staffs = state.staffs.map((staff) => {
+        if (staff.user_id === action.payload.user_id) {
+          staff = { ...staff, ...action.payload };
+        }
+        return staff;
+      });
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [updateStaffClinic.rejected]: (state, action) => {
       message.err(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;
@@ -495,6 +594,13 @@ const clinicsSlice = createSlice({
   },
 });
 
+// Actions
+export const {
+  addClinicNeedUpdateImage,
+  setClinicNeedUpdate,
+  changeSearchTerm,
+} = clinicsSlice.actions;
+
 // Selectors
 export const selectClinics = (state) => state.clinics.clinics;
 
@@ -510,7 +616,25 @@ export const selectClinicsError = (state) => state.clinics.hasError;
 
 export const selectClinicNeedUpdate = (state) => state.clinics.clinicNeedUpdate;
 
-export const { addClinicNeedUpdateImage, setClinicNeedUpdate } =
-  clinicsSlice.actions;
+export const selectSearchTermClinic = (state) => state.clinics.searchTerm;
+
+export const selectStaffsByClinic = (state) => state.clinics.staffs;
+
+export const selectFilteredDoctorsByClinic = (state) => {
+  const doctors = selectDoctorsByClinic(state);
+  const searchTerm = selectSearchTermClinic(state);
+  return doctors.filter((doctor) =>
+    doctor.doctor.full_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+};
+
+export const selectFilteredStaffsByClinic = (state) => {
+  const staffs = selectStaffsByClinic(state);
+  const searchTerm = selectSearchTermClinic(state);
+
+  return staffs.filter((staff) =>
+    staff.user.full_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+};
 
 export default clinicsSlice.reducer;

@@ -164,8 +164,7 @@ const doctorsSlice = createSlice({
   },
 });
 
-// Selector
-
+// Actions
 export const {
   changeDoctorNeedUpdateAvatar,
   deleteDoctorNeedUpdateAvatar,
@@ -173,6 +172,7 @@ export const {
   changeSearchTerm,
 } = doctorsSlice.actions;
 
+// Selector
 export const selectDoctorsLoading = (state) => state.doctors.isLoading;
 
 export const selectDoctors = (state) => state.doctors.doctors;
@@ -183,12 +183,12 @@ export const selectDoctorNeedUpdate = (state) => state.doctors.doctorNeedUpdate;
 
 export const selectDoctorSearchTerm = (state) => state.doctors.searchTerm;
 
-export const selectFilteredDoctor = (state) => {
+export const selectFilteredDoctors = (state) => {
   const doctors = selectDoctors(state);
   const searchTerm = selectDoctorSearchTerm(state);
 
   return doctors.filter((doctor) =>
-    doctor.first_name.toLowerCase().includes(searchTerm.toLowerCase())
+    doctor.full_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 };
 

@@ -126,6 +126,7 @@ const usersSlice = createSlice({
   name: 'usersSlice',
   initialState: {
     users: [],
+    searchTerm: '',
     userNeedUpdate: {},
     isLoading: false,
     hasError: false,
@@ -145,6 +146,9 @@ const usersSlice = createSlice({
         ...state.userNeedUpdate,
         ...action.payload,
       };
+    },
+    changeSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
     },
   },
   extraReducers: {
@@ -309,6 +313,7 @@ export const {
   changeUserNeedUpdateAvatar,
   deleteUserNeedUpdateAvatar,
   setUserNeedUpdate,
+  changeSearchTerm,
 } = usersSlice.actions;
 
 // Selectors
@@ -319,6 +324,17 @@ export const selectUsers = (state) => state.users.users;
 export const selectUsersError = (state) => state.users.hasError;
 
 export const selectUserNeedUpdate = (state) => state.users.userNeedUpdate;
+
+export const selectUserSearchTerm = (state) => state.users.searchTerm;
+
+export const selectFilteredUsers = (state) => {
+  const users = selectUsers(state);
+  const searchTerm = selectUserSearchTerm(state);
+
+  return users.filter((user) =>
+    user.full_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+};
 
 export const selectUsersAdmin = (state) =>
   state.users.users.filter((user) => user.role_id === ROLES.ADMIN);

@@ -1,21 +1,26 @@
-import { Table, PageHeader } from 'antd';
+import { Table, PageHeader, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
+import { SearchOutlined } from '@ant-design/icons';
 import { IoClose } from 'react-icons/io5';
+import Highlighter from 'react-highlight-words';
 
 import {
-  selectUsers,
   selectUsersLoading,
   fetchUsers,
   deleteUser,
+  changeSearchTerm,
+  selectUserSearchTerm,
+  selectFilteredUsers,
 } from '../../../store/slices/usersSlice';
-import usersColumn from './table-column';
 import UserDetail from '../detail';
 import Modal from '../../../components/Modal';
 import Button from '../../../components/Button';
+import checkRole from '../../../helpers/checkRole';
+import Tag from '../../../components/Tag';
 
 const { Column } = Table;
 
@@ -23,9 +28,11 @@ export default function AccountsList() {
   const [isShowDetail, setIsShowDetail] = useState(false);
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [userDetail, setUserDetail] = useState({});
+  const [searchedColumn, setSearchColumn] = useState('');
   const dispatch = useDispatch();
-  const users = useSelector(selectUsers);
+  const filteredUsers = useSelector(selectFilteredUsers);
   const usersLoading = useSelector(selectUsersLoading);
+  const searchTerm = useSelector(selectUserSearchTerm);
 
   const renderBody = () => (
     <div className="content content--confirm">
@@ -66,6 +73,110 @@ export default function AccountsList() {
     setIsShowDelete(false);
   };
 
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => {
+      return (
+        <div style={{ padding: 8 }}>
+          <Input
+            // ref={searchInput}
+            placeholder={`Search ${dataIndex}`}
+            // value={selectedKeys[0]}
+            // onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            onChange={(e) => {
+              dispatch(changeSearchTerm(e.target.value));
+              setSearchColumn(dataIndex);
+              // if(e.target.value === '') {
+              //   clearFilters();
+              // }
+            }}
+            style={{
+              marginBottom: 8,
+              display: 'block',
+            }}
+          />
+        </div>
+      );
+    },
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1890ff' : 'white',
+        }}
+      />
+    ),
+    render: (text) => {
+      // console.log('Text at render: ', text);
+      return searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          autoEscape
+          searchWords={[searchTerm]}
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      );
+    },
+  });
+
+  const usersColumn = [
+    {
+      title: 'ID',
+      key: 'index',
+      dataIndex: 'user_id',
+    },
+    {
+      title: 'Avatar',
+      key: 'avatar',
+      render: (text, record, index) => (
+        <img
+          src={`${record.avatar}`}
+          alt="avatar user"
+          className="user-avatar"
+        />
+      ),
+    },
+    {
+      title: 'Full Name',
+      dataIndex: 'full_name',
+      key: 'full name',
+      ...getColumnSearchProps('full_name'),
+    },
+    {
+      title: 'Gender',
+      dataIndex: 'gender',
+      key: 'gender',
+    },
+    {
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone',
+    },
+    {
+      title: 'Role',
+      key: 'role',
+      render: (text, record, index) => checkRole(record.role_id),
+    },
+    {
+      title: 'Date of Birth',
+      dataIndex: 'date_of_birth',
+      key: 'dateOfBirth',
+    },
+    {
+      title: 'Profile status',
+      key: 'profile status',
+      render: (record) => <Tag status={record.profile_status} />,
+    },
+  ];
+
   return (
     <>
       <PageHeader
@@ -96,7 +207,7 @@ export default function AccountsList() {
         pagination={{
           position: ['bottomCenter'],
         }}
-        dataSource={users}
+        dataSource={filteredUsers}
         rowKey={(record) => record.user_id}
       >
         <Column title={usersColumn.title} key={usersColumn.keys} />

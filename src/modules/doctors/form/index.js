@@ -188,6 +188,7 @@ export default function DoctorForm({ mode }) {
     const formData = new FormData();
     formData.append('first_name', values.first_name);
     formData.append('last_name', values.last_name);
+    formData.append('full_name', `${values.first_name} ${values.last_name}`);
     formData.append('email', values.email);
     formData.append('phone', `${values.prefix}${values.phone}`);
     formData.append('gender', values.gender);

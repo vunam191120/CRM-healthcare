@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineUserAdd } from 'react-icons/ai';
-import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import Highlighter from 'react-highlight-words';
 
 import {
   changeSearchTerm,
@@ -11,10 +13,10 @@ import {
   selectDoctorSearchTerm,
   // selectDoctors,
   selectDoctorsLoading,
-  selectFilteredDoctor,
+  selectFilteredDoctors,
 } from '../../../store/slices/doctorsSlice';
 import DoctorDetail from '../detail';
-import Highlighter from 'react-highlight-words';
+import Tag from '../../../components/Tag';
 
 export default function DoctorsList() {
   const dispatch = useDispatch();
@@ -23,7 +25,7 @@ export default function DoctorsList() {
   const [searchedColumn, setSearchColumn] = useState('');
   const searchTerm = useSelector(selectDoctorSearchTerm);
 
-  const filteredDoctors = useSelector(selectFilteredDoctor);
+  const filteredDoctors = useSelector(selectFilteredDoctors);
   const doctorsLoading = useSelector(selectDoctorsLoading);
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export default function DoctorsList() {
           <Input
             // ref={searchInput}
             placeholder={`Search ${dataIndex}`}
-            value={selectedKeys[0]}
+            // value={selectedKeys[0]}
             // onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
             onChange={(e) => {
               dispatch(changeSearchTerm(e.target.value));
@@ -94,9 +96,9 @@ export default function DoctorsList() {
 
   const doctorColumns = [
     {
-      title: 'No',
+      title: 'ID',
       key: 'index',
-      render: (text, record, index) => index + 1,
+      dataIndex: 'doctor_id',
     },
     {
       title: 'Avatar',
@@ -111,15 +113,10 @@ export default function DoctorsList() {
       width: 100,
     },
     {
-      title: 'First Name',
-      dataIndex: 'first_name',
+      title: 'Full Name',
+      dataIndex: 'full_name',
       key: 'first name',
-      ...getColumnSearchProps('first_name'),
-    },
-    {
-      title: 'Last Name',
-      dataIndex: 'last_name',
-      key: 'last name',
+      ...getColumnSearchProps('full_name'),
     },
     {
       title: 'Gender',
@@ -133,8 +130,13 @@ export default function DoctorsList() {
     },
     {
       title: 'Date of Birth',
-      dataIndex: 'date_of_birth',
       key: 'date_of_birth',
+      render: (record) => moment(record.date_of_birth).format('DD-MM-YYYY'),
+    },
+    {
+      title: 'Profile status',
+      key: 'profile status',
+      render: (record) => <Tag status={record.profile_status} />,
     },
   ];
 

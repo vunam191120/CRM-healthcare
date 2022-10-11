@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Form, DatePicker, Select, Input, Switch } from 'antd';
 import { Link, useParams } from 'react-router-dom';
-import { FiTrash2 } from 'react-icons/fi';
 import { BiPencil } from 'react-icons/bi';
 import { IoClose } from 'react-icons/io5';
-import { IoIosCloseCircleOutline } from 'react-icons/io';
+import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
 import moment from 'moment';
 
 import Modal from '../../../../components/Modal';
@@ -14,11 +14,12 @@ import Spinner from '../../../../components/Spinner';
 import Tag from '../../../../components/Tag';
 import {
   createDoctorClinic,
-  deleteDoctorClinic,
   fetchDoctorsClinic,
   selectClinicsLoading,
-  selectDoctorsByClinic,
+  selectFilteredDoctorsByClinic,
+  selectSearchTermClinic,
   updateDoctorClinic,
+  changeSearchTerm,
 } from '../../../../store/slices/clinicsSlice';
 import {
   fetchDoctors,
@@ -65,13 +66,14 @@ export default function ClinicDoctors() {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { clinic_id } = useParams();
-  const doctors = useSelector(selectDoctorsByClinic);
-  const availabledDoctors = useSelector(selectDoctorAvailable);
-  const clinicLoading = useSelector(selectClinicsLoading);
   const [doctorSelected, setDoctorSelected] = useState({});
   const [isShowForm, setIsShowForm] = useState(false);
-  const [isShowDelete, setIsShowDelete] = useState(false);
   const [mode, setMode] = useState('');
+  const [searchedColumn, setSearchColumn] = useState('');
+  const filteredDoctors = useSelector(selectFilteredDoctorsByClinic);
+  const availabledDoctors = useSelector(selectDoctorAvailable);
+  const clinicLoading = useSelector(selectClinicsLoading);
+  const searchTerm = useSelector(selectSearchTermClinic);
 
   useEffect(() => {
     if (mode === 'update') {
@@ -99,6 +101,62 @@ export default function ClinicDoctors() {
     dispatch(fetchDoctors());
   }, [dispatch]);
 
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => {
+      return (
+        <div style={{ padding: 8 }}>
+          <Input
+            // ref={searchInput}
+            placeholder={`Search ${dataIndex}`}
+            // value={selectedKeys[0]}
+            // onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            onChange={(e) => {
+              dispatch(changeSearchTerm(e.target.value));
+              setSearchColumn(dataIndex);
+              // if(e.target.value === '') {
+              //   clearFilters();
+              // }
+            }}
+            style={{
+              marginBottom: 8,
+              display: 'block',
+            }}
+          />
+        </div>
+      );
+    },
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1890ff' : 'white',
+        }}
+      />
+    ),
+    render: (record) => {
+      // console.log('Text at render: ', text);
+      return searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          autoEscape
+          searchWords={[searchTerm]}
+          textToHighlight={
+            record.doctor.full_name ? record.doctor.full_name.toString() : ''
+          }
+        />
+      ) : (
+        record.doctor.full_name
+      );
+    },
+  });
+
   const doctorColumns = [
     {
       title: 'ID',
@@ -117,14 +175,10 @@ export default function ClinicDoctors() {
       ),
     },
     {
-      title: 'First Name',
-      key: 'first name',
-      render: (record) => record.doctor.first_name,
-    },
-    {
-      title: 'Last Name',
-      key: 'last name',
-      render: (record) => record.doctor.last_name,
+      title: 'Full Name',
+      key: 'full name',
+      render: (record) => record.doctor.full_name,
+      ...getColumnSearchProps('full_name'),
     },
     {
       title: 'Position',
@@ -147,6 +201,40 @@ export default function ClinicDoctors() {
       title: 'Profile status',
       key: 'profile status',
       render: (record) => <Tag status={record.profile_status} />,
+      filters: [
+        {
+          text: 'Active',
+          value: 'active',
+        },
+        {
+          text: 'Disabled',
+          value: 'disabled',
+        },
+        {
+          text: 'Both',
+          value: 'both',
+        },
+      ],
+      defaultFilteredValue: ['active'],
+      filterMultiple: false,
+      onFilter: (value, record) => {
+        if (value !== 'both') {
+          return value === 'active'
+            ? record.profile_status === true
+            : record.profile_status === false;
+        } else {
+          return (
+            record.profile_status === true || record.profile_status === false
+          );
+        }
+      },
+      filterIcon: (filtered) => (
+        <FilterOutlined
+          style={{
+            color: 'white',
+          }}
+        />
+      ),
     },
     {
       title: 'Actions',
@@ -164,17 +252,6 @@ export default function ClinicDoctors() {
           >
             <BiPencil />
             <span>Update</span>
-          </Link>
-          <Link
-            to=""
-            className="button button--delete"
-            onClick={() => {
-              setDoctorSelected(record);
-              setIsShowDelete(true);
-            }}
-          >
-            <FiTrash2 />
-            <span>Delete</span>
           </Link>
         </div>
       ),
@@ -274,41 +351,6 @@ export default function ClinicDoctors() {
     </div>
   );
 
-  const renderDelete = () => (
-    <div className="content content--confirm">
-      <div className="close-btn" onClick={() => setIsShowDelete(false)}>
-        <IoClose className="close-icon" />
-      </div>
-      <IoIosCloseCircleOutline className="icon-title icon-title--delete" />
-      <h3 className="message">
-        Are you sure to delete this doctor from clinic - {clinic_id}?
-      </h3>
-      <h3 className="object">
-        {doctorSelected.doctor.first_name} {doctorSelected.doctor.last_name} -{' '}
-        {doctorSelected.doctor_id}
-      </h3>
-      <div className="btn-container">
-        <Button
-          className="button button--light"
-          onClick={() => setIsShowDelete(false)}
-        >
-          Cancel
-        </Button>
-        <Button
-          className="button button--main"
-          onClick={() => {
-            dispatch(
-              deleteDoctorClinic({ doctor_id: doctorSelected.doctor_id })
-            );
-            setIsShowDelete(false);
-          }}
-        >
-          Delete
-        </Button>
-      </div>
-    </div>
-  );
-
   useEffect(() => {
     dispatch(fetchDoctorsClinic(clinic_id));
   }, [clinic_id, dispatch]);
@@ -355,7 +397,7 @@ export default function ClinicDoctors() {
         pagination={{
           position: ['bottomCenter'],
         }}
-        dataSource={doctors}
+        dataSource={filteredDoctors}
         rowKey={(record) => record.doctor_id}
       ></Table>
       <Modal
@@ -363,12 +405,6 @@ export default function ClinicDoctors() {
         onClickClose={() => setIsShowForm(false)}
         isOpen={isShowForm}
         renderBody={() => renderForm(mode)}
-      />
-      <Modal
-        className={`${isShowDelete ? 'active' : ''}`}
-        onClickClose={() => setIsShowDelete(false)}
-        isOpen={isShowDelete}
-        renderBody={renderDelete}
       />
     </div>
   );
