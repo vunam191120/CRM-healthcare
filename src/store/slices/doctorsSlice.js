@@ -58,6 +58,7 @@ const doctorsSlice = createSlice({
   initialState: {
     doctors: [],
     doctorNeedUpdate: {},
+    searchTerm: '',
     isLoading: false,
     hasError: false,
   },
@@ -70,6 +71,15 @@ const doctorsSlice = createSlice({
     },
     deleteDoctorNeedUpdateAvatar: (state, action) => {
       state.doctorNeedUpdate.avatar = [];
+    },
+    setDoctorNeedUpdate: (state, action) => {
+      state.doctorNeedUpdate = {
+        ...state.doctorNeedUpdate,
+        ...action.payload,
+      };
+    },
+    changeSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
     },
   },
   extraReducers: {
@@ -156,8 +166,12 @@ const doctorsSlice = createSlice({
 
 // Selector
 
-export const { changeDoctorNeedUpdateAvatar, deleteDoctorNeedUpdateAvatar } =
-  doctorsSlice.actions;
+export const {
+  changeDoctorNeedUpdateAvatar,
+  deleteDoctorNeedUpdateAvatar,
+  setDoctorNeedUpdate,
+  changeSearchTerm,
+} = doctorsSlice.actions;
 
 export const selectDoctorsLoading = (state) => state.doctors.isLoading;
 
@@ -166,5 +180,24 @@ export const selectDoctors = (state) => state.doctors.doctors;
 export const selectDoctorsError = (state) => state.doctors.hasError;
 
 export const selectDoctorNeedUpdate = (state) => state.doctors.doctorNeedUpdate;
+
+export const selectDoctorSearchTerm = (state) => state.doctors.searchTerm;
+
+export const selectFilteredDoctor = (state) => {
+  const doctors = selectDoctors(state);
+  const searchTerm = selectDoctorSearchTerm(state);
+
+  return doctors.filter((doctor) =>
+    doctor.first_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+};
+
+export const selectDoctorAvailable = (state) => {
+  const doctors = selectDoctors(state);
+
+  return doctors.filter(
+    (doctor) => doctor.profile_status === true && doctor.available === true
+  );
+};
 
 export default doctorsSlice.reducer;

@@ -34,6 +34,10 @@ const clinicAPI = {
     const url = `/clinic/service/${clinic_id}`;
     return axiosClient.get(url);
   },
+  getDoctors(clinic_id) {
+    const url = `/clinic/doctor/${clinic_id}`;
+    return axiosClient.get(url);
+  },
   updateCategories(data) {
     const url = `/clinic/category`;
     return axiosClient.put(url, data);
@@ -41,6 +45,18 @@ const clinicAPI = {
   updateServices(data) {
     const url = `/clinic/service`;
     return axiosClient.put(url, data);
+  },
+  createDoctor(doctor) {
+    const url = `/clinic/doctor/`;
+    return axiosClient.post(url, doctor);
+  },
+  updateDoctor(doctor) {
+    const url = `/clinic/doctor/`;
+    return axiosClient.put(url, doctor);
+  },
+  deleteDoctor(doctor) {
+    const url = `/clinic/doctor/`;
+    return axiosClient.delete(url, doctor);
   },
 };
 

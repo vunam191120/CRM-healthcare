@@ -26,6 +26,7 @@ import {
   selectDoctorNeedUpdate,
   selectDoctorsLoading,
   updateDoctor,
+  setDoctorNeedUpdate,
 } from '../../../store/slices/doctorsSlice';
 
 const { Option } = Select;
@@ -119,11 +120,10 @@ export default function DoctorForm({ mode }) {
           email: doctorNeedUpdate.email,
           phone: doctorNeedUpdate.phone,
           gender: doctorNeedUpdate.gender,
-          date_of_birth: moment(doctorNeedUpdate.date_of_birth, 'DD-MM-YYYY'),
+          date_of_birth: moment(doctorNeedUpdate.date_of_birth),
           work_progress: doctorNeedUpdate.work_progress,
           citizen_identification_date: moment(
-            doctorNeedUpdate.citizen_identification_date,
-            'DD-MM-YYYY'
+            doctorNeedUpdate.citizen_identification_date
           ),
           citizen_identification_number:
             doctorNeedUpdate.citizen_identification_number,
@@ -191,14 +191,17 @@ export default function DoctorForm({ mode }) {
     formData.append('email', values.email);
     formData.append('phone', `${values.prefix}${values.phone}`);
     formData.append('gender', values.gender);
-    formData.append('date_of_birth', values.date_of_birth.toDate());
+    formData.append(
+      'date_of_birth',
+      values.date_of_birth.toDate().toISOString()
+    );
     formData.append(
       'citizen_identification_number',
       values.citizen_identification_number
     );
     formData.append(
       'citizen_identification_date',
-      values.citizen_identification_date.toDate()
+      values.citizen_identification_date.toDate().toISOString()
     );
     formData.append('profile_status', values.profile_status);
     formData.append('work_progress', values.work_progress);
@@ -219,7 +222,7 @@ export default function DoctorForm({ mode }) {
     <>
       <PageHeader
         className="site-page-header"
-        onBack={() => navigate('/accounts')}
+        onBack={() => navigate('/doctors')}
         title={mode === 'create' ? 'Add doctor' : 'Update doctor'}
         // subTitle="This is a subtitle"
       />
@@ -245,7 +248,16 @@ export default function DoctorForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter your first name!" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  first_name: e.target.value,
+                })
+              )
+            }
+            placeholder="Enter your first name!"
+          />
         </Form.Item>
 
         {/* Last Name */}
@@ -259,7 +271,16 @@ export default function DoctorForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter your last name!" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  last_name: e.target.value,
+                })
+              )
+            }
+            placeholder="Enter your last name!"
+          />
         </Form.Item>
 
         {/* Email */}
@@ -277,7 +298,17 @@ export default function DoctorForm({ mode }) {
             },
           ]}
         >
-          <Input disabled={mode === 'update'} placeholder="Enter your email!" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  email: e.target.value,
+                })
+              )
+            }
+            disabled={mode === 'update'}
+            placeholder="Enter your email!"
+          />
         </Form.Item>
 
         {/* Password */}
@@ -340,6 +371,13 @@ export default function DoctorForm({ mode }) {
           ]}
         >
           <Input
+            onBlur={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  phone: e.target.value,
+                })
+              )
+            }
             placeholder="Enter your phone!"
             addonBefore={prefixSelector}
             style={{
@@ -359,7 +397,16 @@ export default function DoctorForm({ mode }) {
             },
           ]}
         >
-          <Select placeholder="Select your gender">
+          <Select
+            onChange={(value) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  gender: value,
+                })
+              )
+            }
+            placeholder="Select your gender"
+          >
             <Option value="Male">Male</Option>
             <Option value="Female">Female</Option>
             <Option value="Other">Other</Option>
@@ -377,7 +424,17 @@ export default function DoctorForm({ mode }) {
             },
           ]}
         >
-          <DatePicker allowClear={false} format="DD-MM-YYYY" />
+          <DatePicker
+            onChange={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  date_of_birth: e.toDate().toISOString(),
+                })
+              )
+            }
+            allowClear={false}
+            format="DD-MM-YYYY"
+          />
         </Form.Item>
 
         {/* Work progress */}
@@ -393,6 +450,13 @@ export default function DoctorForm({ mode }) {
         >
           <Input.TextArea
             autosize={{ minRows: 3, maxRows: 6 }}
+            onBlur={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  work_progress: e.target.value,
+                })
+              )
+            }
             style={{
               minHeight: 100,
             }}
@@ -454,7 +518,16 @@ export default function DoctorForm({ mode }) {
             },
           ]}
         >
-          <Input placeholder="Enter your citizen identification number!" />
+          <Input
+            onBlur={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  citizen_identification_number: e.target.value,
+                })
+              )
+            }
+            placeholder="Enter your citizen identification number!"
+          />
         </Form.Item>
 
         {/* Citizen Identification Date */}
@@ -468,7 +541,17 @@ export default function DoctorForm({ mode }) {
             },
           ]}
         >
-          <DatePicker allowClear={false} format="DD-MM-YYYY" />
+          <DatePicker
+            onChange={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  citizen_identification_date: e.toDate().toISOString(),
+                })
+              )
+            }
+            allowClear={false}
+            format="DD-MM-YYYY"
+          />
         </Form.Item>
 
         {/* Description */}
@@ -482,12 +565,28 @@ export default function DoctorForm({ mode }) {
             },
           ]}
         >
-          <Input.TextArea autosize={{ minRows: 3, maxRows: 6 }} />
+          <Input.TextArea
+            onBlur={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  description: e.target.value,
+                })
+              )
+            }
+            autosize={{ minRows: 3, maxRows: 6 }}
+          />
         </Form.Item>
 
         {/* Other document */}
         <Form.Item label="Other document" name="other_document">
           <Input.TextArea
+            onBlur={(e) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  other_document: e.target.value,
+                })
+              )
+            }
             autosize={{ minRows: 3, maxRows: 6 }}
             style={{
               minHeight: 100,
@@ -502,6 +601,13 @@ export default function DoctorForm({ mode }) {
           label="Profile status"
         >
           <Switch
+            onChange={(value) =>
+              dispatch(
+                setDoctorNeedUpdate({
+                  profile_status: value,
+                })
+              )
+            }
             defaultChecked={
               mode === 'update' ? doctorNeedUpdate.profile_status : false
             }

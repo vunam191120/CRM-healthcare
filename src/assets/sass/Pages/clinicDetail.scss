@@ -70,7 +70,8 @@
   .category-content-detail,
   .service-content-detail,
   .room-content-detail,
-  .bed-content-detail {
+  .bed-content-detail,
+  .doctor-content-detail {
     .header {
       display: flex;
       justify-content: space-between;
@@ -82,6 +83,9 @@
     .button-container {
       .button:last-child {
         margin-left: 0;
+      }
+      .button--update {
+        margin-right: $mg-4;
       }
     }
   }

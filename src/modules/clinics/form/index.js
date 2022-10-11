@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 import { IoClose } from 'react-icons/io5';
+import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { Form, Input, PageHeader, Select, Upload } from 'antd';
 
 import Spinner from '../../../components/Spinner';
@@ -82,6 +83,38 @@ export default function ClinicsForm({ mode, customPageHeader }) {
     title: '',
     src: '',
   });
+  const [isShowDelete, setIsShowDelete] = useState(false);
+  const [imageDelete, setImageDelete] = useState({});
+
+  const renderBody = () => (
+    <div className="content content--confirm">
+      <div className="close-btn" onClick={() => setIsShowDelete(false)}>
+        <IoClose className="close-icon" />
+      </div>
+      <IoIosCloseCircleOutline className="icon-title icon-title--delete" />
+      <h3 className="message">Are you sure to delete this image?</h3>
+      <img
+        className="object"
+        src={imageDelete.url}
+        width="100%"
+        alt="img confirm delete"
+      />
+      <div className="btn-container">
+        <Button
+          className="button button--light"
+          onClick={() => setIsShowDelete(false)}
+        >
+          Cancel
+        </Button>
+        <Button
+          className="button button--main"
+          onClick={() => dispatch(deleteImage(imageDelete))}
+        >
+          Delete
+        </Button>
+      </div>
+    </div>
+  );
 
   const handleClose = () => {
     setPreview({ ...preview, isOpen: false });
@@ -323,7 +356,8 @@ export default function ClinicsForm({ mode, customPageHeader }) {
                 newFileList.splice(index, 1);
                 setFileList(newFileList);
               } else {
-                dispatch(deleteImage(file));
+                setIsShowDelete(true);
+                setImageDelete(file);
               }
             }}
             beforeUpload={(file) => {
@@ -382,6 +416,12 @@ export default function ClinicsForm({ mode, customPageHeader }) {
           </div>
         )}
         onClose={handleClose}
+      />
+      <Modal
+        className={`${isShowDelete ? 'active' : ''}`}
+        onClickClose={() => setIsShowDelete(false)}
+        isOpen={isShowDelete}
+        renderBody={renderBody}
       />
     </>
   );

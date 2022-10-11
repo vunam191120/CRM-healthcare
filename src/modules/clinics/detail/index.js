@@ -108,7 +108,7 @@ export default function ClinicDetailLayout() {
     <>
       <PageHeader
         className="site-page-header clinic-detail-header"
-        onBack={() => navigate(-1)}
+        onBack={() => navigate('/clinics')}
         title={renderTitle()}
       />
       <div className="clinic-detail-content">

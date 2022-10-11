@@ -36,6 +36,7 @@
   .button--view,
   .button--update,
   .button--delete {
+    border-radius: $border-radius-4;
     display: flex;
     align-items: center;
     transition: 0.25s ease;
@@ -79,6 +80,7 @@
 
 .button--main {
   transition: 0.25s ease;
+  border-radius: $border-radius-4;
   height: auto;
   width: auto;
   @include styleButton(
@@ -97,6 +99,8 @@
 
 .button--light {
   transition: 0.25s ease;
+  border-radius: $border-radius-4;
+
   @include styleButton(
     $color-blue-0,
     $color-white-0,

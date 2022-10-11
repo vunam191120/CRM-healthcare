@@ -22,8 +22,7 @@ export default function DoctorDetail({
       <div className="head">
         <img
           className="avatar"
-          //   src={doctor.avatar}
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv5yszj7JL_R5Et7UHQllwsrlBqJHdBQMtaXsSBhmp&s"
+          src={doctor.avatar}
           alt="Doctor Detail Avatar"
         />
         <div className="description">

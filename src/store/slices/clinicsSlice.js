@@ -51,6 +51,18 @@ export const fetchServicesByClinic = createAsyncThunk(
   }
 );
 
+export const fetchDoctorsClinic = createAsyncThunk(
+  'clinicsSlice/fetchDoctorsClinic',
+  async (clinic_id) => {
+    try {
+      const result = await clinicAPI.getDoctors(clinic_id);
+      return result.data.data;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
 export const createClinic = createAsyncThunk(
   'clinicsSlice/createClinic',
   async (clinic) => {
@@ -132,12 +144,49 @@ export const deleteImage = createAsyncThunk(
   }
 );
 
+export const createDoctorClinic = createAsyncThunk(
+  'clinicsSlice/createDoctorClinic',
+  async (doctor) => {
+    try {
+      const result = await clinicAPI.createDoctor(doctor);
+      return result.data.data;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
+export const updateDoctorClinic = createAsyncThunk(
+  'clinicsSlice/updateDoctorClinic',
+  async (doctor) => {
+    try {
+      await clinicAPI.updateDoctor(doctor);
+      return doctor;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
+export const deleteDoctorClinic = createAsyncThunk(
+  'clinicsSlice/deleteDoctorClinic',
+  async (doctor_id) => {
+    try {
+      const result = await clinicAPI.deleteDoctor(doctor_id);
+      return result.data.data;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
 // Reducer
 
 const clinicsSlice = createSlice({
   name: 'clinicsSlice',
   initialState: {
     clinics: [],
+    doctors: [],
     categories: [],
     services: [],
     clinicNeedUpdate: {},
@@ -230,6 +279,21 @@ const clinicsSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Fetch doctors by clinic
+    [fetchDoctorsClinic.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchDoctorsClinic.fulfilled]: (state, action) => {
+      state.doctors = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchDoctorsClinic.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
     // Create Clinic
     [createClinic.pending]: (state) => {
       state.isLoading = true;
@@ -244,6 +308,49 @@ const clinicsSlice = createSlice({
       state.hasError = false;
     },
     [createClinic.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Create Doctor
+    [createDoctorClinic.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [createDoctorClinic.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 0.5)
+        .then(() =>
+          message.success('Added new doctor into clinic successfully!', 3)
+        );
+      state.doctors = [...state.doctors, action.payload];
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [createDoctorClinic.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Update Doctor
+    [updateDoctorClinic.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [updateDoctorClinic.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 0.5)
+        .then(() => message.success('Updated doctor successfully!', 3));
+      state.doctors = state.doctors.map((doctor) => {
+        if (doctor.doctor_id === action.payload.doctor_id) {
+          doctor = { ...doctor, ...action.payload };
+        }
+        return doctor;
+      });
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [updateDoctorClinic.rejected]: (state, action) => {
       message.err(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;
@@ -363,6 +470,28 @@ const clinicsSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Delete doctor
+    [deleteDoctorClinic.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [deleteDoctorClinic.fulfilled]: (state, action) => {
+      message
+        .loading('Action in progress..', 0.5)
+        .then(() =>
+          message.success('Deleted doctor from clinic successfully!', 3)
+        );
+      state.doctors = state.doctors.filter(
+        (doctor) => doctor.doctor_id !== action.doctor_id
+      );
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [deleteDoctorClinic.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
   },
 });
 
@@ -372,6 +501,8 @@ export const selectClinics = (state) => state.clinics.clinics;
 export const selectCategoriesByClinic = (state) => state.clinics.categories;
 
 export const selectServicesByClinic = (state) => state.clinics.services;
+
+export const selectDoctorsByClinic = (state) => state.clinics.doctors;
 
 export const selectClinicsLoading = (state) => state.clinics.isLoading;
 

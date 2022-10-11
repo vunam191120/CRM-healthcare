@@ -123,7 +123,6 @@ export default function AccountForm({ mode }) {
           phone: userNeedUpdate.phone,
           gender: userNeedUpdate.gender,
           role: checkRole(userNeedUpdate.role_id),
-          // date_of_birth: moment('19-11-2000', 'DD-MM-YYYY'),
           date_of_birth: moment(userNeedUpdate.date_of_birth, 'DD-MM-YYYY'),
           profile_status: userNeedUpdate.profile_status,
           agreement: true,
@@ -204,7 +203,7 @@ export default function AccountForm({ mode }) {
       <PageHeader
         className="site-page-header"
         onBack={() => navigate('/accounts')}
-        title={mode === 'create' ? 'Add User' : 'Update User'}
+        title={mode === 'create' ? 'Add account' : 'Update account'}
         subTitle="This is a subtitle"
       />
       <Form
