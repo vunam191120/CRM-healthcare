@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, PageHeader } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BiPencil } from 'react-icons/bi';
 import { RiArticleLine } from 'react-icons/ri';
 // import { HiSearch } from 'react-icons/hi';
@@ -22,7 +22,6 @@ import {
 
 export default function ArticlesList() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [article, setArticle] = useState();
   const articles = useSelector(selectArticles);
