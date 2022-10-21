@@ -10,7 +10,7 @@ export const fetchDoctors = createAsyncThunk(
       const result = await doctorAPI.getAll();
       return result.data.data.rows;
     } catch (err) {
-      return err.message;
+      return Promise.reject(err.message);
     }
   }
 );
