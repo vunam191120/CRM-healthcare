@@ -58,7 +58,7 @@ export const fetchDoctorsClinic = createAsyncThunk(
       const result = await clinicAPI.getDoctors(clinic_id);
       return result.data.data;
     } catch (err) {
-      return err.message;
+      return Promise.reject(err.message);
     }
   }
 );
@@ -70,7 +70,7 @@ export const fetchStaffsClinic = createAsyncThunk(
       const result = await clinicAPI.getStaffs(clinic_id);
       return result.data.data;
     } catch (err) {
-      return err.message;
+      return Promise.reject(err.message);
     }
   }
 );
@@ -82,7 +82,7 @@ export const createStaffClinic = createAsyncThunk(
       const result = await clinicAPI.createStaff(staff);
       return result.data.data;
     } catch (err) {
-      return err.message;
+      return Promise.reject(err.message);
     }
   }
 );
@@ -94,7 +94,7 @@ export const updateStaffClinic = createAsyncThunk(
       await clinicAPI.updateStaff(staff);
       return staff;
     } catch (err) {
-      return err.message;
+      return Promise.reject(err.message);
     }
   }
 );
@@ -175,7 +175,7 @@ export const deleteImage = createAsyncThunk(
       console.log('result at delete image clinic: ', result);
       return file;
     } catch (err) {
-      return err;
+      return Promise.reject(err.message);
     }
   }
 );
@@ -187,7 +187,7 @@ export const createDoctorClinic = createAsyncThunk(
       const result = await clinicAPI.createDoctor(doctor);
       return result.data.data;
     } catch (err) {
-      return err.message;
+      return Promise.reject(err.message);
     }
   }
 );
@@ -199,7 +199,7 @@ export const updateDoctorClinic = createAsyncThunk(
       await clinicAPI.updateDoctor(doctor);
       return doctor;
     } catch (err) {
-      return err.message;
+      return Promise.reject(err.message);
     }
   }
 );
@@ -211,7 +211,7 @@ export const deleteDoctorClinic = createAsyncThunk(
       const result = await clinicAPI.deleteDoctor(doctor_id);
       return result.data.data;
     } catch (err) {
-      return err.message;
+      return Promise.reject(err.message);
     }
   }
 );
