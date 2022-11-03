@@ -85,7 +85,7 @@ export default function AccountForm({ mode }) {
   const [oldImage, setOldImage] = useState(false);
   const isLoading = useSelector(selectUsersLoading);
   const userNeedUpdate = useSelector(selectUserNeedUpdate);
-  const { email } = useParams();
+  const { user_id } = useParams();
   const [form] = Form.useForm();
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -108,9 +108,9 @@ export default function AccountForm({ mode }) {
   // Get user need to update
   useEffect(() => {
     if (mode === 'update') {
-      dispatch(fetchUser(email));
+      dispatch(fetchUser(user_id));
     }
-  }, [mode, dispatch, email]);
+  }, [mode, dispatch, user_id]);
 
   // Fill values after getting needed user
   useEffect(() => {

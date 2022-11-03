@@ -21,9 +21,9 @@ export const fetchUsers = createAsyncThunk(
 
 export const fetchUser = createAsyncThunk(
   'usersSlice/getUser',
-  async (email) => {
+  async (user_id) => {
     try {
-      const result = await accountAPI.getOne(email);
+      const result = await accountAPI.getOne(user_id);
       return result.data.data;
     } catch (err) {
       return Promise.reject(err.message);
@@ -110,7 +110,9 @@ export const login = createAsyncThunk(
       }
       localStorage.setItem('accessToken', resultToken.data.token);
       localStorage.setItem('refreshToken', resultToken.data.refreshToken);
-      const resultUser = await accountAPI.getIdentity(email);
+      const resultUser = await accountAPI.getIdentity(
+        resultToken.data.userData.user_id
+      );
       let currentUser = resultUser.data.data;
       currentUser = { ...currentUser, role: checkRole(currentUser.role_id) };
       localStorage.setItem('currentUser', JSON.stringify(currentUser));

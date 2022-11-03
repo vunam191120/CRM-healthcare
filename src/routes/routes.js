@@ -24,6 +24,8 @@ import {
   PATH_TYPES,
   PATH_TAGS,
   PATH_CLINICS_DETAIL_APPOINTMENTS,
+  PATH_CLINICS_DETAIL_APPOINTMENTS_CREATE,
+  PATH_CLINICS_DETAIL_APPOINTMENTS_UPDATE,
   PATH_CLINICS_DETAIL_CATEGORIES,
   PATH_CLINICS_DETAIL_DOCTORS,
   PATH_CLINICS_DETAIL_PAYMENTS,
@@ -58,7 +60,9 @@ import Clinics from '../pages/clinics';
 import CreateClinic from '../pages/clinics/create';
 import UpdateClinic from '../pages/clinics/update';
 import ClinicDetail from '../pages/clinics/detail';
-import ClinicAppointments from '../modules/clinics/detail/appointments';
+import Appointment from '../pages/appointments';
+import CreateAppointment from '../pages/appointments/create';
+import UpdateAppointment from '../pages/appointments/update';
 import ClinicCategories from '../modules/clinics/detail/categories';
 import ClinicDoctors from '../modules/clinics/detail/doctors';
 import ClinicPayments from '../modules/clinics/detail/payments';
@@ -209,7 +213,17 @@ const appRoutes = [
       },
       {
         path: PATH_CLINICS_DETAIL_APPOINTMENTS,
-        element: <ClinicAppointments />,
+        element: <Appointment />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_APPOINTMENTS_CREATE,
+        element: <CreateAppointment />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_APPOINTMENTS_UPDATE,
+        element: <UpdateAppointment />,
         roles: ['Admin'],
       },
       {

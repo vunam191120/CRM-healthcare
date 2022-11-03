@@ -83,7 +83,7 @@ export default function DoctorForm({ mode }) {
   const [oldImage, setOldImage] = useState(false);
   const isLoading = useSelector(selectDoctorsLoading);
   const doctorNeedUpdate = useSelector(selectDoctorNeedUpdate);
-  const { email } = useParams();
+  const { doctor_id } = useParams();
   const [form] = Form.useForm();
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -106,9 +106,9 @@ export default function DoctorForm({ mode }) {
   // Get user need to update
   useEffect(() => {
     if (mode === 'update') {
-      dispatch(fetchDoctor(email));
+      dispatch(fetchDoctor(doctor_id));
     }
-  }, [mode, dispatch, email]);
+  }, [mode, dispatch, doctor_id]);
 
   // Fill values after getting needed user
   useEffect(() => {

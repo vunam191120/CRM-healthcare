@@ -9,12 +9,12 @@ const accountAPI = {
     const url = `/account/user`;
     return axiosClient.get(url);
   },
-  getOne(email) {
-    const url = `/account/user/${email}`;
+  getOne(user_id) {
+    const url = `/account/user/${user_id}`;
     return axiosClient.get(url);
   },
-  getIdentity(email) {
-    const url = `/account/user/${email}`;
+  getIdentity(user_id) {
+    const url = `/account/user/${user_id}`;
     return axiosClient.get(url);
   },
   update(user, user_id) {

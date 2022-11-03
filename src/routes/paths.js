@@ -1,12 +1,12 @@
 // Accounts
 export const PATH_ACCOUNTS = '/accounts';
 export const PATH_ACCOUNTS_CREATE = '/accounts/create';
-export const PATH_ACCOUNTS_UPDATE = '/accounts/update/:email';
+export const PATH_ACCOUNTS_UPDATE = '/accounts/update/:user_id';
 
 // Doctors
 export const PATH_DOCTORS = '/doctors';
 export const PATH_DOCTORS_CREATE = '/doctors/create';
-export const PATH_DOCTORS_UPDATE = '/doctors/update/:email';
+export const PATH_DOCTORS_UPDATE = '/doctors/update/:doctor_id';
 
 // Categories
 export const PATH_CATEGORIES = '/categories';
@@ -39,6 +39,9 @@ export const PATH_CLINICS_UPDATE = '/clinics/update/:clinic_id';
 export const PATH_CLINICS_DETAIL = '/clinics/detail/:clinic_id/*';
 export const PATH_CLINICS_DETAIL_CLINIC = 'clinic';
 export const PATH_CLINICS_DETAIL_APPOINTMENTS = 'appointments';
+export const PATH_CLINICS_DETAIL_APPOINTMENTS_CREATE = 'appointments/create';
+export const PATH_CLINICS_DETAIL_APPOINTMENTS_UPDATE =
+  'appointments/update/:appointment_id';
 export const PATH_CLINICS_DETAIL_CATEGORIES = 'categories';
 export const PATH_CLINICS_DETAIL_DOCTORS = 'doctors';
 export const PATH_CLINICS_DETAIL_PAYMENTS = 'payments';

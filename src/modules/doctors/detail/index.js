@@ -83,7 +83,7 @@ export default function DoctorDetail({
         </p>
       </div>
       <div className="footer">
-        <Link to={`update/${doctor.email}`} className="button button--main">
+        <Link to={`update/${doctor.doctor_id}`} className="button button--main">
           Update
         </Link>
       </div>

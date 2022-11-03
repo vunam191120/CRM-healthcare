@@ -9,8 +9,8 @@ const doctorAPI = {
     const url = `/account/doctor`;
     return axiosClient.get(url);
   },
-  getOne(email) {
-    const url = `/account/doctor/${email}`;
+  getOne(doctor_id) {
+    const url = `/account/doctor/${doctor_id}`;
     return axiosClient.get(url);
   },
   update(doctor, doctor_id) {

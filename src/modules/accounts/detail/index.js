@@ -77,7 +77,7 @@ export default function UserDetail({
         </p>
       </div>
       <div className="footer">
-        <Link to={`update/${user.email}`} className="button button--main">
+        <Link to={`update/${user.user_id}`} className="button button--main">
           Update
         </Link>
         <Button

@@ -17,9 +17,9 @@ export const fetchDoctors = createAsyncThunk(
 
 export const fetchDoctor = createAsyncThunk(
   'doctorsSlice/getDoctor',
-  async (email) => {
+  async (doctor_id) => {
     try {
-      const result = await doctorAPI.getOne(email);
+      const result = await doctorAPI.getOne(doctor_id);
       return result.data.data;
     } catch (err) {
       return Promise.reject(err.message);

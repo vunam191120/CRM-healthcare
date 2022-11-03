@@ -1,4 +1,5 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import appointmentsSlice from './slices/appointmentsSlice';
 import articlesSlice from './slices/articlesSlice';
 import bedsSlice from './slices/bedsSlice';
 import categoriesSlice from './slices/categoriesSlice';
@@ -22,6 +23,7 @@ export default configureStore({
     articles: articlesSlice,
     tags: tagsSlice,
     types: typesSlice,
+    appointments: appointmentsSlice,
   },
   middleware: () =>
     getDefaultMiddleware({
