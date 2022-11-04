@@ -1,6 +1,6 @@
 // import GoThreeBars from 'react-icons/go';
 import { AiOutlineSetting } from 'react-icons/ai';
-import { BiUser, BiClinic } from 'react-icons/bi';
+import { BiUser, BiSupport, BiClinic } from 'react-icons/bi';
 import { RiArticleLine } from 'react-icons/ri';
 import { FaUserNurse } from 'react-icons/fa';
 import {
@@ -19,6 +19,11 @@ export const SidebarData = [
     title: 'Clinics',
     path: '/clinics',
     icon: <BiClinic />,
+  },
+  {
+    title: 'Supports',
+    path: '/supports',
+    icon: <BiSupport />,
   },
   {
     title: 'Accounts',

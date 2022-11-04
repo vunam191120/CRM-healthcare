@@ -1,36 +1,27 @@
-import React, { useEffect, useMemo } from 'react';
-import { DatePicker, Table } from 'antd';
+import React, { useEffect } from 'react';
+import { DatePicker, Table, PageHeader } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FilterOutlined } from '@ant-design/icons';
-import { useParams, Link } from 'react-router-dom';
-import { BiPencil } from 'react-icons/bi';
+import { BiPencil, BiSupport } from 'react-icons/bi';
 import { AiTwotoneCalendar } from 'react-icons/ai';
 import moment from 'moment';
 
+import { STATUS_SUPPORT } from '../../constants';
 import {
   changeDate,
-  fetchAppointments,
-  selectAppointmentsIsLoading,
-  selectFilteredAppointmentsByClinic,
-} from '../../../../store/slices/appointmentsSlice';
-
-import { STATUS_APPOINTMENT } from '../../../../constants';
+  fetchSupports,
+  selectFilteredSupport,
+  selectSupportsIsLoading,
+} from '../../store/slices/supportsSlice';
 
 const { RangePicker } = DatePicker;
 
-export default function ClinicAppointments() {
+export default function SupportList() {
   const dispatch = useDispatch();
-  const { clinic_id } = useParams();
-  const appointments = useSelector(selectFilteredAppointmentsByClinic);
-  const appointmentsLoading = useSelector(selectAppointmentsIsLoading);
-  const listUniDoctorID = useMemo(() => {
-    if (appointments.length > 0) {
-      const listDoctorID = appointments.map((item) => item.doctor_id);
-      return [...new Set(listDoctorID)];
-    } else {
-      return [];
-    }
-  }, [appointments]);
+  const navigate = useNavigate();
+  const supports = useSelector(selectFilteredSupport);
+  const isLoading = useSelector(selectSupportsIsLoading);
 
   const getColumnFilterDateProps = (dataIndex) => ({
     filterDropdown: ({
@@ -74,47 +65,36 @@ export default function ClinicAppointments() {
     },
   });
 
-  const appointmentColumns = [
+  useEffect(() => {
+    dispatch(fetchSupports());
+  }, [dispatch]);
+
+  const supportColumns = [
     {
       title: 'ID',
-      dataIndex: 'appointment_id',
-      key: 'appointment ID',
+      dataIndex: 'support_id',
+      key: 'support ID',
     },
     {
-      title: 'Doctor',
-      key: 'doctor',
-      dataIndex: 'doctor_id',
-      filters:
-        listUniDoctorID.length > 0 &&
-        listUniDoctorID.map((item) => ({
-          text: item,
-          value: item,
-        })),
-      onFilter: (value, record) => record.doctor_id === value,
-      filterIcon: (filtered) => (
-        <FilterOutlined
-          style={{
-            color: filtered ? '#1890ff' : 'white',
-          }}
-        />
-      ),
+      title: 'Subject',
+      dataIndex: 'subject',
+      key: 'subject',
     },
     {
-      title: 'Customer',
+      title: 'Name',
       dataIndex: 'name',
-      key: 'customer',
+      key: 'name',
     },
     {
-      title: 'Created Date',
-      key: 'created ID',
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone',
+    },
+    {
+      title: 'Created date',
+      key: 'created_date',
       dataIndex: 'created_date',
       ...getColumnFilterDateProps('created_date'),
-    },
-    {
-      title: 'Date',
-      key: 'doctor',
-      render: (record) =>
-        `${moment(record.date).format('DD-MM-YYYY')} | ${record.time}`,
     },
     {
       title: 'Status',
@@ -125,7 +105,7 @@ export default function ClinicAppointments() {
             record.status.slice(1, record.status.length)}
         </span>
       ),
-      filters: STATUS_APPOINTMENT.map((status) => ({
+      filters: STATUS_SUPPORT.map((status) => ({
         text: status.charAt(0).toUpperCase() + status.slice(1, status.length),
         value: status,
       })),
@@ -144,7 +124,7 @@ export default function ClinicAppointments() {
       render: (text, record, index) => (
         <div className="button-container">
           <Link
-            to={`update/${record.appointment_id}`}
+            to={`update/${record.support_id}`}
             className={'button button--update'}
             style={{ marginRight: 10 }}
             onClick={() => {}}
@@ -157,30 +137,31 @@ export default function ClinicAppointments() {
     },
   ];
 
-  useEffect(() => {
-    dispatch(fetchAppointments(clinic_id));
-  }, [clinic_id, dispatch]);
-
   return (
-    <div className="appointment-content-detail">
-      <div className="header">
-        <h4 className="title">Appointments Information</h4>
-        <Link to="create" className="button button--main" type="button">
-          <span>Add appointment</span>
-        </Link>
-      </div>
+    <>
+      <PageHeader
+        className="site-page-header"
+        title={'List Support'}
+        extra={
+          <Link className="add-link button button--main" to="create">
+            <BiSupport />
+            <span style={{ marginLeft: 10 }}>Add new support</span>
+          </Link>
+        }
+        onBack={() => navigate('/', { replace: true })}
+      />
       <Table
         rowClassName="custom-row"
         x={true}
-        loading={appointmentsLoading}
-        columns={appointmentColumns}
+        loading={isLoading}
+        columns={supportColumns}
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],
         }}
-        dataSource={appointments}
-        rowKey={(record) => record.appointment_id}
+        dataSource={supports}
+        rowKey={(record) => record.support_id}
       ></Table>
-    </div>
+    </>
   );
 }

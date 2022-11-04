@@ -8,6 +8,11 @@ export const PATH_DOCTORS = '/doctors';
 export const PATH_DOCTORS_CREATE = '/doctors/create';
 export const PATH_DOCTORS_UPDATE = '/doctors/update/:doctor_id';
 
+// Supports
+export const PATH_SUPPORTS = '/supports';
+export const PATH_SUPPORTS_CREATE = '/supports/create';
+export const PATH_SUPPORTS_UPDATE = '/supports/update/:support_id';
+
 // Categories
 export const PATH_CATEGORIES = '/categories';
 export const PATH_CATEGORIES_CREATE = '/categories/create';

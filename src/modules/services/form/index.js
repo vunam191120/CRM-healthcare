@@ -127,13 +127,6 @@ export default function ServiceForm({ mode }) {
         form={form}
         onFinish={handleSubmit}
         name="categories"
-        // initialValues={
-        //   mode === 'update'
-        //     ? {
-        //         category: `${serviceNeedUpdate.category_id}`,
-        //       }
-        //     : {}
-        // }
         scrollToFirstError
       >
         {/* Service Name */}

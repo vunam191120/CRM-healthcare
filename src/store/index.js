@@ -9,11 +9,13 @@ import roomsSlice from './slices/roomsSlice';
 import servicesSlice from './slices/servicesSlice';
 import tagsSlice from './slices/tagsSlice';
 import typesSlice from './slices/typesSlice';
-import usersReducer from './slices/usersSlice';
+import usersSlice from './slices/usersSlice';
+import supportsSlice from './slices/supportsSlice';
 
 export default configureStore({
   reducer: {
-    users: usersReducer,
+    users: usersSlice,
+    supports: supportsSlice,
     doctors: doctorsSlice,
     categories: categoriesSlice,
     services: servicesSlice,

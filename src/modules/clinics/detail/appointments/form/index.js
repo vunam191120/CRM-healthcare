@@ -1,5 +1,5 @@
-import { DatePicker, Form, Input, Select, Radio, Checkbox } from 'antd';
 import React, { useEffect } from 'react';
+import { DatePicker, Form, Input, Select, Radio, Checkbox } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
@@ -358,7 +358,7 @@ export default function AppointmentForm({ mode }) {
             {isLoading ? (
               <Spinner />
             ) : (
-              `${mode === 'create' ? 'Create' : 'Update'} appointment`
+              `${mode === 'create' ? 'Add' : 'Update'} appointment`
             )}
           </Button>
         </Form.Item>
