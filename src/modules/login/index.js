@@ -110,7 +110,7 @@ export default function LoginForm() {
                 className="login__img--mobile"
                 alt="logo healthcare mobile"
               />
-              <h1>HealthCare</h1>
+              <h1>MedCares</h1>
               <p>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta
                 nobis in repellat, animi quibusdam. Beatae, doloribus.

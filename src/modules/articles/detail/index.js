@@ -38,12 +38,6 @@ export default function ArticleDetail() {
     }
   }, [article.author_id, dispatch]);
 
-  // Fetch information about the author
-  useEffect(() => {
-    // dispatch(fetchUser(article.author_email));
-    dispatch(fetchUser('vuhainam1911@gmail.com'));
-  }, [dispatch]);
-
   return (
     <>
       <PageHeader

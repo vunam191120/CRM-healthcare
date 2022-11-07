@@ -14,7 +14,7 @@ export const STATUS_SUPPORT = [
 
 export const STATUS_APPOINTMENT = ['received', 'cancled', 'done'];
 
-export const APP_NAME = 'Healthcare';
+export const APP_NAME = 'MedCares';
 
 export const TIME_WORKING = [
   '08:00',

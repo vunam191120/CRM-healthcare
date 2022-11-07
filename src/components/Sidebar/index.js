@@ -25,7 +25,7 @@ const Sidebar = ({ expanded, toggleExpanded }) => {
       <Link to="/" className="sidebar-logo">
         <img src={healthCareLogo} alt="HealthCare Logo" />
         <h4>
-          Health<span>care</span>
+          Med<span>Cares</span>
         </h4>
       </Link>
       <ul className="sidebar-content">
