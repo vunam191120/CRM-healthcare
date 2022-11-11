@@ -42,6 +42,14 @@ const clinicAPI = {
     const url = `/clinic/staff/${clinic_id}`;
     return axiosClient.get(url);
   },
+  getPayments(clinic_id) {
+    const url = `/clinic/payment/${clinic_id}`;
+    return axiosClient.get(url);
+  },
+  getPayment(clinic_id, payment_id) {
+    const url = `/clinic/payment/${clinic_id}/${payment_id}`;
+    return axiosClient.get(url);
+  },
   createStaff(staff) {
     const url = `/clinic/staff`;
     return axiosClient.post(url, staff);
