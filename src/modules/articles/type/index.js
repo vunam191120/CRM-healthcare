@@ -59,10 +59,10 @@ export default function TypesList() {
 
   const typesColumns = [
     {
-      title: 'No',
+      title: 'ID',
       key: 'index',
       width: 40,
-      render: (text, record, index) => index + 1,
+      render: (text, record, index) => record.type_id,
     },
     {
       title: 'Type name',

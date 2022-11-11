@@ -35,10 +35,9 @@ export default function TagsList() {
 
   const tagsColumns = [
     {
-      title: 'No',
-      key: 'index',
+      title: 'ID',
+      dataIndex: 'tag_id',
       width: 40,
-      render: (text, record, index) => index + 1,
     },
     {
       title: 'Tag name',

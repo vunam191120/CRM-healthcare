@@ -250,12 +250,6 @@ export default function ClinicStaffs() {
       ),
     },
     {
-      title: 'Full Name',
-      key: 'full name',
-      render: (record) => record.user.full_name,
-      ...getColumnSearchProps('full_name'),
-    },
-    {
       title: 'Profile status',
       key: 'profile status',
       render: (record) => <Tag status={record.profile_status} />,

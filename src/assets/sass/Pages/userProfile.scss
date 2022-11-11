@@ -1,0 +1,64 @@
+.user-profile-container {
+  border-radius: $border-radius-3;
+  border: 1px solid $color-line-0;
+  padding-bottom: $pd-5;
+  .cover {
+    width: 100%;
+    height: 250px;
+    border-top-left-radius: $border-radius-3;
+    border-top-right-radius: $border-radius-3;
+    background-image: url(https://images.wallpaperscraft.com/image/single/fern_plant_leaves_108470_1152x864.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+  .user-header {
+    padding: 0 $pd-5;
+    display: flex;
+    align-items: center;
+    transform: translateY(-20%);
+    .avatar {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: $mg-2;
+    }
+    .user-info {
+      .name {
+        @include styleText($color-black-0, $fs-4 - 6, $fw-2);
+      }
+    }
+  }
+  .user-body {
+    padding: 0 $pd-5;
+    margin-top: $mg-2;
+    // Personal Information
+    .personal-information-container {
+      .info-item {
+        padding-left: $pd-4;
+        .left {
+          width: 150px;
+          display: inline-block;
+          @include styleText($color-black-0, $fs-0, $fw-2);
+        }
+        .right {
+          display: inline-block;
+          @include styleText($color-black-0, $fs-0, $fw-0);
+        }
+      }
+    }
+
+    // Appointment
+    .appointment-container {
+      .title {
+        margin: $mg-3 0;
+        text-align: center;
+        @include styleText($color-black-0, $fs-3, $fw-2);
+      }
+      .appointmentForm {
+        justify-content: center;
+      }
+    }
+  }
+}

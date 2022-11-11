@@ -56,3 +56,7 @@ export const PATH_CLINICS_DETAIL_ROOMS_UPDATE = 'rooms/update/:room_id';
 export const PATH_CLINICS_DETAIL_BEDS = 'beds/:room_id';
 export const PATH_CLINICS_DETAIL_SERVICES = 'services';
 export const PATH_CLINICS_DETAIL_STAFFS = 'staffs';
+
+// Patient
+export const PATH_PATIENTS = '/patients';
+export const PATH_PATIENTS_DETAIL = '/patients/detail/:patient_id';

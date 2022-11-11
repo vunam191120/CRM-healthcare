@@ -101,6 +101,13 @@ thead[class*='ant-table-thead'] th {
   }
 }
 
+.ant-tabs {
+  border: 1px solid $color-line-0;
+  .ant-tabs-content-holder {
+    padding: $pd-1;
+  }
+}
+
 // hide sorter icon in table, apply when use custom sort icon in table
 // .ant-table-column-sorter {
 //   display: none;

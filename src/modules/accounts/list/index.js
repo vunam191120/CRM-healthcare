@@ -21,6 +21,7 @@ import Modal from '../../../components/Modal';
 import Button from '../../../components/Button';
 import checkRole from '../../../helpers/checkRole';
 import Tag from '../../../components/Tag';
+import moment from 'moment';
 
 const { Column } = Table;
 
@@ -167,8 +168,9 @@ export default function AccountsList() {
     },
     {
       title: 'Date of Birth',
-      dataIndex: 'date_of_birth',
       key: 'dateOfBirth',
+      render: (text, record, index) =>
+        moment(record.date_of_birth).format('DD-MM-YYYY'),
     },
     {
       title: 'Profile status',

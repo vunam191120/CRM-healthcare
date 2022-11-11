@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
 import clinicAPI from '../../api/clinic';
+import { selectUsers } from './usersSlice';
 
 // Side effect actions
 export const fetchClinics = createAsyncThunk(

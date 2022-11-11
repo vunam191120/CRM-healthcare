@@ -39,6 +39,8 @@ import {
   PATH_CLINICS_DETAIL_SERVICES,
   PATH_CLINICS_DETAIL_STAFFS,
   PATH_CLINICS_DETAIL_CLINIC,
+  PATH_PATIENTS_DETAIL,
+  PATH_PATIENTS,
 } from './paths';
 import Accounts from '../pages/accounts';
 import CreateAccount from '../pages/accounts/create';
@@ -80,6 +82,8 @@ import ClinicServices from '../modules/clinics/detail/services';
 import ClinicStaffs from '../modules/clinics/detail/staffs';
 import ClinicClinic from '../modules/clinics/detail/clinic';
 import ArticleDetail from '../modules/articles/detail';
+import Patients from '../pages/patients';
+import PatientDetailPage from '../pages/patients/detail';
 
 // import NoMatch from '../components/NoMatch';
 
@@ -220,6 +224,17 @@ const appRoutes = [
   {
     path: PATH_CLINICS_UPDATE,
     element: <UpdateClinic />,
+    roles: ['Admin'],
+  },
+  // Patient
+  {
+    path: PATH_PATIENTS,
+    element: <Patients />,
+    roles: ['Admin'],
+  },
+  {
+    path: PATH_PATIENTS_DETAIL,
+    element: <PatientDetailPage />,
     roles: ['Admin'],
   },
   // Clinic detail

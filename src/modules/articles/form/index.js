@@ -285,8 +285,6 @@ export default function ArticleForm({ mode }) {
                     <Input.TextArea
                       className="input"
                       placeholder="Enter your summary"
-                      showCount
-                      maxLength={100}
                       rows={3}
                       onChange={(e) =>
                         dispatch(updateSummaryWritingArticle(e.target.value))
@@ -500,7 +498,7 @@ export default function ArticleForm({ mode }) {
                 <Form.Item className="article-input-group">
                   <div className="title-container">
                     <h3 className="title">Types</h3>
-                    <Link className="btn-view" to="/articles/types`">
+                    <Link className="btn-view" to="/articles/types">
                       View all types
                     </Link>
                   </div>

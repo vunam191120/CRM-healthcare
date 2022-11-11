@@ -23,9 +23,9 @@ export default function UserDetail({
         <img className="avatar" src={user.avatar} alt="Doctor Detail Avatar" />
         <div className="description">
           <p className="id">#{user.user_id}</p>
-          <h3 className="name">
+          <Link to={`/profile/account/${user.user_id}`} className="name">
             Dr.{user.first_name} {user.last_name}
-          </h3>
+          </Link>
           <p className="category">BDS, MDS - Oral & Maxillofacial Surgery</p>
         </div>
         <div className="tag-stars">

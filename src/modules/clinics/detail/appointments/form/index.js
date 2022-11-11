@@ -97,6 +97,7 @@ export default function AppointmentForm({ mode }) {
   useEffect(() => {
     if (Object.keys(appointmentNeedUpdate).length > 0) {
       form.setFieldsValue({
+        clinic_id: appointmentNeedUpdate.clinic_id,
         category: appointmentNeedUpdate.category_id,
         doctor: appointmentNeedUpdate.doctor_id,
         date: moment(appointmentNeedUpdate.date),
@@ -156,7 +157,7 @@ export default function AppointmentForm({ mode }) {
         scrollToFirstError
       >
         {/* Clinic ID */}
-        <Form.Item label="Appointment ID" value={clinic_id}>
+        <Form.Item label="Appointment ID" name="clinic_id">
           <Input disabled={true} />
         </Form.Item>
 

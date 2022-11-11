@@ -29,7 +29,22 @@
           @include styleText($color-black-0, $fs-1, $fw-0);
         }
         .name {
-          @include styleText($color-black-0, $fs-3, $fw-2);
+          @include styleText(#40a9ff, $fs-3, $fw-1);
+          transition: 0.5s ease;
+          position: relative;
+          &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 100%;
+            height: 1px;
+            width: 0;
+            border: 1px solid #40a9ff;
+            transition: 0.5s ease;
+          }
+          &:hover::after {
+            width: 100%;
+          }
         }
         .category {
           @include styleText($color-gray-1, $fs-1, $fw-0);

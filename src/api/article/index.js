@@ -2,7 +2,7 @@ import axiosClient from '../axios.config';
 
 const articleAPI = {
   getAll() {
-    const url = `/article`;
+    const url = `/article/list/all`;
     return axiosClient.get(url);
   },
   getOne(article_id) {

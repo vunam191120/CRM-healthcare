@@ -173,7 +173,8 @@ export default function AccountForm({ mode }) {
       oldImage && formData.append('avatar', avatar[0]);
       formData.append('role_id', ROLES[values.role.toUpperCase()]);
       formData.append('user_id', userNeedUpdate.user_id);
-      dispatch(updateUser(formData));
+      // dispatch(updateUser(formData));
+      console.log(typeof formData);
     }
   };
 
