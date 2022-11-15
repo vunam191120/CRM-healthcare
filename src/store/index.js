@@ -12,6 +12,7 @@ import typesSlice from './slices/typesSlice';
 import usersSlice from './slices/usersSlice';
 import supportsSlice from './slices/supportsSlice';
 import patientsSlice from './slices/patientsSlice';
+import productsSlice from './slices/productsSlice';
 
 export default configureStore({
   reducer: {
@@ -28,6 +29,7 @@ export default configureStore({
     types: typesSlice,
     appointments: appointmentsSlice,
     patients: patientsSlice,
+    products: productsSlice,
   },
   middleware: () =>
     getDefaultMiddleware({

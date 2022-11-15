@@ -108,6 +108,10 @@ thead[class*='ant-table-thead'] th {
   }
 }
 
+.ant-picker {
+  width: 250px;
+}
+
 // hide sorter icon in table, apply when use custom sort icon in table
 // .ant-table-column-sorter {
 //   display: none;

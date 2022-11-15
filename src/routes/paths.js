@@ -60,3 +60,8 @@ export const PATH_CLINICS_DETAIL_STAFFS = 'staffs';
 // Patient
 export const PATH_PATIENTS = '/patients';
 export const PATH_PATIENTS_DETAIL = '/patients/detail/:patient_id';
+
+// Product
+export const PATH_PRODUCTS = '/products';
+export const PATH_PRODUCTS_CREATE = '/products/create';
+export const PATH_PRODUCTS_UPDATE = '/products/update/:product_id';

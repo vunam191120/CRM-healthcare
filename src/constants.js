@@ -32,3 +32,5 @@ export const TIME_WORKING = [
   '15:30',
   '16:00',
 ];
+
+export const TYPE_PRODUCTS = ['tablets', 'bottles', 'injections', 'tubes'];

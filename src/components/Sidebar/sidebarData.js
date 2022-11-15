@@ -8,7 +8,7 @@ import {
   MdOutlineDashboard,
   MdOutlineMedicalServices,
 } from 'react-icons/md';
-import { GiPerson } from 'react-icons/gi';
+import { GiPerson, GiMedicines } from 'react-icons/gi';
 
 export const SidebarData = [
   {
@@ -40,6 +40,11 @@ export const SidebarData = [
     title: 'Patients',
     path: '/patients',
     icon: <GiPerson />,
+  },
+  {
+    title: 'Products',
+    path: '/products',
+    icon: <GiMedicines />,
   },
   {
     title: 'Categories',

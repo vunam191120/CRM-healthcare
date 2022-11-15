@@ -41,6 +41,9 @@ import {
   PATH_CLINICS_DETAIL_CLINIC,
   PATH_PATIENTS_DETAIL,
   PATH_PATIENTS,
+  PATH_PRODUCTS,
+  PATH_PRODUCTS_CREATE,
+  PATH_PRODUCTS_UPDATE,
 } from './paths';
 import Accounts from '../pages/accounts';
 import CreateAccount from '../pages/accounts/create';
@@ -84,6 +87,9 @@ import ClinicClinic from '../modules/clinics/detail/clinic';
 import ArticleDetail from '../modules/articles/detail';
 import Patients from '../pages/patients';
 import PatientDetailPage from '../pages/patients/detail';
+import Products from '../pages/products';
+import CreateProduct from '../pages/products/create';
+import UpdateProduct from '../pages/products/update';
 
 // import NoMatch from '../components/NoMatch';
 
@@ -235,6 +241,22 @@ const appRoutes = [
   {
     path: PATH_PATIENTS_DETAIL,
     element: <PatientDetailPage />,
+    roles: ['Admin'],
+  },
+  // Product
+  {
+    path: PATH_PRODUCTS,
+    element: <Products />,
+    roles: ['Admin'],
+  },
+  {
+    path: PATH_PRODUCTS_CREATE,
+    element: <CreateProduct />,
+    roles: ['Admin'],
+  },
+  {
+    path: PATH_PRODUCTS_UPDATE,
+    element: <UpdateProduct />,
     roles: ['Admin'],
   },
   // Clinic detail
