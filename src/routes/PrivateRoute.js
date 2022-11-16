@@ -1,10 +1,13 @@
+import { message } from 'antd';
 import { Navigate } from 'react-router-dom';
+import { isLogin } from '../helpers/isLogin';
 
 const PrivateRoute = ({ children, roles }) => {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   // Note logged in so redirect to login page
-  if (!Boolean(localStorage.getItem('currentUser'))) {
+  if (!isLogin()) {
+    message.warning('You must login first!', 3);
     return <Navigate to="/login" replace={true} />;
   }
 

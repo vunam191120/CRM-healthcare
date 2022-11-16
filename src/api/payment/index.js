@@ -5,9 +5,29 @@ const PaymentAPI = {
     const url = `/clinic/payment/${clinic_id}`;
     return axiosClient.get(url);
   },
-  getPayment(clinic_id, payment_id) {
-    const url = `/clinic/payment/${clinic_id}/${payment_id}`;
+  getPayment(payment_id) {
+    const url = `/patient/payment/patient/${payment_id}`;
     return axiosClient.get(url);
+  },
+  getDetails(payment_id) {
+    const url = `/patient/detail/payment/${payment_id}`;
+    return axiosClient.get(url);
+  },
+  getDetail(detail_id) {
+    const url = `/patient/detail/patient/${detail_id}`;
+    return axiosClient.get(url);
+  },
+  addDetail(newDetail) {
+    const url = `/patient/detail/patient`;
+    return axiosClient.post(url, newDetail);
+  },
+  updateDetail(detail_id, newDetail) {
+    const url = `/patient/detail/patient/${detail_id}`;
+    return axiosClient.put(url, newDetail);
+  },
+  deleteDetail(detail_id) {
+    const url = `/patient/detail/patient/${detail_id}`;
+    return axiosClient.delete(url);
   },
 };
 

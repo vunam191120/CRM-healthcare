@@ -26,7 +26,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem('currentUser'))) {
-      navigate('/');
+      navigate(-1);
     }
   }, [navigate]);
 

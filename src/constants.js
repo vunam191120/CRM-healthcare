@@ -12,7 +12,7 @@ export const STATUS_SUPPORT = [
   'resolved',
 ];
 
-export const STATUS_APPOINTMENT = ['received', 'cancled', 'done'];
+export const STATUS_APPOINTMENT = ['received', 'confirmed', 'canceled', 'done'];
 
 export const STATUS_PAYMENT = ['received', 'paid', 'canceled'];
 
@@ -36,3 +36,5 @@ export const TIME_WORKING = [
 ];
 
 export const TYPE_PRODUCTS = ['tablets', 'bottles', 'injections', 'tubes'];
+
+export const TYPE_PAYMENTS = ['product', 'bed', 'service'];

@@ -183,6 +183,11 @@ export default function ServicesList() {
       key: 'description',
     },
     {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+    },
+    {
       title: 'Category',
       key: 'category_name',
       render: (text, record, index) => record.category.category_name,

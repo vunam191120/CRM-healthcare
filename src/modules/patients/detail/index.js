@@ -87,6 +87,7 @@ const tailFormItemLayout = {
     },
   },
 };
+
 export default function PatientDetail() {
   const { patient_id } = useParams();
   const [form] = Form.useForm();

@@ -32,7 +32,11 @@ export default function ClinicPayments() {
     {
       title: 'Patient ID',
       key: 'patient id',
-      dataIndex: 'patient_id',
+      render: (record) => (
+        <Link to={`/patients/detail/${record.patient_id}`}>
+          {record.patient_id}
+        </Link>
+      ),
     },
     {
       title: 'Created date',
@@ -62,7 +66,7 @@ export default function ClinicPayments() {
           <Link
             style={{ marginRight: 10 }}
             className={'button button--view'}
-            to={`/clinic/detail/${clinic_id}/payments/detail/${record.payment_id}`}
+            to={`/clinics/detail/${clinic_id}/payments/detail/${record.payment_id}`}
           >
             <ImEye />
             <span>View</span>
@@ -89,8 +93,8 @@ export default function ClinicPayments() {
     },
     {
       title: 'Patient Name',
-      key: 'name',
-      dataIndex: 'name',
+      key: 'full name',
+      dataIndex: 'full_name',
     },
     {
       title: 'Email',
@@ -130,7 +134,7 @@ export default function ClinicPayments() {
           <Link
             style={{ marginRight: 10 }}
             className={'button button--view'}
-            to={`/clinic/detail/${clinic_id}/payments/detail/${record.payment_id}`}
+            to={`/clinics/detail/${clinic_id}/payments/detail/${record.payment_id}`}
           >
             <ImEye />
             <span>View</span>
@@ -162,8 +166,8 @@ export default function ClinicPayments() {
       <div className="switch-table">
         <span className="text-mode">
           {modeHaveAccount
-            ? 'Payment does not have patient accounts'
-            : 'Payment has patient accounts'}
+            ? 'Payment has patient accounts'
+            : 'Payment does not have patient accounts'}
           :{' '}
         </span>
         <Switch
@@ -182,7 +186,7 @@ export default function ClinicPayments() {
           position: ['bottomCenter'],
         }}
         dataSource={modeHaveAccount ? paymentsHasAccount : paymentsNoAccount}
-        rowKey={(record) => record.appointment_id}
+        rowKey={(record) => record.payment_id}
       ></Table>
     </div>
   );

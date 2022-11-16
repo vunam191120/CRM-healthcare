@@ -50,6 +50,12 @@ export const PATH_CLINICS_DETAIL_APPOINTMENTS_UPDATE =
 export const PATH_CLINICS_DETAIL_CATEGORIES = 'categories';
 export const PATH_CLINICS_DETAIL_DOCTORS = 'doctors';
 export const PATH_CLINICS_DETAIL_PAYMENTS = 'payments';
+export const PATH_CLINICS_DETAIL_PAYMENTS_DETAIL =
+  'payments/detail/:payment_id';
+export const PATH_CLINICS_DETAIL_PAYMENTS_DETAIL_CREATE =
+  'payments/detail/:payment_id/detail/create';
+export const PATH_CLINICS_DETAIL_PAYMENTS_DETAIL_UPDATE =
+  'payments/detail/:payment_id/detail/update/:detail_id';
 export const PATH_CLINICS_DETAIL_ROOMS = 'rooms';
 export const PATH_CLINICS_DETAIL_ROOMS_CREATE = 'rooms/create';
 export const PATH_CLINICS_DETAIL_ROOMS_UPDATE = 'rooms/update/:room_id';

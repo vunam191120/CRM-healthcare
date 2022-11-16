@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Form, Input, PageHeader, Select } from 'antd';
+import { Form, Input, InputNumber, PageHeader, Select } from 'antd';
 
 import {
   createService,
@@ -93,6 +93,8 @@ export default function ServiceForm({ mode }) {
         form.setFieldsValue({
           name: serviceNeedUpdate.service_name,
           description: serviceNeedUpdate.description,
+          price: serviceNeedUpdate.price,
+          category: serviceNeedUpdate.category_id,
         });
       }
     }
@@ -103,6 +105,7 @@ export default function ServiceForm({ mode }) {
     newService.service_name = values.name;
     newService.description = values.description;
     newService.category_id = values.category;
+    newService.price = values.price;
     if (mode === 'create') {
       dispatch(createService(newService));
       form.resetFields();
@@ -141,6 +144,20 @@ export default function ServiceForm({ mode }) {
           ]}
         >
           <Input placeholder="Enter your service name!" />
+        </Form.Item>
+
+        {/* Price */}
+        <Form.Item
+          name="price"
+          label="Price"
+          rules={[
+            {
+              required: true,
+              message: 'Please input price',
+            },
+          ]}
+        >
+          <InputNumber style={{ width: '100%' }} prefix="$" min={1} />
         </Form.Item>
 
         {/* Description */}
