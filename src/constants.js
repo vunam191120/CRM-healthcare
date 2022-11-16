@@ -14,6 +14,8 @@ export const STATUS_SUPPORT = [
 
 export const STATUS_APPOINTMENT = ['received', 'cancled', 'done'];
 
+export const STATUS_PAYMENT = ['received', 'paid', 'canceled'];
+
 export const APP_NAME = 'MedCares';
 
 export const TIME_WORKING = [

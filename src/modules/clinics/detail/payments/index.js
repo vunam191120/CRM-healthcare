@@ -5,21 +5,22 @@ import { ImEye } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import {
-  selectClinicsLoading,
+  fetchPayments,
   selectPaymentHasAccount,
   selectPaymentNoAccount,
-} from '../../../../store/slices/clinicsSlice';
+  selectPaymentsIsLoading,
+} from '../../../../store/slices/paymentsSlice';
 
 export default function ClinicPayments() {
   const dispatch = useDispatch();
   const [modeHaveAccount, setModeHaveAcocunt] = useState(true);
   const { clinic_id } = useParams();
-  const isLoading = useSelector(selectClinicsLoading);
+  const isLoading = useSelector(selectPaymentsIsLoading);
   const paymentsHasAccount = useSelector(selectPaymentHasAccount);
   const paymentsNoAccount = useSelector(selectPaymentNoAccount);
 
   useEffect(() => {
-    // dispatch(fetchPayments(clinic_id));
+    dispatch(fetchPayments(clinic_id));
   }, [clinic_id, dispatch]);
 
   const columnsHasAccount = [
@@ -153,15 +154,23 @@ export default function ClinicPayments() {
       <div className="header">
         <div className="title-container">
           <h4 className="title">Payments Information</h4>
-          <Switch
-            onChange={(values) => setModeHaveAcocunt(values)}
-            defaultChecked={modeHaveAccount}
-            className="switch"
-          />
         </div>
         <Link to="create" className="button button--main" type="button">
           <span>Add payment</span>
         </Link>
+      </div>
+      <div className="switch-table">
+        <span className="text-mode">
+          {modeHaveAccount
+            ? 'Payment does not have patient accounts'
+            : 'Payment has patient accounts'}
+          :{' '}
+        </span>
+        <Switch
+          onChange={(values) => setModeHaveAcocunt(values)}
+          defaultChecked={modeHaveAccount}
+          className="switch"
+        />
       </div>
       <Table
         rowClassName="custom-row"

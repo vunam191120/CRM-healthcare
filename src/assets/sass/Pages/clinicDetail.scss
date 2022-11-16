@@ -72,7 +72,8 @@
   .appointment-content-detail,
   .room-content-detail,
   .bed-content-detail,
-  .doctor-content-detail {
+  .doctor-content-detail,
+  .payment-content-detail {
     .header {
       display: flex;
       justify-content: space-between;
@@ -105,6 +106,19 @@
         .ant-form-horizontal .ant-form-item-control {
           margin-left: auto;
         }
+      }
+    }
+  }
+
+  // Payment detail
+  .payment-content-detail {
+    .switch-table {
+      display: flex;
+      align-items: center;
+      margin-bottom: $mg-2;
+      .text-mode {
+        margin-right: $mg-4;
+        @include styleText($color-brown-1, $fs-3, $fw-1);
       }
     }
   }

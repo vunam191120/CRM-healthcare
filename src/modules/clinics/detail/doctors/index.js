@@ -101,10 +101,6 @@ export default function ClinicDoctors() {
     dispatch(fetchDoctors());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log(filteredDoctors);
-  }, [filteredDoctors]);
-
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,

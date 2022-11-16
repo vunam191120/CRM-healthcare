@@ -216,31 +216,6 @@ export const deleteDoctorClinic = createAsyncThunk(
   }
 );
 
-export const fetchPayments = createAsyncThunk(
-  'clinicsSlice/fetchPayments',
-  async (clinic_id) => {
-    try {
-      const result = await clinicAPI.getPayments(clinic_id);
-      return result.data.data;
-    } catch (error) {
-      return Promise.reject(error.message);
-    }
-  }
-);
-
-export const fetchPayment = createAsyncThunk(
-  'clinicsSlice/fetchPayments',
-  async (data) => {
-    try {
-      const { clinic_id, payment_id } = data;
-      const result = await clinicAPI.getPayment(clinic_id, payment_id);
-      return result.data.data;
-    } catch (error) {
-      return Promise.reject(error.message);
-    }
-  }
-);
-
 // Reducer
 
 const clinicsSlice = createSlice({
@@ -251,9 +226,7 @@ const clinicsSlice = createSlice({
     staffs: [],
     categories: [],
     services: [],
-    payments: [],
     clinicNeedUpdate: {},
-    paymentNeedUpdate: {},
     searchTerm: '',
     isLoading: false,
     hasError: false,
@@ -373,21 +346,6 @@ const clinicsSlice = createSlice({
       state.hasError = false;
     },
     [fetchStaffsClinic.rejected]: (state, action) => {
-      message.err(action.error.message, 3);
-      state.isLoading = false;
-      state.hasError = true;
-    },
-    // Fetch payments by clinic
-    [fetchDoctorsClinic.pending]: (state) => {
-      state.isLoading = true;
-      state.hasError = false;
-    },
-    [fetchDoctorsClinic.fulfilled]: (state, action) => {
-      state.payments = action.payments;
-      state.isLoading = false;
-      state.hasError = false;
-    },
-    [fetchDoctorsClinic.rejected]: (state, action) => {
       message.err(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;
@@ -644,7 +602,13 @@ export const {
 } = clinicsSlice.actions;
 
 // Selectors
+export const selectClinicsLoading = (state) => state.clinics.isLoading;
+
+export const selectClinicsError = (state) => state.clinics.hasError;
+
 export const selectClinics = (state) => state.clinics.clinics;
+
+export const selectClinicNeedUpdate = (state) => state.clinics.clinicNeedUpdate;
 
 export const selectCategoriesByClinic = (state) => state.clinics.categories;
 
@@ -654,22 +618,9 @@ export const selectPaymentsByClinic = (state) => state.clinics.payments;
 
 export const selectDoctorsByClinic = (state) => state.clinics.doctors;
 
-export const selectClinicsLoading = (state) => state.clinics.isLoading;
-
-export const selectClinicsError = (state) => state.clinics.hasError;
-
-export const selectClinicNeedUpdate = (state) => state.clinics.clinicNeedUpdate;
-
-export const selectPaymentNeedUpdate = (state) =>
-  state.clinics.paymentNeedUpdate;
-
-export const selectPaymentHasAccount = (state) => {};
-
-export const selectPaymentNoAccount = (state) => {};
+export const selectStaffsByClinic = (state) => state.clinics.staffs;
 
 export const selectSearchTermClinic = (state) => state.clinics.searchTerm;
-
-export const selectStaffsByClinic = (state) => state.clinics.staffs;
 
 export const selectFilteredDoctorsByClinic = (state) => {
   const doctors = selectDoctorsByClinic(state);
