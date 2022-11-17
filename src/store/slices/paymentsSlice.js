@@ -27,6 +27,30 @@ export const fetchPayment = createAsyncThunk(
   }
 );
 
+export const addPayment = createAsyncThunk(
+  'paymentsSlice/addPayment',
+  async (newPayment) => {
+    try {
+      const result = await PaymentAPI.addPayment(newPayment);
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
+export const updatePayment = createAsyncThunk(
+  'paymentsSlice/updatePayment',
+  async (newPayment) => {
+    try {
+      await PaymentAPI.updatePayment(newPayment);
+      return newPayment;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
 export const fetchDetails = createAsyncThunk(
   'paymentsSlice/fetchDetails',
   async (payment_id) => {
@@ -130,6 +154,38 @@ const paymentsSlice = createSlice({
       state.hasError = false;
     },
     [fetchPayment.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Add Payment
+    [addPayment.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [addPayment.fulfilled]: (state, action) => {
+      message.success('Added new payment successfully!');
+      state.paymentNeedUpdate = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [addPayment.rejected]: (state, action) => {
+      message.err(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Update Payment
+    [updatePayment.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [updatePayment.fulfilled]: (state, action) => {
+      message.success('Updated payment successfully!');
+      state.paymentNeedUpdate = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [updatePayment.rejected]: (state, action) => {
       message.err(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;

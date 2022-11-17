@@ -32,6 +32,8 @@ import {
   PATH_CLINICS_DETAIL_CATEGORIES,
   PATH_CLINICS_DETAIL_DOCTORS,
   PATH_CLINICS_DETAIL_PAYMENTS,
+  PATH_CLINICS_DETAIL_PAYMENTS_CREATE,
+  PATH_CLINICS_DETAIL_PAYMENTS_UPDATE,
   PATH_CLINICS_DETAIL_PAYMENTS_DETAIL,
   PATH_CLINICS_DETAIL_PAYMENTS_DETAIL_CREATE,
   PATH_CLINICS_DETAIL_PAYMENTS_DETAIL_UPDATE,
@@ -96,8 +98,8 @@ import UpdateProduct from '../pages/products/update';
 import PaymentDetail from '../modules/clinics/detail/payments/detail';
 import CreatePaymentDetail from '../pages/clinics/detail/payments/detail/create';
 import UpdatePaymentDetail from '../pages/clinics/detail/payments/detail/update';
-
-// import NoMatch from '../components/NoMatch';
+import CreatePayment from '../pages/clinics/detail/payments/create';
+import UpdatePayment from '../pages/clinics/detail/payments/update';
 
 const appRoutes = [
   // Accounts
@@ -304,6 +306,16 @@ const appRoutes = [
       {
         path: PATH_CLINICS_DETAIL_PAYMENTS,
         element: <ClinicPayments />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_PAYMENTS_CREATE,
+        element: <CreatePayment />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_PAYMENTS_UPDATE,
+        element: <UpdatePayment />,
         roles: ['Admin'],
       },
       {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DatePicker, Form, Input, Select, Radio, Checkbox } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -74,6 +74,7 @@ const { Option } = Select;
 export default function AppointmentForm({ mode }) {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const [statusCanceled, setStatusCanceled] = useState(false);
   const { appointment_id, clinic_id } = useParams();
   const categories = useSelector(selectCategoriesByClinic);
   const doctors = useSelector(selectDoctorsByClinic);
@@ -131,11 +132,11 @@ export default function AppointmentForm({ mode }) {
     if (mode === 'create') {
       dispatch(createAppointment(newAppointment));
     } else {
-      newAppointment = {
-        ...newAppointment,
-        status: values.status,
-        appointment_id,
-      };
+      newAppointment.status = values.status;
+      newAppointment.appointment_id = appointment_id;
+      if (values.status === 'canceled') {
+        newAppointment.reason = values.reason;
+      }
       dispatch(updateAppointment(newAppointment));
     }
   };
@@ -158,7 +159,7 @@ export default function AppointmentForm({ mode }) {
       >
         {/* Clinic ID */}
         <Form.Item label="Appointment ID" name="clinic_id">
-          <Input disabled={true} />
+          <Input className="input-custom-disabled" disabled={true} />
         </Form.Item>
 
         {/* Doctor ID */}
@@ -330,7 +331,10 @@ export default function AppointmentForm({ mode }) {
               },
             ]}
           >
-            <Select placeholder="Select status">
+            <Select
+              onChange={(value) => setStatusCanceled(value === 'canceled')}
+              placeholder="Select status"
+            >
               {STATUS_APPOINTMENT.map((status, index) => (
                 <Option value={status} key={index}>
                   {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -338,6 +342,24 @@ export default function AppointmentForm({ mode }) {
               ))}
             </Select>
           </Form.Item>
+        )}
+
+        {statusCanceled && (
+          <>
+            {/* Reason */}
+            <Form.Item
+              label="Reason"
+              name="reason"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input reason for this payment!',
+                },
+              ]}
+            >
+              <Input.TextArea placeholder="Enter reason" rows={3} />
+            </Form.Item>
+          </>
         )}
 
         {/* Is foreigner */}

@@ -1,9 +1,10 @@
 import { Switch, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { BiExport } from 'react-icons/bi';
+import { BiExport, BiPencil } from 'react-icons/bi';
 import { ImEye } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
+import { formatDateAndTime } from '../../../../helpers/formatDate';
 import {
   fetchPayments,
   selectPaymentHasAccount,
@@ -41,7 +42,7 @@ export default function ClinicPayments() {
     {
       title: 'Created date',
       key: 'created date',
-      dataIndex: 'created_date',
+      render: (record) => formatDateAndTime(record.created_date),
     },
     {
       title: 'Amount',
@@ -72,10 +73,17 @@ export default function ClinicPayments() {
             <span>View</span>
           </Link>
           <Link
-            to={`update/${record.appointment_id}`}
+            className={'button button--update'}
+            to={`update/${record.payment_id}`}
+          >
+            <BiPencil />
+            <span>Update</span>
+          </Link>
+          <Link
             className={'button button--update'}
             style={{ marginRight: 10 }}
             onClick={() => {}}
+            // to={`update/${record.appointment_id}`}
           >
             <BiExport />
             <span>Export</span>
@@ -109,7 +117,7 @@ export default function ClinicPayments() {
     {
       title: 'Created date',
       key: 'created date',
-      dataIndex: 'created_date',
+      render: (record) => formatDateAndTime(record.created_date),
     },
     {
       title: 'Amount',
@@ -140,7 +148,14 @@ export default function ClinicPayments() {
             <span>View</span>
           </Link>
           <Link
-            to={`update/${record.appointment_id}`}
+            className={'button button--update'}
+            to={`update/${record.payment_id}`}
+          >
+            <BiPencil />
+            <span>Update</span>
+          </Link>
+          <Link
+            // to={`update/${record.appointment_id}`}
             className={'button button--update'}
             style={{ marginRight: 10 }}
             onClick={() => {}}

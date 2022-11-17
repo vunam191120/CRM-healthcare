@@ -9,6 +9,14 @@ const PaymentAPI = {
     const url = `/patient/payment/patient/${payment_id}`;
     return axiosClient.get(url);
   },
+  addPayment(newPayment) {
+    const url = `/patient/payment/patient`;
+    return axiosClient.post(url, newPayment);
+  },
+  updatePayment(newPayment) {
+    const url = `/patient/payment/patient`;
+    return axiosClient.put(url, newPayment);
+  },
   getDetails(payment_id) {
     const url = `/patient/detail/payment/${payment_id}`;
     return axiosClient.get(url);

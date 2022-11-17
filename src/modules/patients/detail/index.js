@@ -12,15 +12,17 @@ import {
   Tabs,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { BiPencil } from 'react-icons/bi';
 import moment from 'moment';
 
 import {
   fetchAppointmentByPatient,
   fetchPatient,
+  fetchPaymentByPatient,
   selectAppointmentByPatient,
   selectPatientNeedUpdate,
+  selectPaymentByPatient,
   updatePatientAppointments,
 } from '../../../store/slices/patientsSlice';
 import {
@@ -37,6 +39,8 @@ import {
   selectDoctorsByClinic,
 } from '../../../store/slices/clinicsSlice';
 import { STATUS_APPOINTMENT, TIME_WORKING } from '../../../constants';
+import { ImEye } from 'react-icons/im';
+import { formatDateAndTime } from '../../../helpers/formatDate';
 
 const { Option } = Select;
 
@@ -97,12 +101,14 @@ export default function PatientDetail() {
   const patient = useSelector(selectPatientNeedUpdate);
   const appointments = useSelector(selectAppointmentByPatient);
   const appointmentsLoading = useSelector(selectAppointmentsIsLoading);
+  const payments = useSelector(selectPaymentByPatient);
   const doctors = useSelector(selectDoctorsByClinic);
   const categories = useSelector(selectCategoriesByClinic);
   const clinicsLoading = useSelector(selectClinicsLoading);
 
   useEffect(() => {
     dispatch(fetchPatient(patient_id));
+    dispatch(fetchPaymentByPatient(patient_id));
   }, [dispatch, patient_id]);
 
   useEffect(() => {
@@ -183,6 +189,50 @@ export default function PatientDetail() {
             <BiPencil />
             <span>Update</span>
           </span>
+        </div>
+      ),
+    },
+  ];
+
+  const paymentColumns = [
+    {
+      title: 'ID',
+      key: 'id',
+      dataIndex: 'payment_id',
+    },
+    {
+      title: 'Clinic ID',
+      key: 'clinic id',
+      dataIndex: 'clinic_id',
+    },
+    {
+      title: 'Created date',
+      key: 'created date',
+      render: (record) => formatDateAndTime(record.date),
+    },
+    {
+      title: 'Paid on',
+      key: 'Paid on',
+      render: (record) => record.paid_on && formatDateAndTime(record.paid_on),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (record) => (
+        <div className="button-container">
+          <Link
+            style={{ marginRight: 10 }}
+            className={'button button--view'}
+            to={`/clinics/detail/${record.clinic_id}/payments/detail/${record.payment_id}`}
+          >
+            <ImEye />
+            <span>View detail</span>
+          </Link>
         </div>
       ),
     },
@@ -304,6 +354,7 @@ export default function PatientDetail() {
                                 onFinish={handleSubmit}
                                 name="appointmentForm"
                                 scrollToFirstError
+                                z
                               >
                                 {/* Clinic ID */}
                                 <Form.Item
@@ -533,7 +584,22 @@ export default function PatientDetail() {
                     return {
                       label: item,
                       key: index,
-                      children: <div>Payment</div>,
+                      children: (
+                        <div className="payment-container">
+                          <Table
+                            rowClassName="custom-row"
+                            x={true}
+                            loading={appointmentsLoading}
+                            columns={paymentColumns}
+                            scroll={{ x: 300 }}
+                            pagination={{
+                              position: ['bottomCenter'],
+                            }}
+                            dataSource={payments}
+                            rowKey={(record) => record.payment_id}
+                          />
+                        </div>
+                      ),
                     };
                   }
                 }

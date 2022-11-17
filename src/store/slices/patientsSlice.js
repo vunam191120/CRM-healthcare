@@ -38,6 +38,18 @@ export const fetchAppointmentByPatient = createAsyncThunk(
   }
 );
 
+export const fetchPaymentByPatient = createAsyncThunk(
+  'patientsSlice/fetchPaymentByPatient',
+  async (patient_id) => {
+    try {
+      const result = await patientAPI.getPatientPayment(patient_id);
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
 // Reducer
 const patientsSlice = createSlice({
   name: 'patientsSlice',
@@ -45,6 +57,7 @@ const patientsSlice = createSlice({
     patients: [],
     patientNeedUpdate: {},
     appointments: [],
+    payments: [],
     searchTerm: '',
     isLoading: false,
     hasError: false,
@@ -108,6 +121,21 @@ const patientsSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Fetch Payment by Patient
+    [fetchPaymentByPatient.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchPaymentByPatient.fulfilled]: (state, action) => {
+      state.payments = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchPaymentByPatient.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
   },
 });
 
@@ -126,6 +154,8 @@ export const selectPatientNeedUpdate = (state) =>
 
 export const selectAppointmentByPatient = (state) =>
   state.patients.appointments;
+
+export const selectPaymentByPatient = (state) => state.patients.payments;
 
 export const selectFilteredPatients = (state) => {
   const patients = selectPatients(state);
