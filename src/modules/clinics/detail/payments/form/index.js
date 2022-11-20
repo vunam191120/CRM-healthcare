@@ -71,7 +71,7 @@ const { Option } = Select;
 export default function PaymentForm({ mode }) {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const [modeHaveAccount, setModeHaveAcocunt] = useState(true);
+  const [modeHaveAccount, setModeHaveAccount] = useState(true);
   const [statusCanceled, setStatusCanceled] = useState(false);
   const { clinic_id, payment_id } = useParams();
   const paymentNeedUpdate = useSelector(selectPaymentNeedUpdate);
@@ -170,7 +170,7 @@ export default function PaymentForm({ mode }) {
           </span>
           <Switch
             onChange={(values) => {
-              setModeHaveAcocunt(values);
+              setModeHaveAccount(values);
             }}
             defaultChecked={modeHaveAccount}
             className="switch"

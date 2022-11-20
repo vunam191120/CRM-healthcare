@@ -195,11 +195,11 @@ export default function ClinicPayments() {
         rowClassName="custom-row"
         x={true}
         loading={isLoading}
-        columns={modeHaveAccount ? columnsHasAccount : columnsNoAccount}
         scroll={{ x: 300 }}
         pagination={{
           position: ['bottomCenter'],
         }}
+        columns={modeHaveAccount ? columnsHasAccount : columnsNoAccount}
         dataSource={modeHaveAccount ? paymentsHasAccount : paymentsNoAccount}
         rowKey={(record) => record.payment_id}
       ></Table>

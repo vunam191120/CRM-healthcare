@@ -108,7 +108,10 @@ export default function ClinicsForm({ mode, customPageHeader }) {
         </Button>
         <Button
           className="button button--main"
-          onClick={() => dispatch(deleteImage(imageDelete))}
+          onClick={() => {
+            dispatch(deleteImage(imageDelete));
+            setIsShowDelete(false);
+          }}
         >
           Delete
         </Button>
