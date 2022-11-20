@@ -49,6 +49,8 @@ import {
   PATH_PRODUCTS,
   PATH_PRODUCTS_CREATE,
   PATH_PRODUCTS_UPDATE,
+  PATH_MEDICAL_RERCORD_DETAIL,
+  PATH_CLINICS_DETAIL_MEDICAL_RECORDS,
 } from './paths';
 import Accounts from '../pages/accounts';
 import CreateAccount from '../pages/accounts/create';
@@ -100,6 +102,8 @@ import CreatePaymentDetail from '../pages/clinics/detail/payments/detail/create'
 import UpdatePaymentDetail from '../pages/clinics/detail/payments/detail/update';
 import CreatePayment from '../pages/clinics/detail/payments/create';
 import UpdatePayment from '../pages/clinics/detail/payments/update';
+import MedicalRecordDetailPage from '../pages/medicalRecord';
+import ClinicMedicalRecords from '../modules/clinics/detail/medicalRecords';
 
 const appRoutes = [
   // Accounts
@@ -267,6 +271,12 @@ const appRoutes = [
     element: <UpdateProduct />,
     roles: ['Admin'],
   },
+  // Medical Record
+  {
+    path: PATH_MEDICAL_RERCORD_DETAIL,
+    element: <MedicalRecordDetailPage />,
+    roles: ['Admin'],
+  },
   // Clinic detail
   {
     path: PATH_CLINICS_DETAIL,
@@ -361,6 +371,11 @@ const appRoutes = [
       {
         path: PATH_CLINICS_DETAIL_STAFFS,
         element: <ClinicStaffs />,
+        roles: ['Admin'],
+      },
+      {
+        path: PATH_CLINICS_DETAIL_MEDICAL_RECORDS,
+        element: <ClinicMedicalRecords />,
         roles: ['Admin'],
       },
     ],

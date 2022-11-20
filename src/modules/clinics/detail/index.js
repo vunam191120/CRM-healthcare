@@ -4,6 +4,7 @@ import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { ReconciliationOutlined } from '@ant-design/icons';
+import { BsJournalMedical } from 'react-icons/bs';
 import {
   MdOutlineCategory,
   MdPayment,
@@ -98,6 +99,15 @@ export default function ClinicDetailLayout() {
           >
             <MdPayment />
             <span className="text">Payments</span>
+          </NavLink>
+        </li>
+        <li className="navbar__item">
+          <NavLink
+            className="navbar__link"
+            to={`/clinics/detail/${clinic_id}/medical-records`}
+          >
+            <BsJournalMedical />
+            <span className="text">Meical Records</span>
           </NavLink>
         </li>
       </ul>

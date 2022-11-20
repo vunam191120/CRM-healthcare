@@ -65,6 +65,7 @@ export const PATH_CLINICS_DETAIL_ROOMS_UPDATE = 'rooms/update/:room_id';
 export const PATH_CLINICS_DETAIL_BEDS = 'beds/:room_id';
 export const PATH_CLINICS_DETAIL_SERVICES = 'services';
 export const PATH_CLINICS_DETAIL_STAFFS = 'staffs';
+export const PATH_CLINICS_DETAIL_MEDICAL_RECORDS = 'medical-records';
 
 // Patient
 export const PATH_PATIENTS = '/patients';
@@ -74,3 +75,6 @@ export const PATH_PATIENTS_DETAIL = '/patients/detail/:patient_id';
 export const PATH_PRODUCTS = '/products';
 export const PATH_PRODUCTS_CREATE = '/products/create';
 export const PATH_PRODUCTS_UPDATE = '/products/update/:product_id';
+
+// Medical Record
+export const PATH_MEDICAL_RERCORD_DETAIL = '/medical-record/detail/:record_id';

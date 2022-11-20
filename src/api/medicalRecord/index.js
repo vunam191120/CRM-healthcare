@@ -9,6 +9,10 @@ const medicalRecordAPI = {
     const url = `/patient/record/doctor/${doctor_id}`;
     return axiosClient.get(url);
   },
+  getAllByClinic(clinic_id) {
+    const url = `/patient/record/clinic/${clinic_id}`;
+    return axiosClient.get(url);
+  },
   getOne(record_id) {
     const url = `/patient/record/medical/${record_id}`;
     return axiosClient.get(url);

@@ -75,6 +75,18 @@ export const deletePrescription = createAsyncThunk(
   }
 );
 
+export const fetchMedicalRecordByClinic = createAsyncThunk(
+  'medicalRecordsSlice/fetchMedicalRecordByClinic',
+  async (clinic_id) => {
+    try {
+      const result = await medicalRecordAPI.getAllByClinic(clinic_id);
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
 const medicalRecordsSlice = createSlice({
   name: 'medicalRecordsSlice',
   initialState: {
@@ -111,6 +123,21 @@ const medicalRecordsSlice = createSlice({
       state.hasError = false;
     },
     [fetchMedicalRecord.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Fetch Medical Record by clinic
+    [fetchMedicalRecordByClinic.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchMedicalRecordByClinic.fulfilled]: (state, action) => {
+      state.medicalRecords = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchMedicalRecordByClinic.rejected]: (state, action) => {
       message.error(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;

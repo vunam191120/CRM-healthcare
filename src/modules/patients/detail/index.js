@@ -274,7 +274,7 @@ export default function PatientDetail() {
       render: (record) => (
         <div className="button-container">
           <Link
-            to={`/detail/${record.record_id}`}
+            to={`/medical-record/detail/${record.record_id}`}
             className="button button--view"
           >
             <ImEye className="icon" />
