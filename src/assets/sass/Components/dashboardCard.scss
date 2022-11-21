@@ -1,0 +1,25 @@
+.dashboard-card-container {
+  padding: $pd-1;
+  border-radius: $border-radius-2;
+  border: 1px solid $color-line-0;
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .left {
+      .num {
+        @include styleText($color-black-0, $fs-5, $fw-1);
+        margin-bottom: 0;
+      }
+      .text {
+        @include styleText($color-black-0, $fs-0, $fw-0);
+        margin-bottom: 0;
+      }
+    }
+    .right {
+      .icon {
+        @include styleText($color-blue-0, $fs-4, $fw-0);
+      }
+    }
+  }
+}

@@ -51,6 +51,7 @@ import {
   PATH_PRODUCTS_UPDATE,
   PATH_MEDICAL_RERCORD_DETAIL,
   PATH_CLINICS_DETAIL_MEDICAL_RECORDS,
+  PATH_DASHBOARD,
 } from './paths';
 import Accounts from '../pages/accounts';
 import CreateAccount from '../pages/accounts/create';
@@ -104,8 +105,15 @@ import CreatePayment from '../pages/clinics/detail/payments/create';
 import UpdatePayment from '../pages/clinics/detail/payments/update';
 import MedicalRecordDetailPage from '../pages/medicalRecord';
 import ClinicMedicalRecords from '../modules/clinics/detail/medicalRecords';
+import DashboardPage from '../pages/dashboard';
 
 const appRoutes = [
+  // Dashboard
+  {
+    path: PATH_DASHBOARD,
+    element: <DashboardPage />,
+    roles: ['Admin', 'Sale', 'Back Officer'],
+  },
   // Accounts
   {
     path: PATH_ACCOUNTS,

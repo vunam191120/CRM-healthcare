@@ -1,0 +1,148 @@
+.dashboard-container {
+  .header {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    .dashboard-card-container {
+      .num {
+        color: $color-white-0;
+      }
+      .text {
+        color: $color-white-0;
+      }
+      .icon {
+        color: $color-white-0;
+      }
+      &:nth-child(1) {
+        background-color: $color-blue-1;
+      }
+      &:nth-child(2) {
+        background-color: $color-tomato;
+      }
+      &:nth-child(3) {
+        background-color: $color-green-0;
+      }
+      &:nth-child(4) {
+        background-color: $color-yellow-0;
+      }
+    }
+  }
+  .content {
+    margin-top: $mg-2;
+    // Patient Visit
+    .patient-visit-container {
+      padding-right: $pd-4;
+      .patient-visit-content {
+        border-radius: $border-radius-2;
+        border: 1px solid $color-line-0;
+        padding-bottom: $pd-3;
+        .heading {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 $pd-4 + 4;
+          margin: $mg-4 0;
+          .title {
+            @include styleText($color-black-0, $fs-5, $fw-3);
+            margin-bottom: 0;
+          }
+          .dropdown {
+            min-width: 140px;
+          }
+        }
+      }
+      &.right {
+        padding-right: 0;
+        &.barchart {
+          .recharts-legend-wrapper {
+            padding-top: 0 !important;
+          }
+        }
+      }
+    }
+
+    // Appointment
+    .appointments-container {
+      padding-right: $pd-4;
+      .appointments-content {
+        border-radius: $border-radius-2;
+        border: 1px solid $color-line-0;
+        .heading {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 $pd-4 + 4;
+          margin: $mg-4 0;
+          .title {
+            @include styleText($color-black-0, $fs-5, $fw-3);
+            margin-bottom: 0;
+          }
+          .dropdown {
+            min-width: 140px;
+          }
+        }
+        .ant-table-wrapper {
+          border-radius: 0;
+          .ant-table-content {
+            border-radius: 0;
+          }
+        }
+      }
+    }
+
+    // Patient Review
+    .patient-review-container {
+      .patient-review-content {
+        border-radius: $border-radius-2;
+        border: 1px solid $color-line-0;
+        .heading {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-left: $pd-3;
+          padding-right: $pd-0;
+          margin-top: $mg-4;
+          margin-bottom: $mg-4 + 4;
+          .title {
+            margin-bottom: 0;
+          }
+        }
+        .review-list {
+          .review-item {
+            display: flex;
+            align-items: center;
+            padding: 0 $pd-1;
+            margin-bottom: $mg-4 + 5;
+            .avatar {
+              margin-right: $mg-1;
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              display: block;
+            }
+            .info {
+              .name {
+                @include styleText($color-black-0, $fs-0, $fw-2);
+                margin-bottom: 0;
+              }
+              .specific {
+                @include styleText($color-gray-0, $fs-1, $fw-0);
+                margin-bottom: 0;
+              }
+              .star-list {
+                display: flex;
+                .icon {
+                  @include styleText($color-yellow-0, $fs-0, $fw-0);
+                }
+              }
+            }
+            .total-patients {
+              margin-left: auto;
+              @include styleText($color-black-0, $fs-0, $fw-0);
+            }
+          }
+        }
+      }
+    }
+  }
+}

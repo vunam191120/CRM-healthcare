@@ -1,3 +1,6 @@
+// Dashboard
+export const PATH_DASHBOARD = '/dashboard';
+
 // Accounts
 export const PATH_ACCOUNTS = '/accounts';
 export const PATH_ACCOUNTS_CREATE = '/accounts/create';
