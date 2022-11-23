@@ -12,7 +12,7 @@
   }
   &.tag--inprogress {
     @include styleText($color-white-0, $fs-1, $fw-1);
-    background-color: rgba($color: $color-green-0, $alpha: 0.8);
+    background-color: rgba($color: $color-blue-1, $alpha: 0.8);
   }
   &.tag--isBlocking {
     @include styleText($color-white-0, $fs-1, $fw-1);

@@ -172,11 +172,11 @@ export default function AccountsList() {
       render: (text, record, index) =>
         moment(record.date_of_birth).format('DD-MM-YYYY'),
     },
-    {
-      title: 'Profile status',
-      key: 'profile status',
-      render: (record) => <Tag status={record.profile_status} />,
-    },
+    // {
+    //   title: 'Profile status',
+    //   key: 'profile status',
+    //   render: (record) => <Tag status={record.profile_status} />,
+    // },
   ];
 
   return (

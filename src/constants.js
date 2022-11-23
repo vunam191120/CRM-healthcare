@@ -2,6 +2,8 @@ export const ROLES = {
   ADMIN: 1,
   SALE: 2,
   BACK_OFFICER: 3,
+  SUPPORT: 4,
+  MARKETING: 5,
 };
 
 export const STATUS_SUPPORT = [

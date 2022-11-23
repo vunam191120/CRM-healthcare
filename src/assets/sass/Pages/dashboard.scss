@@ -1,5 +1,6 @@
 .dashboard-container {
   .header {
+    //Default for admin
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 40px;
@@ -26,13 +27,38 @@
         background-color: $color-yellow-0;
       }
     }
+    &.sale,
+    &.support {
+      grid-template-columns: repeat(3, 1fr);
+      .dashboard-card-container {
+        padding: $pd-1 $pd-3;
+        // .content {
+        //   margin-top: 0;
+        // }
+      }
+    }
   }
   .content {
     margin-top: $mg-2;
-    // Patient Visit
-    .patient-visit-container {
+    // Patient Visit & Income & Appointment
+    // & Patient review & Pie chart appointment
+    .patient-visit-container,
+    .income-container,
+    .appointments-container,
+    .patient-review-container,
+    .pie-charts-appointment,
+    .payment-container,
+    .support-container,
+    .social-container {
       padding-right: $pd-4;
-      .patient-visit-content {
+      .patient-visit-content,
+      .social-content,
+      .income-content,
+      .appointments-content,
+      .patient-review-content,
+      .pie-appointment-content,
+      .support-content,
+      .payment-content {
         border-radius: $border-radius-2;
         border: 1px solid $color-line-0;
         padding-bottom: $pd-3;
@@ -62,25 +88,10 @@
     }
 
     // Appointment
-    .appointments-container {
-      padding-right: $pd-4;
-      .appointments-content {
-        border-radius: $border-radius-2;
-        border: 1px solid $color-line-0;
-        .heading {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 $pd-4 + 4;
-          margin: $mg-4 0;
-          .title {
-            @include styleText($color-black-0, $fs-5, $fw-3);
-            margin-bottom: 0;
-          }
-          .dropdown {
-            min-width: 140px;
-          }
-        }
+    .appointments-container,
+    .payment-container {
+      .appointments-content,
+      .payment-content {
         .ant-table-wrapper {
           border-radius: 0;
           .ant-table-content {
@@ -93,20 +104,6 @@
     // Patient Review
     .patient-review-container {
       .patient-review-content {
-        border-radius: $border-radius-2;
-        border: 1px solid $color-line-0;
-        .heading {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding-left: $pd-3;
-          padding-right: $pd-0;
-          margin-top: $mg-4;
-          margin-bottom: $mg-4 + 4;
-          .title {
-            margin-bottom: 0;
-          }
-        }
         .review-list {
           .review-item {
             display: flex;
@@ -139,6 +136,42 @@
             .total-patients {
               margin-left: auto;
               @include styleText($color-black-0, $fs-0, $fw-0);
+            }
+          }
+        }
+      }
+    }
+
+    // Socials
+    .social-container {
+      .social-content {
+        .social-item {
+          padding: 0 $pd-4 + 5;
+          display: flex;
+          align-items: center;
+          justify-content: space-evenly;
+          margin-bottom: $mg-4;
+          .icon {
+            @include styleText($color-facebook, $fs-6, $fw-0);
+            &.twitter {
+              color: $color-twitter;
+            }
+            &.youtube {
+              color: $color-red-0;
+            }
+            &.linkedin {
+              color: $color-linkedin;
+            }
+          }
+          .info {
+            text-align: center;
+            .num {
+              margin-bottom: 0;
+              @include styleText($color-black-0, $fs-5, $fw-2);
+            }
+            .text {
+              @include styleText($color-black-0, $fs-3, $fw-0);
+              margin-bottom: 0;
             }
           }
         }

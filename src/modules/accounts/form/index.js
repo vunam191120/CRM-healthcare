@@ -26,6 +26,7 @@ import {
   changeUserNeedUpdateAvatar,
   deleteUserNeedUpdateAvatar,
   setUserNeedUpdate,
+  updateUser,
 } from '../../../store/slices/usersSlice';
 import { ROLES } from '../../../constants';
 import checkRole from '../../../helpers/checkRole';
@@ -172,8 +173,7 @@ export default function AccountForm({ mode }) {
       oldImage && formData.append('avatar', avatar[0]);
       formData.append('role_id', ROLES[values.role.toUpperCase()]);
       formData.append('user_id', userNeedUpdate.user_id);
-      // dispatch(updateUser(formData));
-      console.log(typeof formData);
+      dispatch(updateUser(formData));
     }
   };
 
@@ -408,6 +408,8 @@ export default function AccountForm({ mode }) {
             <Option value={ROLES.ADMIN}>Admin</Option>
             <Option value={ROLES.SALE}>Sale</Option>
             <Option value={ROLES.BACK_OFFICER}>Back Officer</Option>
+            <Option value={ROLES.SUPPORT}>Support</Option>
+            <Option value={ROLES.MARKETING}>Marketing</Option>
           </Select>
         </Form.Item>
 

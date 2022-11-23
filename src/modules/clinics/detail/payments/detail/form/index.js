@@ -15,10 +15,7 @@ import {
   fetchProducts,
   selectProducts,
 } from '../../../../../../store/slices/productsSlice';
-import {
-  fetchBeds,
-  selectBeds,
-} from '../../../../../../store/slices/bedsSlice';
+import { fetchBeds } from '../../../../../../store/slices/bedsSlice';
 import {
   fetchServices,
   selectServices,
@@ -87,7 +84,6 @@ export default function PaymentDetailForm({ mode }) {
   const isLoading = useSelector(selectPaymentsIsLoading);
   const detailNeedUpdate = useSelector(selectDetailNeedUpdate);
   const products = useSelector(selectProducts);
-  const beds = useSelector(selectBeds);
   const services = useSelector(selectServices);
 
   useEffect(() => {
