@@ -15,46 +15,55 @@ export const SidebarData = [
     title: 'Dashboard',
     path: '/dashboard',
     icon: <MdOutlineDashboard />,
+    roles: ['Admin', 'Sale', 'Back Officer', 'Marketing', 'Support'],
   },
   {
     title: 'Clinics',
     path: '/clinics',
     icon: <BiClinic />,
+    roles: ['Admin', 'Sale', 'Back Officer', 'Marketing', 'Support'],
   },
   {
     title: 'Supports',
     path: '/supports',
     icon: <BiSupport />,
+    roles: ['Admin', 'Support'],
   },
   {
     title: 'Accounts',
     path: '/accounts',
     icon: <BiUser />,
+    roles: ['Admin', 'Back Officer'],
   },
   {
     title: 'Doctors',
     path: '/doctors',
     icon: <FaUserNurse />,
+    roles: ['Admin', 'Back Officer'],
   },
   {
     title: 'Patients',
     path: '/patients',
     icon: <GiPerson />,
+    roles: ['Admin', 'Support'],
   },
   {
     title: 'Products',
     path: '/products',
     icon: <GiMedicines />,
+    roles: ['Admin', 'Marketing', 'Support', 'Sale'],
   },
   {
     title: 'Categories',
     path: '/categories',
     icon: <MdOutlineCategory />,
+    roles: ['Admin', 'Marketing', 'Support'],
   },
   {
     title: 'Services',
     path: '/services',
     icon: <MdOutlineMedicalServices />,
+    roles: ['Admin', 'Marketing', 'Support'],
   },
   // {
   //   title: 'Reports',
@@ -89,10 +98,12 @@ export const SidebarData = [
     title: 'Articles',
     path: '/articles',
     icon: <RiArticleLine />,
+    roles: ['Admin', 'Marketing'],
   },
   {
     title: 'Setting',
     path: '/setting',
     icon: <AiOutlineSetting />,
+    roles: ['Admin', 'Sale', 'Back Officer', 'Marketing', 'Support'],
   },
 ];

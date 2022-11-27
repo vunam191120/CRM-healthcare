@@ -10,7 +10,7 @@ import Button from '../Button';
 
 const Sidebar = ({ expanded, toggleExpanded }) => {
   const navigate = useNavigate();
-
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('currentUser');
@@ -29,9 +29,12 @@ const Sidebar = ({ expanded, toggleExpanded }) => {
         </h4>
       </Link>
       <ul className="sidebar-content">
-        {SidebarData.map((item, index) => (
-          <SubMenu item={item} key={index} />
-        ))}
+        {SidebarData.map(
+          (item, index) =>
+            item.roles.indexOf(currentUser.role) !== -1 && (
+              <SubMenu item={item} key={index} />
+            )
+        )}
       </ul>
       <ImExit onClick={handleLogout} className="logout-btn" />
     </div>

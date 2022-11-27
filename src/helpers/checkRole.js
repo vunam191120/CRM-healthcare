@@ -6,6 +6,10 @@ const checkRole = (roleId) => {
       return 'Sale';
     case 3:
       return 'Back Officer';
+    case 4:
+      return 'Support';
+    case 5:
+      return 'Marketing';
     default:
       return 'Invalid Role';
   }

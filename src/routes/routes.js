@@ -112,55 +112,55 @@ const appRoutes = [
   {
     path: PATH_DASHBOARD,
     element: <DashboardPage />,
-    roles: ['Admin', 'Sale', 'Back Officer'],
+    roles: ['Admin', 'Sale', 'Back Officer', 'Marketing', 'Support'],
   },
   // Accounts
   {
     path: PATH_ACCOUNTS,
     element: <Accounts />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Back Officer'],
   },
   {
     path: PATH_ACCOUNTS_CREATE,
     element: <CreateAccount />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Back Officer'],
   },
   {
     path: PATH_ACCOUNTS_UPDATE,
     element: <UpdateAccount />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Back Officer'],
   },
   // Doctors
   {
     path: PATH_DOCTORS,
     element: <Doctors />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Back Officer'],
   },
   {
     path: PATH_DOCTORS_CREATE,
     element: <CreateDoctor />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Back Officer'],
   },
   {
     path: PATH_DOCTORS_UPDATE,
     element: <UpdateDoctor />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Back Officer'],
   },
   // Supports
   {
     path: PATH_SUPPORTS,
     element: <Supports />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Support'],
   },
   {
     path: PATH_SUPPORTS_CREATE,
     element: <CreateSupport />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Support'],
   },
   {
     path: PATH_SUPPORTS_UPDATE,
     element: <UpdateSupport />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Support'],
   },
   // Categories
   {
@@ -240,7 +240,7 @@ const appRoutes = [
   {
     path: PATH_CLINICS,
     element: <Clinics />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Back Officer', 'Sale', 'Support'],
   },
   {
     path: PATH_CLINICS_CREATE,
@@ -267,17 +267,17 @@ const appRoutes = [
   {
     path: PATH_PRODUCTS,
     element: <Products />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale'],
   },
   {
     path: PATH_PRODUCTS_CREATE,
     element: <CreateProduct />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale'],
   },
   {
     path: PATH_PRODUCTS_UPDATE,
     element: <UpdateProduct />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale'],
   },
   // Medical Record
   {
@@ -289,97 +289,97 @@ const appRoutes = [
   {
     path: PATH_CLINICS_DETAIL,
     element: <ClinicDetail />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Back Officer', 'Sale', 'Support'],
     subnavs: [
       {
         path: PATH_CLINICS_DETAIL_CLINIC,
         element: <ClinicClinic />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Back Officer', 'Sale', 'Support'],
       },
       {
         path: PATH_CLINICS_DETAIL_APPOINTMENTS,
         element: <Appointment />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Sale', 'Support'],
       },
       {
         path: PATH_CLINICS_DETAIL_APPOINTMENTS_CREATE,
         element: <CreateAppointment />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Sale', 'Support'],
       },
       {
         path: PATH_CLINICS_DETAIL_APPOINTMENTS_UPDATE,
         element: <UpdateAppointment />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Sale', 'Support'],
       },
       {
         path: PATH_CLINICS_DETAIL_CATEGORIES,
         element: <ClinicCategories />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Back Officer'],
       },
       {
         path: PATH_CLINICS_DETAIL_DOCTORS,
         element: <ClinicDoctors />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Back Officer'],
       },
       {
         path: PATH_CLINICS_DETAIL_PAYMENTS,
         element: <ClinicPayments />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Sale', 'Support', 'Marketing'],
       },
       {
         path: PATH_CLINICS_DETAIL_PAYMENTS_CREATE,
         element: <CreatePayment />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Sale', 'Support', 'Marketing'],
       },
       {
         path: PATH_CLINICS_DETAIL_PAYMENTS_UPDATE,
         element: <UpdatePayment />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Sale', 'Support', 'Marketing'],
       },
       {
         path: PATH_CLINICS_DETAIL_PAYMENTS_DETAIL,
         element: <PaymentDetail />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Sale', 'Support'],
       },
       {
         path: PATH_CLINICS_DETAIL_PAYMENTS_DETAIL_CREATE,
         element: <CreatePaymentDetail />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Sale', 'Support'],
       },
       {
         path: PATH_CLINICS_DETAIL_PAYMENTS_DETAIL_UPDATE,
         element: <UpdatePaymentDetail />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Salew', 'Support'],
       },
       {
         path: PATH_CLINICS_DETAIL_ROOMS,
         element: <Room />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Back Officer'],
       },
       {
         path: PATH_CLINICS_DETAIL_ROOMS_CREATE,
         element: <CreateRoom />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Back Officer'],
       },
       {
         path: PATH_CLINICS_DETAIL_ROOMS_UPDATE,
         element: <UpdateRoom />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Back Officer'],
       },
       {
         path: PATH_CLINICS_DETAIL_BEDS,
         element: <ClinicBeds />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Back Officer'],
       },
       {
         path: PATH_CLINICS_DETAIL_SERVICES,
         element: <ClinicServices />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Back Officer'],
       },
       {
         path: PATH_CLINICS_DETAIL_STAFFS,
         element: <ClinicStaffs />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Back Officer'],
       },
       {
         path: PATH_CLINICS_DETAIL_MEDICAL_RECORDS,

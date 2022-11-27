@@ -171,7 +171,12 @@ export default function AccountForm({ mode }) {
       dispatch(createUser(formData));
     } else if (mode === 'update') {
       oldImage && formData.append('avatar', avatar[0]);
-      formData.append('role_id', ROLES[values.role.toUpperCase()]);
+      if (values.role === 'Back Officer') {
+        let role = values.role.split(' ').join('_').toUpperCase();
+        formData.append('role_id', ROLES[role]);
+      } else {
+        formData.append('role_id', ROLES[values.role.toUpperCase()]);
+      }
       formData.append('user_id', userNeedUpdate.user_id);
       dispatch(updateUser(formData));
     }

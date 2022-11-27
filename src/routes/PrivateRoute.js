@@ -1,8 +1,9 @@
 import { message } from 'antd';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { isLogin } from '../helpers/isLogin';
 
 const PrivateRoute = ({ children, roles }) => {
+  const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   // Note logged in so redirect to login page
@@ -14,7 +15,8 @@ const PrivateRoute = ({ children, roles }) => {
   // Check if route is restricted by role
   if (roles && roles.indexOf(currentUser.role) === -1) {
     // role are not authorised will redirect to home page
-    return <Navigate to="/" replace={true} />;
+    message.warning('You do not have permission to access this page!', 3);
+    return navigate(-1);
   }
 
   // Authorised role will return the children route

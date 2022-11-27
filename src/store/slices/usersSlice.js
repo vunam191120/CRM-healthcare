@@ -49,7 +49,7 @@ export const updateUser = createAsyncThunk(
     const user_id = user.get('user_id');
     try {
       const result = await accountAPI.update(user, user_id);
-      return Promise.resolve(result);
+      return result;
     } catch (err) {
       return Promise.reject(err.message);
     }

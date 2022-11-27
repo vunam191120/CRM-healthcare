@@ -369,8 +369,8 @@ export default function ClinicsForm({ mode, customPageHeader }) {
               const reader = new FileReader();
               reader.readAsDataURL(file);
               reader.onload = (event) => {
+                file.url = event.target.result;
                 if (mode === 'update') {
-                  file.url = event.target.result;
                   dispatch(addClinicNeedUpdateImage(file));
                 }
                 setFileList((oldFile) => [...oldFile, file]);
