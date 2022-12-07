@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Form, Select, Input, Switch } from 'antd';
+import { Table, Form, Select, Switch } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import { BiPencil } from 'react-icons/bi';
 import { IoClose } from 'react-icons/io5';
-import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
-import Highlighter from 'react-highlight-words';
+import { FilterOutlined } from '@ant-design/icons';
 
 import Modal from '../../../../components/Modal';
 import Button from '../../../../components/Button';
@@ -15,8 +14,6 @@ import {
   fetchStaffsClinic,
   selectClinicsLoading,
   selectFilteredStaffsByClinic,
-  selectSearchTermClinic,
-  changeSearchTerm,
   createStaffClinic,
   updateStaffClinic,
 } from '../../../../store/slices/clinicsSlice';
@@ -63,11 +60,9 @@ export default function ClinicStaffs() {
   const [staffSelected, setStaffSlected] = useState({});
   const [isShowForm, setIsShowForm] = useState(false);
   const [mode, setMode] = useState('');
-  const [searchedColumn, setSearchColumn] = useState('');
   const filteredStaffs = useSelector(selectFilteredStaffsByClinic);
   const users = useSelector(selectUsers);
   const clinicLoading = useSelector(selectClinicsLoading);
-  const searchTerm = useSelector(selectSearchTermClinic);
 
   useEffect(() => {
     dispatch(fetchStaffsClinic(clinic_id));
@@ -85,61 +80,6 @@ export default function ClinicStaffs() {
       });
     }
   }, [form, mode, staffSelected.profile_status, staffSelected.user_id]);
-
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => {
-      return (
-        <div style={{ padding: 8 }}>
-          <Input
-            // ref={searchInput}
-            placeholder={`Search ${dataIndex}`}
-            // value={selectedKeys[0]}
-            // onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            onChange={(e) => {
-              dispatch(changeSearchTerm(e.target.value));
-              setSearchColumn(dataIndex);
-              // if(e.target.value === '') {
-              //   clearFilters();
-              // }
-            }}
-            style={{
-              marginBottom: 8,
-              display: 'block',
-            }}
-          />
-        </div>
-      );
-    },
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? '#1890ff' : 'white',
-        }}
-      />
-    ),
-    render: (record) => {
-      return searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{
-            backgroundColor: '#ffc069',
-            padding: 0,
-          }}
-          autoEscape
-          searchWords={[searchTerm]}
-          textToHighlight={
-            record.user.full_name ? record.user.full_name.toString() : ''
-          }
-        />
-      ) : (
-        record.user.full_name
-      );
-    },
-  });
 
   const renderForm = (mode) => (
     <div className="content clinic-detail-category">

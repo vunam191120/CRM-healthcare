@@ -100,6 +100,7 @@ export default function QuillEditor({ content, action, keyContent }) {
           });
       };
     };
+
     return {
       toolbar: {
         container: '#toolbar',
@@ -115,9 +116,6 @@ export default function QuillEditor({ content, action, keyContent }) {
               editor.insertEmbed(range, 'image', value);
             }
           },
-          // image3: () => {
-          //   console.log('3');
-          // },
         },
       },
       imageResize: {

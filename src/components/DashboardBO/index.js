@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  FaUserNurse,
-  FaClinicMedical,
-  FaStarHalfAlt,
-  FaStar,
-} from 'react-icons/fa';
+import { FaUserNurse } from 'react-icons/fa';
 import { RiNurseFill } from 'react-icons/ri';
 import { GiPerson } from 'react-icons/gi';
 import { Col, Row, Select, Table } from 'antd';
@@ -24,6 +19,7 @@ import {
   BarChart,
   Bar,
 } from 'recharts';
+import { AiFillStar } from 'react-icons/ai';
 
 import DashboardCard from '../DashboardCard';
 import doctor1 from '../../assets/img/doctor-avatar.jpeg';
@@ -32,57 +28,121 @@ import {
   selectAppointments,
   selectAppointmentsIsLoading,
 } from '../../store/slices/appointmentsSlice';
-import {
-  fetchAdminChart,
-  fetchCount,
-  selectDashboardChartDay,
-  selectDashboardChartMonth,
-  selectDashboardCount,
-} from '../../store/slices/dashboardSlice';
 import getCurrentUser from '../../helpers/getCurrentUser';
 
 const { Option } = Select;
 
-export default function DashboardAdmin() {
+export default function DashboardBO() {
   const dispatch = useDispatch();
-  const currentUser = getCurrentUser();
+
   const appointmentsLoading = useSelector(selectAppointmentsIsLoading);
   const appointments = useSelector(selectAppointments);
-  const dashboardCount = useSelector(selectDashboardCount);
-  const chartMonth = useSelector(selectDashboardChartMonth);
-  const chartDay = useSelector(selectDashboardChartDay);
+  const currentUser = getCurrentUser();
 
   useEffect(() => {
     dispatch(fetchAppointments(11));
   }, [dispatch]);
 
-  // Get total
-  useEffect(() => {
-    dispatch(fetchCount(currentUser.role_id));
-  }, [currentUser.role_id, dispatch]);
+  const data = [
+    {
+      name: 'Jan',
+      Male: 4000,
+      Female: 2400,
+    },
+    {
+      name: 'Feb',
+      Male: 3000,
+      Female: 1398,
+    },
+    {
+      name: 'Mar',
+      Male: 2000,
+      Female: 9800,
+    },
+    {
+      name: 'Apr',
+      Male: 2780,
+      Female: 3908,
+    },
+    {
+      name: 'May',
+      Male: 1890,
+      Female: 4800,
+    },
+    {
+      name: 'Jun',
+      Male: 2390,
+      Female: 3800,
+    },
+    {
+      name: 'July',
+      Male: 3490,
+      Female: 4300,
+    },
+    {
+      name: 'Aug',
+      Male: 2390,
+      Female: 3800,
+    },
+    {
+      name: 'Sep',
+      Male: 3490,
+      Female: 4300,
+    },
+    {
+      name: 'Oct',
+      Male: 2390,
+      Female: 3800,
+    },
+    {
+      name: 'Nov',
+      Male: 3490,
+      Female: 4300,
+    },
+    {
+      name: 'Des',
+      Male: 3490,
+      Female: 4300,
+    },
+  ];
 
-  // Get chart
-  useEffect(() => {
-    dispatch(fetchAdminChart());
-  }, [dispatch]);
-
-  let dataMonth;
-  if (chartMonth) {
-    dataMonth = chartMonth.map((item, index) => ({
-      name: item.month.slice(0, 3),
-      Male: item.male,
-      Female: item.female,
-    }));
-  }
-
-  let dataDay;
-  if (chartDay) {
-    dataDay = chartDay.map((item, index) => ({
-      name: item.day.slice(0, 1),
-      Male: item.male,
-      Female: item.female,
-    }));
-  }
+  const dataBar = [
+    {
+      name: 'M',
+      Male: 2000,
+      Female: 2400,
+    },
+    {
+      name: 'T',
+      Male: 200,
+      Female: 1200,
+    },
+    {
+      name: 'W',
+      Male: 300,
+      Female: 3000,
+    },
+    {
+      name: 'T',
+      Male: 2000,
+      Female: 2400,
+    },
+    {
+      name: 'F',
+      Male: 200,
+      Female: 1200,
+    },
+    {
+      name: 'S',
+      Male: 300,
+      Female: 3000,
+    },
+    {
+      name: 'S',
+      Male: 300,
+      Female: 3000,
+    },
+  ];
 
   const appointmentColumns = [
     { title: 'Patient Name', key: 'patient name', dataIndex: 'name' },
@@ -117,31 +177,25 @@ export default function DashboardAdmin() {
   ];
 
   return (
-    <div className="dashboard-admin">
+    <div className="dashboard-bo">
       <div className="header">
         <DashboardCard
           text="Total Doctors"
-          num={dashboardCount.doctor}
+          num="120"
           icon={<FaUserNurse className="icon" />}
         />
         <DashboardCard
           text="Total Staffs"
-          num={dashboardCount.user}
+          num="40"
           icon={<RiNurseFill className="icon" />}
         />
         <DashboardCard
           text="Total Patients"
-          num={dashboardCount.patient}
+          num="1130"
           icon={<GiPerson className="icon" />}
-        />
-        <DashboardCard
-          text="Total Clinics"
-          num={dashboardCount.clinic}
-          icon={<FaClinicMedical className="icon" />}
         />
       </div>
       <Row className="content">
-        {/* Patient by Month */}
         <Col
           sm={24}
           md={16}
@@ -150,54 +204,51 @@ export default function DashboardAdmin() {
           xll={16}
           className="patient-visit-container left"
         >
-          {chartMonth && (
-            <div className="patient-visit-content">
-              <div className="heading">
-                <h3 className="title">Patient Visit Online</h3>
-                <Select
-                  className="dropdown"
-                  placeholder="Select year"
-                  defaultValue={'2022'}
-                >
-                  <Option value={'2022'}>This Year</Option>
-                  <Option value={'2021'}>Last Year</Option>
-                  <Option value={'2020'}>Over Last Year</Option>
-                </Select>
-              </div>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart
-                  data={dataMonth}
-                  margin={{
-                    top: 5,
-                    right: 40,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="5 5" />
-                  <XAxis dataKey="name" />
-                  <YAxis yAxisId="left" />
-                  <YAxis yAxisId="left" orientation="left" />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                    yAxisId="left"
-                    type="monotone"
-                    dataKey="Male"
-                    stroke="#8884d8"
-                    activeDot={{ r: 8 }}
-                  />
-                  <Line
-                    yAxisId="left"
-                    type="monotone"
-                    dataKey="Female"
-                    stroke="#82ca9d"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+          <div className="patient-visit-content">
+            <div className="heading">
+              <h3 className="title">Patient Visit Online</h3>
+              <Select
+                className="dropdown"
+                placeholder="Select year"
+                defaultValue={'2022'}
+              >
+                <Option value={'2022'}>This Year</Option>
+                <Option value={'2021'}>Last Year</Option>
+                <Option value={'2020'}>Over Last Year</Option>
+              </Select>
             </div>
-          )}
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart
+                data={data}
+                margin={{
+                  top: 5,
+                  right: 40,
+                }}
+              >
+                <CartesianGrid strokeDasharray="5 5" />
+                <XAxis dataKey="name" />
+                <YAxis yAxisId="left" />
+                <YAxis yAxisId="left" orientation="left" />
+                <Tooltip />
+                <Legend />
+                <Line
+                  yAxisId="left"
+                  type="monotone"
+                  dataKey="Male"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+                <Line
+                  yAxisId="left"
+                  type="monotone"
+                  dataKey="Female"
+                  stroke="#82ca9d"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </Col>
 
-        {/* Patient by Day */}
         <Col
           sm={24}
           md={8}
@@ -208,7 +259,7 @@ export default function DashboardAdmin() {
         >
           <div className="patient-visit-content barchart">
             <div className="heading">
-              <h3 className="title">Patients visit by day</h3>
+              <h3 className="title">Patients</h3>
               <Select
                 className="dropdown"
                 placeholder="Select week"
@@ -221,7 +272,7 @@ export default function DashboardAdmin() {
             </div>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart
-                data={dataDay}
+                data={dataBar}
                 barGap={4}
                 barSize={10}
                 barCategoryGap={20}
@@ -317,11 +368,11 @@ export default function DashboardAdmin() {
                       <h4 className="name">Dr. Sair Naif</h4>
                       <p className="specific">Orthapedic</p>
                       <div className="star-list">
-                        <FaStar className="icon" />
-                        <FaStar className="icon" />
-                        <FaStar className="icon" />
-                        <FaStar className="icon" />
-                        <FaStarHalfAlt className="icon" />
+                        <AiFillStar className="icon" />
+                        <AiFillStar className="icon" />
+                        <AiFillStar className="icon" />
+                        <AiFillStar className="icon" />
+                        <AiFillStar className="icon" />
                       </div>
                     </div>
                     <p className="total-patients">150 patients</p>

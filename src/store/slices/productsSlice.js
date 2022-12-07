@@ -54,7 +54,7 @@ export const updateProduct = createAsyncThunk(
   'productsSlice/updateProduct',
   async (newProduct) => {
     try {
-      await ProductAPI.updateProduct(newProduct);
+      await ProductAPI.update(newProduct);
       return newProduct;
     } catch (error) {
       return Promise.reject(error.message);

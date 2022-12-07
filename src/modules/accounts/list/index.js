@@ -20,7 +20,7 @@ import UserDetail from '../detail';
 import Modal from '../../../components/Modal';
 import Button from '../../../components/Button';
 import checkRole from '../../../helpers/checkRole';
-import Tag from '../../../components/Tag';
+// import Tag from '../../../components/Tag';
 import moment from 'moment';
 
 const { Column } = Table;

@@ -1,4 +1,5 @@
 .dashboard-container {
+  // Dashboard Admin and all
   .header {
     //Default for admin
     display: grid;
@@ -176,6 +177,13 @@
           }
         }
       }
+    }
+  }
+
+  // Dashboard BO
+  .dashboard-bo {
+    .header {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }

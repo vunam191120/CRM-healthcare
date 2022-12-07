@@ -103,7 +103,7 @@ const renderActiveShape = (props) => {
   );
 };
 
-export default function DashboadSupport() {
+export default function DashboardMarketing() {
   const [pieIndex, setPieIndex] = useState(0);
 
   const dataTotalViewBar = [
