@@ -93,7 +93,7 @@ export const resetPassword = createAsyncThunk(
         new_password,
         confirm_password,
       });
-      return Promise.resolve(result.data.data[0]);
+      return 'Your password has been successfully reset';
     } catch (err) {
       return Promise.reject(err.message);
     }
@@ -279,8 +279,8 @@ const usersSlice = createSlice({
     [resetPassword.fulfilled]: (state, action) => {
       message
         .loading('Action in progress..', 1)
-        .then(() => message.success(action.payload, 3));
-      // Auto login
+        .then(() => message.success(action.payload, 3))
+        .then(() => (window.location.href = '/login'));
       state.isLoading = false;
       state.hasError = false;
     },

@@ -21,7 +21,7 @@ export const SidebarData = [
     title: 'Clinics',
     path: '/clinics',
     icon: <BiClinic />,
-    roles: ['Admin', 'Sale', 'Back Officer', 'Marketing', 'Support'],
+    roles: ['Admin', 'Sale', 'Back Officer', 'Support'],
   },
   {
     title: 'Supports',
@@ -45,25 +45,25 @@ export const SidebarData = [
     title: 'Patients',
     path: '/patients',
     icon: <GiPerson />,
-    roles: ['Admin', 'Support'],
+    roles: ['Admin', 'Marketing', 'Support'],
   },
   {
     title: 'Products',
     path: '/products',
     icon: <GiMedicines />,
-    roles: ['Admin', 'Marketing', 'Support', 'Sale'],
+    roles: ['Admin', 'Support', 'Sale'],
   },
   {
     title: 'Categories',
     path: '/categories',
     icon: <MdOutlineCategory />,
-    roles: ['Admin', 'Marketing', 'Support'],
+    roles: ['Admin', 'Support', 'Sale'],
   },
   {
     title: 'Services',
     path: '/services',
     icon: <MdOutlineMedicalServices />,
-    roles: ['Admin', 'Marketing'],
+    roles: ['Admin', 'Sale'],
   },
   // {
   //   title: 'Reports',

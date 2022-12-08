@@ -106,6 +106,7 @@ import UpdatePayment from '../pages/clinics/detail/payments/update';
 import MedicalRecordDetailPage from '../pages/medicalRecord';
 import ClinicMedicalRecords from '../modules/clinics/detail/medicalRecords';
 import DashboardPage from '../pages/dashboard';
+import MedicalRecordDetail from '../modules/medicalRecord/detail';
 
 const appRoutes = [
   // Dashboard
@@ -166,63 +167,64 @@ const appRoutes = [
   {
     path: PATH_CATEGORIES,
     element: <Categories />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale', 'Support'],
   },
   {
     path: PATH_CATEGORIES_CREATE,
     element: <CreateCategory />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale'],
   },
   {
     path: PATH_CATEGORIES_UPDATE,
     element: <UpdateCategory />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale'],
   },
   {
     path: PATH_CATEGORIES_DETAIL,
     element: <CategoryDetail />,
+    roles: ['Admin', 'Sale'],
   },
   // Services
   {
     path: PATH_SERVICES,
     element: <Services />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale'],
   },
   {
     path: PATH_SERVICES_CREATE,
     element: <CreateService />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale'],
   },
   {
     path: PATH_SERVICES_UPDATE,
     element: <UpdateService />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale'],
   },
   {
     path: PATH_SERVICES_DETAIL,
     element: <ServiceDetail />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Sale'],
   },
   // Articles
   {
     path: PATH_ARTICLES,
     element: <Articles />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Marketing'],
   },
   {
     path: PATH_ARTICLES_CREATE,
     element: <CreateArticle />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Marketing'],
   },
   {
     path: PATH_ARTICLES_UPDATE,
     element: <UpdateArticle />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Marketing'],
   },
   {
     path: PATH_ARTICLES_DETAIL,
     element: <ArticleDetail />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Marketing'],
   },
   // Types
   {
@@ -256,18 +258,18 @@ const appRoutes = [
   {
     path: PATH_PATIENTS,
     element: <Patients />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Marketing', 'Support'],
   },
   {
     path: PATH_PATIENTS_DETAIL,
     element: <PatientDetailPage />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Marketing', 'Support'],
   },
   // Product
   {
     path: PATH_PRODUCTS,
     element: <Products />,
-    roles: ['Admin', 'Sale'],
+    roles: ['Admin', 'Sale', 'Support'],
   },
   {
     path: PATH_PRODUCTS_CREATE,
@@ -283,7 +285,7 @@ const appRoutes = [
   {
     path: PATH_MEDICAL_RERCORD_DETAIL,
     element: <MedicalRecordDetailPage />,
-    roles: ['Admin'],
+    roles: ['Admin', 'Support'],
   },
   // Clinic detail
   {
@@ -314,7 +316,7 @@ const appRoutes = [
       {
         path: PATH_CLINICS_DETAIL_CATEGORIES,
         element: <ClinicCategories />,
-        roles: ['Admin', 'Back Officer'],
+        roles: ['Admin', 'Back Officer', 'Sale'],
       },
       {
         path: PATH_CLINICS_DETAIL_DOCTORS,
@@ -374,7 +376,7 @@ const appRoutes = [
       {
         path: PATH_CLINICS_DETAIL_SERVICES,
         element: <ClinicServices />,
-        roles: ['Admin', 'Back Officer'],
+        roles: ['Admin', 'Back Officer', 'Sale'],
       },
       {
         path: PATH_CLINICS_DETAIL_STAFFS,
@@ -384,7 +386,7 @@ const appRoutes = [
       {
         path: PATH_CLINICS_DETAIL_MEDICAL_RECORDS,
         element: <ClinicMedicalRecords />,
-        roles: ['Admin'],
+        roles: ['Admin', 'Sale', 'Back Officer', 'Support'],
       },
     ],
   },
