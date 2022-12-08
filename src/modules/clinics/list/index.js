@@ -63,14 +63,14 @@ export default function ClinicsList() {
     },
     {
       title: 'Manager',
-      // dataIndex: 'manager_id',
+      dataIndex: 'manager_id',
       key: 'manager',
-      render: (record) => {
-        const manager = usersAdmin.find(
-          (user) => user.user_id === record.manager_id
-        );
-        return manager ? manager.full_name : '';
-      },
+      // render: (record) => {
+      //   const manager = usersAdmin.find(
+      //     (user) => user.user_id === record.manager_id
+      //   );
+      //   return manager ? manager.full_name : '';
+      // },
     },
     {
       title: 'Actions',
