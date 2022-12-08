@@ -10,20 +10,17 @@ import {
   selectClinics,
   selectClinicsLoading,
 } from '../../../store/slices/clinicsSlice';
-import { fetchUsers, selectUsersAdmin } from '../../../store/slices/usersSlice';
+import { fetchUsers } from '../../../store/slices/usersSlice';
 
 const { Column } = Table;
 
 export default function ClinicsList() {
   const dispatch = useDispatch();
   const clinics = useSelector(selectClinics);
-  const usersAdmin = useSelector(selectUsersAdmin);
   const clinicsLoading = useSelector(selectClinicsLoading);
 
   useEffect(() => {
-    // if (Object.keys(clinics).length === 0) {
     dispatch(fetchClinics());
-    // }
   }, [dispatch]);
 
   useEffect(() => {

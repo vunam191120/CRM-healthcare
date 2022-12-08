@@ -222,7 +222,7 @@ export const selectDashboardChartIncome = (state) =>
 
 export const selectDashboardPieStatus = (state) => state.dashboard.pie.status;
 
-export const selectDashboardPieType = (state) => state.dashboard.pie.types;
+export const selectDashboardPieType = (state) => state.dashboard.pie.type;
 
 export const selectDashboardChartView = (state) => state.dashboard.chart.views;
 

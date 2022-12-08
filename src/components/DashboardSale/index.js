@@ -280,7 +280,7 @@ export default function DashboardSale() {
                   <Option value={'over last month'}>Over Last Month</Option>
                 </Select>
               </div>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={264}>
                 <PieChart>
                   <Pie
                     data={dataAppointmentMade}
