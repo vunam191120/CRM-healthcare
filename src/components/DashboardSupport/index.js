@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RiArticleLine } from 'react-icons/ri';
 import {
   AiFillTags,
@@ -27,6 +28,16 @@ import {
   Bar,
 } from 'recharts';
 import DashboardCard from '../DashboardCard';
+import getCurrentUser from '../../helpers/getCurrentUser';
+import {
+  fetchCount,
+  fetchMarketingChart,
+  fetchSupportPie,
+  selectDashboardChartView,
+  selectDashboardCount,
+  selectDashboardPieStatus,
+  selectDashboardPieType,
+} from '../../store/slices/dashboardSlice';
 
 const { Option } = Select;
 
@@ -89,7 +100,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`PV ${value}`}</text>
+      >{`Value: ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -104,97 +115,89 @@ const renderActiveShape = (props) => {
 };
 
 export default function DashboadSupport() {
+  const dispatch = useDispatch();
   const [pieIndex, setPieIndex] = useState(0);
+  const currentUser = getCurrentUser();
+  const chartView = useSelector(selectDashboardChartView);
+  const pieType = useSelector(selectDashboardPieType);
+  const pieStatus = useSelector(selectDashboardPieStatus);
+  const dashboardCount = useSelector(selectDashboardCount);
 
-  const dataTotalViewBar = [
-    {
-      name: 'Jan',
-      views: 220,
-    },
-    {
-      name: 'Feb',
-      views: 620,
-    },
-    {
-      name: 'Mar',
-      views: 120,
-    },
-    {
-      name: 'Apr',
-      views: 420,
-    },
-    {
-      name: 'May',
-      views: 100,
-    },
-    {
-      name: 'Jun',
-      views: 300,
-    },
-    {
-      name: 'Jul',
-      views: 90,
-    },
-    {
-      name: 'Aug',
-      views: 220,
-    },
-    {
-      name: 'Sep',
-      views: 620,
-    },
-    {
-      name: 'Oct',
-      views: 120,
-    },
-    {
-      name: 'Nov',
-      views: 420,
-    },
-    {
-      name: 'Dec',
-      views: 100,
-    },
-  ];
+  // Get total
+  useEffect(() => {
+    dispatch(fetchCount(currentUser.role_id));
+  }, [currentUser.role_id, dispatch]);
 
-  const dataSupportMade = [
-    { name: 'In progress', value: 498 },
-    { name: 'Cancel', value: 220 },
-    { name: 'Done', value: 600 },
-  ];
+  // Get chart
+  useEffect(() => {
+    dispatch(fetchMarketingChart());
+  }, [dispatch]);
 
-  const dataArticleType = [
-    { name: 'Type Guide', value: 400 },
-    { name: 'Type News', value: 300 },
-    { name: 'Type A', value: 300 },
-    { name: 'Type B', value: 200 },
-  ];
+  // Get pie
+  useEffect(() => {
+    dispatch(fetchSupportPie());
+  }, [dispatch]);
+
+  let dataTotalViewBar;
+  if (chartView) {
+    dataTotalViewBar = chartView.map((item) => ({
+      name: item.month.slice(0, 3),
+      views: item.view,
+    }));
+  }
+
+  let dataSupportMade;
+  if (pieType) {
+    dataSupportMade = pieType.map((item) => ({
+      name: item.name,
+      value: item.value,
+    }));
+  }
+
+  let dataArticleType;
+  if (pieStatus) {
+    dataArticleType = pieStatus.map((item, index) => ({
+      name: index === pieStatus.length - 1 ? item.name.slice(0, 7) : item.name,
+      value: item.value,
+    }));
+  }
 
   const COLORS_SUPPORT_MADE = ['#5b76d8', '#d36a68', '#3cc196'];
 
-  const COLORS_ARTICLE_TYPE = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS_ARTICLE_TYPE = [
+    '#d36a68',
+    '#56bed1',
+    '#FFBB28',
+    '#5b76d8',
+    '#3cc196',
+  ];
 
   const onPieEnter = (_, index) => {
     setPieIndex(index);
   };
 
   return (
-    <>
-      <div className="header support">
+    <div className="dashboard-support">
+      <div className="header">
         <DashboardCard
           text="Total Supports"
-          num="120"
+          num={dashboardCount.support}
           icon={<BiSupport className="icon" />}
         />
         <DashboardCard
           text="Total Articles by type"
-          num="10"
+          num={dashboardCount.type}
           icon={<RiArticleLine className="icon" />}
         />
         <DashboardCard
           text="Total Articles by tag"
-          num="1130"
+          num={dashboardCount.tag}
           icon={<AiFillTags className="icon" />}
+        />
+        <DashboardCard
+          text="Total Articles"
+          num={dashboardCount.article}
+          icon={<RiArticleLine className="icon" />}
         />
       </div>
       <Row className="content">
@@ -247,53 +250,57 @@ export default function DashboadSupport() {
           xll={10}
           className="support-container right"
         >
-          <div className="support-content">
-            <div className="heading">
-              <h3 className="title">Rate of supports </h3>
-              <Select
-                className="dropdown"
-                placeholder="Select month"
-                defaultValue={'this month'}
-              >
-                <Option value={'this month'}>This Month</Option>
-                <Option value={'last month'}>Last Month</Option>
-                <Option value={'over last month'}>Over Last Month</Option>
-              </Select>
-            </div>
-            <ResponsiveContainer width="100%" height={320}>
-              <PieChart>
-                <Pie
-                  activeIndex={pieIndex}
-                  activeShape={renderActiveShape}
-                  data={dataArticleType}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  onMouseEnter={onPieEnter}
+          {pieStatus && (
+            <div className="support-content">
+              <div className="heading">
+                <h3 className="title">Rate of supports </h3>
+                <Select
+                  className="dropdown"
+                  placeholder="Select month"
+                  defaultValue={'this month'}
                 >
-                  {dataArticleType.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={
-                        COLORS_ARTICLE_TYPE[index % COLORS_ARTICLE_TYPE.length]
-                      }
-                    />
-                  ))}
-                </Pie>
-                <Legend
-                  style={{
-                    marginTop: 30,
-                  }}
-                  layout="horizontal"
-                  verticalAlign="bottom"
-                  align="center"
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                  <Option value={'this month'}>This Month</Option>
+                  <Option value={'last month'}>Last Month</Option>
+                  <Option value={'over last month'}>Over Last Month</Option>
+                </Select>
+              </div>
+              <ResponsiveContainer width="100%" height={320}>
+                <PieChart>
+                  <Pie
+                    activeIndex={pieIndex}
+                    activeShape={renderActiveShape}
+                    data={dataArticleType}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    onMouseEnter={onPieEnter}
+                  >
+                    {dataArticleType.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={
+                          COLORS_ARTICLE_TYPE[
+                            index % COLORS_ARTICLE_TYPE.length
+                          ]
+                        }
+                      />
+                    ))}
+                  </Pie>
+                  <Legend
+                    style={{
+                      marginTop: 30,
+                    }}
+                    layout="horizontal"
+                    verticalAlign="bottom"
+                    align="center"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </Col>
       </Row>
 
@@ -306,46 +313,50 @@ export default function DashboadSupport() {
           xll={14}
           className="support-container left"
         >
-          <div className="support-content">
-            <div className="heading">
-              <h3 className="title">Rate of supports </h3>
-              <Select
-                className="dropdown"
-                placeholder="Select month"
-                defaultValue={'this month'}
-              >
-                <Option value={'this month'}>This Month</Option>
-                <Option value={'last month'}>Last Month</Option>
-                <Option value={'over last month'}>Over Last Month</Option>
-              </Select>
-            </div>
-            <ResponsiveContainer width="100%" height={306}>
-              <PieChart>
-                <Pie
-                  data={dataSupportMade}
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  paddingAngle={5}
-                  dataKey="value"
+          {pieType && (
+            <div className="support-content">
+              <div className="heading">
+                <h3 className="title">Rate of supports </h3>
+                <Select
+                  className="dropdown"
+                  placeholder="Select month"
+                  defaultValue={'this month'}
                 >
-                  {dataSupportMade.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={
-                        COLORS_SUPPORT_MADE[index % COLORS_SUPPORT_MADE.length]
-                      }
-                    />
-                  ))}
-                </Pie>
-                <Legend
-                  layout="horizontal"
-                  verticalAlign="bottom"
-                  align="center"
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                  <Option value={'this month'}>This Month</Option>
+                  <Option value={'last month'}>Last Month</Option>
+                  <Option value={'over last month'}>Over Last Month</Option>
+                </Select>
+              </div>
+              <ResponsiveContainer width="100%" height={306}>
+                <PieChart>
+                  <Pie
+                    data={dataSupportMade}
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {dataSupportMade.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={
+                          COLORS_SUPPORT_MADE[
+                            index % COLORS_SUPPORT_MADE.length
+                          ]
+                        }
+                      />
+                    ))}
+                  </Pie>
+                  <Legend
+                    layout="horizontal"
+                    verticalAlign="bottom"
+                    align="center"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </Col>
         <Col
           sm={24}
@@ -392,6 +403,6 @@ export default function DashboadSupport() {
           </div>
         </Col>
       </Row>
-    </>
+    </div>
   );
 }

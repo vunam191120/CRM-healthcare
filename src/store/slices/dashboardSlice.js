@@ -28,12 +28,73 @@ export const fetchAdminChart = createAsyncThunk(
   }
 );
 
+export const fetchBOChart = createAsyncThunk(
+  'dashboardSlice/fetchBOChart',
+  async () => {
+    try {
+      const result = await DashboardAPI.getAdminChart();
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
+export const fetchMarketingChart = createAsyncThunk(
+  'dashboardSlice/fetchMarketingChart',
+  async () => {
+    try {
+      const result = await DashboardAPI.getMarketingChart();
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
+export const fetchSaleChart = createAsyncThunk(
+  'dashboardSlice/fetchSaleChart',
+  async () => {
+    try {
+      const result = await DashboardAPI.getSaleChart();
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
+export const fetchSalePie = createAsyncThunk(
+  'dashboardSlice/fetchSalePie',
+  async () => {
+    try {
+      const result = await DashboardAPI.getSalePie();
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
+export const fetchSupportPie = createAsyncThunk(
+  'dashboardSlice/fetchSupportPie',
+  async () => {
+    try {
+      const result = await DashboardAPI.getSupportPie();
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
 // Reducer
 const dashboardSlice = createSlice({
   name: 'dashboardSlice',
   initialState: {
     count: [],
     chart: {},
+    pie: {},
   },
   reducers: {},
   extraReducers: {
@@ -67,6 +128,81 @@ const dashboardSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
+    // Fetch bo chart
+    [fetchBOChart.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchBOChart.fulfilled]: (state, action) => {
+      state.chart = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchBOChart.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Fetch sale chart
+    [fetchSaleChart.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchSaleChart.fulfilled]: (state, action) => {
+      state.chart = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchSaleChart.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Fetch marketing chart
+    [fetchMarketingChart.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchMarketingChart.fulfilled]: (state, action) => {
+      state.chart = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchMarketingChart.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Fetch sale pie
+    [fetchSalePie.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchSalePie.fulfilled]: (state, action) => {
+      state.pie = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchSalePie.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Fetch support pie
+    [fetchSupportPie.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchSupportPie.fulfilled]: (state, action) => {
+      state.pie = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchSupportPie.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
   },
 });
 
@@ -80,5 +216,14 @@ export const selectDashboardChartMonth = (state) =>
 
 export const selectDashboardChartDay = (state) =>
   state.dashboard.chart.visit_by_day;
+
+export const selectDashboardChartIncome = (state) =>
+  state.dashboard.chart.income;
+
+export const selectDashboardPieStatus = (state) => state.dashboard.pie.status;
+
+export const selectDashboardPieType = (state) => state.dashboard.pie.types;
+
+export const selectDashboardChartView = (state) => state.dashboard.chart.views;
 
 export default dashboardSlice.reducer;

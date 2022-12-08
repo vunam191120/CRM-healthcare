@@ -29,6 +29,13 @@ import {
   selectAppointmentsIsLoading,
 } from '../../store/slices/appointmentsSlice';
 import getCurrentUser from '../../helpers/getCurrentUser';
+import {
+  fetchBOChart,
+  fetchCount,
+  selectDashboardChartDay,
+  selectDashboardChartMonth,
+  selectDashboardCount,
+} from '../../store/slices/dashboardSlice';
 
 const { Option } = Select;
 
@@ -38,111 +45,41 @@ export default function DashboardBO() {
   const appointmentsLoading = useSelector(selectAppointmentsIsLoading);
   const appointments = useSelector(selectAppointments);
   const currentUser = getCurrentUser();
+  const dashboardCount = useSelector(selectDashboardCount);
+  const chartMonth = useSelector(selectDashboardChartMonth);
+  const chartDay = useSelector(selectDashboardChartDay);
 
   useEffect(() => {
     dispatch(fetchAppointments(11));
   }, [dispatch]);
 
-  const data = [
-    {
-      name: 'Jan',
-      Male: 4000,
-      Female: 2400,
-    },
-    {
-      name: 'Feb',
-      Male: 3000,
-      Female: 1398,
-    },
-    {
-      name: 'Mar',
-      Male: 2000,
-      Female: 9800,
-    },
-    {
-      name: 'Apr',
-      Male: 2780,
-      Female: 3908,
-    },
-    {
-      name: 'May',
-      Male: 1890,
-      Female: 4800,
-    },
-    {
-      name: 'Jun',
-      Male: 2390,
-      Female: 3800,
-    },
-    {
-      name: 'July',
-      Male: 3490,
-      Female: 4300,
-    },
-    {
-      name: 'Aug',
-      Male: 2390,
-      Female: 3800,
-    },
-    {
-      name: 'Sep',
-      Male: 3490,
-      Female: 4300,
-    },
-    {
-      name: 'Oct',
-      Male: 2390,
-      Female: 3800,
-    },
-    {
-      name: 'Nov',
-      Male: 3490,
-      Female: 4300,
-    },
-    {
-      name: 'Des',
-      Male: 3490,
-      Female: 4300,
-    },
-  ];
+  // Get total
+  useEffect(() => {
+    dispatch(fetchCount(currentUser.role_id));
+  }, [currentUser.role_id, dispatch]);
 
-  const dataBar = [
-    {
-      name: 'M',
-      Male: 2000,
-      Female: 2400,
-    },
-    {
-      name: 'T',
-      Male: 200,
-      Female: 1200,
-    },
-    {
-      name: 'W',
-      Male: 300,
-      Female: 3000,
-    },
-    {
-      name: 'T',
-      Male: 2000,
-      Female: 2400,
-    },
-    {
-      name: 'F',
-      Male: 200,
-      Female: 1200,
-    },
-    {
-      name: 'S',
-      Male: 300,
-      Female: 3000,
-    },
-    {
-      name: 'S',
-      Male: 300,
-      Female: 3000,
-    },
-  ];
+  // Get chart
+  useEffect(() => {
+    dispatch(fetchBOChart());
+  }, [dispatch]);
+
+  let dataMonth;
+  if (chartMonth) {
+    dataMonth = chartMonth.map((item, index) => ({
+      name: item.month.slice(0, 3),
+      Male: item.male,
+      Female: item.female,
+    }));
+  }
+
+  let dataDay;
+  if (chartDay) {
+    dataDay = chartDay.map((item, index) => ({
+      name: item.day.slice(0, 1),
+      Male: item.male,
+      Female: item.female,
+    }));
+  }
 
   const appointmentColumns = [
     { title: 'Patient Name', key: 'patient name', dataIndex: 'name' },
@@ -181,17 +118,17 @@ export default function DashboardBO() {
       <div className="header">
         <DashboardCard
           text="Total Doctors"
-          num="120"
+          num={dashboardCount.doctor}
           icon={<FaUserNurse className="icon" />}
         />
         <DashboardCard
           text="Total Staffs"
-          num="40"
+          num={dashboardCount.user}
           icon={<RiNurseFill className="icon" />}
         />
         <DashboardCard
           text="Total Patients"
-          num="1130"
+          num={dashboardCount.patient}
           icon={<GiPerson className="icon" />}
         />
       </div>
@@ -219,7 +156,7 @@ export default function DashboardBO() {
             </div>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart
-                data={data}
+                data={dataMonth}
                 margin={{
                   top: 5,
                   right: 40,
@@ -272,7 +209,7 @@ export default function DashboardBO() {
             </div>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart
-                data={dataBar}
+                data={dataDay}
                 barGap={4}
                 barSize={10}
                 barCategoryGap={20}

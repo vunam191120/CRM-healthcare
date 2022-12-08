@@ -10,11 +10,11 @@ export default function ClinicClinic() {
           <ul className="info-list">
             <li className="info-item">
               <span className="filed">Patient records : </span>
-              <span className="value">4509212</span>
+              <span className="value">173</span>
             </li>
             <li className="info-item">
               <span className="filed">Award Winning : </span>
-              <span className="value">60</span>
+              <span className="value">12</span>
             </li>
             <li className="info-item">
               <span className="filed">Connections Success Rate :</span>

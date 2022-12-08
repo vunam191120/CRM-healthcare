@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RiArticleLine } from 'react-icons/ri';
 import {
   AiFillTags,
@@ -27,6 +28,13 @@ import {
   Bar,
 } from 'recharts';
 import DashboardCard from '../DashboardCard';
+import getCurrentUser from '../../helpers/getCurrentUser';
+import {
+  fetchCount,
+  fetchMarketingChart,
+  selectDashboardChartView,
+  selectDashboardCount,
+} from '../../store/slices/dashboardSlice';
 
 const { Option } = Select;
 
@@ -104,58 +112,29 @@ const renderActiveShape = (props) => {
 };
 
 export default function DashboardMarketing() {
+  const dispatch = useDispatch();
   const [pieIndex, setPieIndex] = useState(0);
+  const currentUser = getCurrentUser();
+  const chartView = useSelector(selectDashboardChartView);
+  const dashboardCount = useSelector(selectDashboardCount);
 
-  const dataTotalViewBar = [
-    {
-      name: 'Jan',
-      views: 220,
-    },
-    {
-      name: 'Feb',
-      views: 620,
-    },
-    {
-      name: 'Mar',
-      views: 120,
-    },
-    {
-      name: 'Apr',
-      views: 420,
-    },
-    {
-      name: 'May',
-      views: 100,
-    },
-    {
-      name: 'Jun',
-      views: 300,
-    },
-    {
-      name: 'Jul',
-      views: 90,
-    },
-    {
-      name: 'Aug',
-      views: 220,
-    },
-    {
-      name: 'Sep',
-      views: 620,
-    },
-    {
-      name: 'Oct',
-      views: 120,
-    },
-    {
-      name: 'Nov',
-      views: 420,
-    },
-    {
-      name: 'Dec',
-      views: 100,
-    },
-  ];
+  // Get total
+  useEffect(() => {
+    dispatch(fetchCount(currentUser.role_id));
+  }, [currentUser.role_id, dispatch]);
+
+  // Get chart
+  useEffect(() => {
+    dispatch(fetchMarketingChart());
+  }, [dispatch]);
+
+  let dataTotalViewBar;
+  if (chartView) {
+    dataTotalViewBar = chartView.map((item) => ({
+      name: item.month.slice(0, 3),
+      views: item.view,
+    }));
+  }
 
   const dataSupportMade = [
     { name: 'In progress', value: 498 },
@@ -179,22 +158,27 @@ export default function DashboardMarketing() {
   };
 
   return (
-    <>
-      <div className="header support">
+    <div className="dashboard-marketing">
+      <div className="header">
         <DashboardCard
           text="Total Supports"
-          num="120"
+          num={dashboardCount.support}
           icon={<BiSupport className="icon" />}
         />
         <DashboardCard
           text="Total Articles by type"
-          num="10"
+          num={dashboardCount.type}
           icon={<RiArticleLine className="icon" />}
         />
         <DashboardCard
           text="Total Articles by tag"
-          num="1130"
+          num={dashboardCount.tag}
           icon={<AiFillTags className="icon" />}
+        />
+        <DashboardCard
+          text="Total Articles"
+          num={dashboardCount.article}
+          icon={<RiArticleLine className="icon" />}
         />
       </div>
       <Row className="content">
@@ -206,38 +190,40 @@ export default function DashboardMarketing() {
           xll={14}
           className="support-container left"
         >
-          <div className="support-content">
-            <div className="heading">
-              <h3 className="title">Articles visits by month</h3>
-              <Select
-                className="dropdown"
-                placeholder="Select month"
-                defaultValue={'this month'}
-              >
-                <Option value={'this month'}>This Month</Option>
-                <Option value={'last month'}>Last Month</Option>
-                <Option value={'over last month'}>Over Last Month</Option>
-              </Select>
+          {chartView && (
+            <div className="support-content">
+              <div className="heading">
+                <h3 className="title">Articles visits by month</h3>
+                <Select
+                  className="dropdown"
+                  placeholder="Select month"
+                  defaultValue={'this month'}
+                >
+                  <Option value={'this month'}>This Month</Option>
+                  <Option value={'last month'}>Last Month</Option>
+                  <Option value={'over last month'}>Over Last Month</Option>
+                </Select>
+              </div>
+              <ResponsiveContainer width="100%" height={320}>
+                <BarChart
+                  data={dataTotalViewBar}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="views" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
-            <ResponsiveContainer width="100%" height={320}>
-              <BarChart
-                data={dataTotalViewBar}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="views" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          )}
         </Col>
         <Col
           sm={24}
@@ -392,6 +378,6 @@ export default function DashboardMarketing() {
           </div>
         </Col>
       </Row>
-    </>
+    </div>
   );
 }

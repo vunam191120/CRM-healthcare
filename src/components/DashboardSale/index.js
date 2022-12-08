@@ -28,6 +28,16 @@ import { formatDateAndTime } from '../../helpers/formatDate';
 import { Link } from 'react-router-dom';
 import { ImEye } from 'react-icons/im';
 import { BiExport, BiPencil } from 'react-icons/bi';
+import {
+  fetchCount,
+  fetchSaleChart,
+  fetchSalePie,
+  selectDashboardChartIncome,
+  selectDashboardCount,
+  selectDashboardPieStatus,
+  selectDashboardPieType,
+} from '../../store/slices/dashboardSlice';
+import getCurrentUser from '../../helpers/getCurrentUser';
 const { Option } = Select;
 
 const RADIAN = Math.PI / 180;
@@ -60,11 +70,31 @@ const renderCustomizedLabel = ({
 
 export default function DashboardSale() {
   const dispatch = useDispatch();
+  const currentUser = getCurrentUser();
   const paymentLoading = useSelector(selectPaymentsIsLoading);
+  const dashboardCount = useSelector(selectDashboardCount);
+  const chartIncome = useSelector(selectDashboardChartIncome);
+  const pieStatus = useSelector(selectDashboardPieStatus);
+  const pieType = useSelector(selectDashboardPieType);
   const payments = useSelector(selectPayments);
 
   useEffect(() => {
     dispatch(fetchPayments(11));
+  }, [dispatch]);
+
+  // Get total
+  useEffect(() => {
+    dispatch(fetchCount(currentUser.role_id));
+  }, [currentUser.role_id, dispatch]);
+
+  // Get chart
+  useEffect(() => {
+    dispatch(fetchSaleChart());
+  }, [dispatch]);
+
+  // Get pie
+  useEffect(() => {
+    dispatch(fetchSalePie());
   }, [dispatch]);
 
   const paymentColumns = [
@@ -135,69 +165,31 @@ export default function DashboardSale() {
     },
   ];
 
-  const dataIncome = [
-    {
-      name: 'Jan',
-      income: 4000,
-    },
-    {
-      name: 'Feb',
-      income: 3000,
-    },
-    {
-      name: 'Mar',
-      income: 2000,
-    },
-    {
-      name: 'Apr',
-      income: 2780,
-    },
-    {
-      name: 'May',
-      income: 1890,
-    },
-    {
-      name: 'Jun',
-      income: 2390,
-    },
-    {
-      name: 'July',
-      income: 3490,
-    },
-    {
-      name: 'Aug',
-      income: 2390,
-    },
-    {
-      name: 'Sep',
-      income: 3490,
-    },
-    {
-      name: 'Okt',
-      income: 2390,
-    },
-    {
-      name: 'Nov',
-      income: 3490,
-    },
-    {
-      name: 'Des',
-      income: 3490,
-    },
-  ];
+  let dataIncome;
+  if (chartIncome) {
+    dataIncome = chartIncome.map((item) => ({
+      name: item.month.slice(0, 3),
+      income: item.total,
+    }));
+  }
 
-  const dataAppointmentMade = [
-    { name: 'In progress', value: 498 },
-    { name: 'Cancel', value: 220 },
-    { name: 'Done', value: 600 },
-  ];
+  let dataAppointmentMade;
+  if (pieStatus) {
+    dataAppointmentMade = pieStatus.map((item) => ({
+      name: item.name,
+      value: item.value,
+    }));
+  }
 
-  const dataTypeAppointment = [
-    { name: 'Offline', value: 498 },
-    { name: 'Online', value: 820 },
-  ];
+  let dataTypeAppointment;
+  if (pieType) {
+    dataTypeAppointment = pieType.map((item) => ({
+      name: item.name,
+      value: item.value,
+    }));
+  }
 
-  const COLORS_APPOINTMENT_MADE = ['#5b76d8', '#d36a68', '#3cc196'];
+  const COLORS_APPOINTMENT_MADE = ['#d36a68', '#5b76d8', '#3cc196', '#FFBB28'];
 
   const COLORS_APPOINTMENT_TYPE = ['#5b76d8', '#3cc196'];
 
@@ -206,17 +198,17 @@ export default function DashboardSale() {
       <div className="header sale">
         <DashboardCard
           text="Total Appointments"
-          num="120"
+          num={dashboardCount.appointment}
           icon={<BsCalendar2Date className="icon" />}
         />
         <DashboardCard
           text="Total Payments"
-          num="40"
+          num={dashboardCount.payment}
           icon={<MdPayment className="icon" />}
         />
         <DashboardCard
           text="Total Patients"
-          num="1130"
+          num={dashboardCount.patient}
           icon={<GiPerson className="icon" />}
         />
       </div>
@@ -274,48 +266,50 @@ export default function DashboardSale() {
           xll={10}
           className="pie-charts-appointment right"
         >
-          <div className="pie-appointment-content">
-            <div className="heading">
-              <h3 className="title">Rate of appointments created </h3>
-              <Select
-                className="dropdown"
-                placeholder="Select Month"
-                defaultValue={'this month'}
-              >
-                <Option value={'this month'}>This Month</Option>
-                <Option value={'last month'}>Last Month</Option>
-                <Option value={'over last month'}>Over Last Month</Option>
-              </Select>
-            </div>
-            <ResponsiveContainer width="100%" height={262}>
-              <PieChart>
-                <Pie
-                  data={dataAppointmentMade}
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  paddingAngle={5}
-                  dataKey="value"
+          {pieStatus && (
+            <div className="pie-appointment-content">
+              <div className="heading">
+                <h3 className="title">Rate of appointments created </h3>
+                <Select
+                  className="dropdown"
+                  placeholder="Select Month"
+                  defaultValue={'this month'}
                 >
-                  {dataAppointmentMade.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={
-                        COLORS_APPOINTMENT_MADE[
-                          index % COLORS_APPOINTMENT_MADE.length
-                        ]
-                      }
-                    />
-                  ))}
-                </Pie>
-                <Legend
-                  layout="horizontal"
-                  verticalAlign="bottom"
-                  align="center"
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                  <Option value={'this month'}>This Month</Option>
+                  <Option value={'last month'}>Last Month</Option>
+                  <Option value={'over last month'}>Over Last Month</Option>
+                </Select>
+              </div>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={dataAppointmentMade}
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {dataAppointmentMade.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={
+                          COLORS_APPOINTMENT_MADE[
+                            index % COLORS_APPOINTMENT_MADE.length
+                          ]
+                        }
+                      />
+                    ))}
+                  </Pie>
+                  <Legend
+                    layout="horizontal"
+                    verticalAlign="bottom"
+                    align="center"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </Col>
       </Row>
       <Row className="content">
@@ -327,50 +321,52 @@ export default function DashboardSale() {
           xll={12}
           className="pie-charts-appointment"
         >
-          <div className="pie-appointment-content">
-            <div className="heading">
-              <h3 className="title">Rate type of appointment </h3>
-              <Select
-                className="dropdown"
-                placeholder="Select Month"
-                defaultValue={'this month'}
-              >
-                <Option value={'this month'}>This Month</Option>
-                <Option value={'last month'}>Last Month</Option>
-                <Option value={'over last month'}>Over Last Month</Option>
-              </Select>
-            </div>
-            <ResponsiveContainer width="100%" height={290}>
-              <PieChart>
-                <Pie
-                  data={dataTypeAppointment}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
+          {pieType && (
+            <div className="pie-appointment-content">
+              <div className="heading">
+                <h3 className="title">Rate type of appointment </h3>
+                <Select
+                  className="dropdown"
+                  placeholder="Select Month"
+                  defaultValue={'this month'}
                 >
-                  {dataAppointmentMade.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={
-                        COLORS_APPOINTMENT_TYPE[
-                          index % COLORS_APPOINTMENT_TYPE.length
-                        ]
-                      }
-                    />
-                  ))}
-                </Pie>
-                <Legend
-                  layout="horizontal"
-                  verticalAlign="bottom"
-                  align="center"
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                  <Option value={'this month'}>This Month</Option>
+                  <Option value={'last month'}>Last Month</Option>
+                  <Option value={'over last month'}>Over Last Month</Option>
+                </Select>
+              </div>
+              <ResponsiveContainer width="100%" height={290}>
+                <PieChart>
+                  <Pie
+                    data={dataTypeAppointment}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {dataAppointmentMade.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={
+                          COLORS_APPOINTMENT_TYPE[
+                            index % COLORS_APPOINTMENT_TYPE.length
+                          ]
+                        }
+                      />
+                    ))}
+                  </Pie>
+                  <Legend
+                    layout="horizontal"
+                    verticalAlign="bottom"
+                    align="center"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </Col>
         <Col
           sm={24}

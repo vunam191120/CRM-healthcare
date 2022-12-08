@@ -63,7 +63,7 @@ export const SidebarData = [
     title: 'Services',
     path: '/services',
     icon: <MdOutlineMedicalServices />,
-    roles: ['Admin', 'Marketing', 'Support'],
+    roles: ['Admin', 'Marketing'],
   },
   // {
   //   title: 'Reports',

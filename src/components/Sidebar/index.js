@@ -22,7 +22,7 @@ const Sidebar = ({ expanded, toggleExpanded }) => {
       <Button className="expand-btn" onClick={toggleExpanded}>
         <BiChevronLeft className="expand-icon" />
       </Button>
-      <Link to="/" className="sidebar-logo">
+      <Link to="/dashboard" className="sidebar-logo">
         <img src={healthCareLogo} alt="HealthCare Logo" />
         <h4>
           Med<span>Cares</span>
